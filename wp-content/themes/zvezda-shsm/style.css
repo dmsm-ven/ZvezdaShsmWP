@@ -1,0 +1,58 @@
+/*
+Theme Name: ФК Звезда ШСМ
+Template: hello-elementor
+Version: 0.1.0
+Text Domain: zvezda-shsm
+*/
+:root {
+  --red: #DF000C;
+  --black: #000;
+  --white: #fff;
+  --gutter: 16px;
+  --maxw: 1200px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--black); color: var(--white); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.5; }
+a { color: inherit; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* Кнопки: красный фон, белый текст */
+.btn { display: inline-block; padding: 12px 22px; background: var(--red); color: var(--white); text-decoration: none; font-weight: 700; border: 2px solid var(--red); border-radius: 6px; cursor: pointer; }
+.btn:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+.btn--outline { background: transparent; border-color: var(--white); }
+
+/* Верхняя полоса */
+.promo { background: var(--red); color: var(--white); }
+.promo__inner { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 8px var(--gutter); text-align: center; }
+.promo a { font-weight: 700; }
+.promo__close { background: none; border: 0; color: var(--white); font-size: 22px; line-height: 1; cursor: pointer; }
+.promo[hidden] { display: none; }
+
+/* Шапка */
+.site-header { position: sticky; top: 0; z-index: 50; background: var(--black); border-bottom: 1px solid #222; }
+.site-header__inner { display: flex; align-items: center; gap: 20px; min-height: 64px; }
+.site-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; white-space: nowrap; }
+.site-brand img { max-height: 44px; width: auto; }
+.site-nav { margin-left: auto; }
+.site-nav ul { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; }
+.site-nav a { text-decoration: none; }
+.site-nav .current-menu-item > a, .site-nav a:hover { border-bottom: 2px solid var(--red); }
+.site-header__phone { font-weight: 700; text-decoration: none; white-space: nowrap; }
+.nav-toggle { display: none; margin-left: auto; background: none; border: 1px solid #444; color: var(--white); padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+
+@media (max-width: 1100px) {
+  .nav-toggle { display: block; }
+  .site-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--black); border-bottom: 1px solid #222; padding: 12px var(--gutter); margin: 0; }
+  .site-nav.is-open { display: block; }
+  .site-nav ul { flex-direction: column; gap: 12px; }
+  .site-header__cta .btn { padding: 8px 12px; font-size: 14px; }
+}
+
+/* Hero */
+.hero { padding: 72px 0; }
+.hero h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.1; margin: 0 0 16px; }
+.hero p { font-size: 18px; max-width: 640px; }
+.hero__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+
+/* Подвал */
+.site-footer { border-top: 1px solid #222; padding: 32px 0; color: var(--white); }
