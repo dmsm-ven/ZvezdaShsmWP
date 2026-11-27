@@ -1,0 +1,73 @@
+// плавное появление секций при скролле
+document.querySelectorAll('.section .wrap, .stats .wrap').forEach(function(el){el.classList.add('reveal')});
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('on');io.unobserve(en.target)}})},{threshold:0,rootMargin:'0px 0px -40px 0px'});
+function novaRevealVisible(){document.querySelectorAll('.reveal:not(.on)').forEach(function(el){var r=el.getBoundingClientRect();if(r.top<window.innerHeight&&r.bottom>0){el.classList.add('on');io.unobserve(el)}})}
+window.addEventListener('load',novaRevealVisible);
+setTimeout(novaRevealVisible,600);
+setTimeout(function(){document.querySelectorAll('.reveal:not(.on)').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight*1.5)el.classList.add('on')})},1800);
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+// видео: клик по превью загружает плеер
+var vc=document.getElementById('videoCard');
+function playVideo(){
+  if(vc.querySelector('iframe'))return;
+  var f=document.createElement('iframe');
+  f.src='https://www.youtube-nocookie.com/embed/G1t2zkg3k04?autoplay=1&rel=0';
+  f.allow='autoplay; encrypted-media; picture-in-picture';
+  f.allowFullscreen=true;
+  vc.appendChild(f);
+}
+if(vc){vc.addEventListener('click',playVideo);vc.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();playVideo()}})}
+// компактная шапка при скролле
+var hd=document.querySelector('.header');
+window.addEventListener('scroll',function(){hd.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
+
+// мобильное меню (генерируется из основного)
+(function(){
+  var wrap=document.querySelector('.header .wrap'), nav=document.querySelector('.header .nav');
+  if(!wrap||!nav)return;
+  var burger=document.createElement('button');
+  burger.className='burger'; burger.setAttribute('aria-label','Открыть меню');
+  burger.innerHTML='<span></span><span></span><span></span>';
+  wrap.insertBefore(burger, wrap.querySelector('.cta'));
+  var mn=document.createElement('div'); mn.className='mobile-nav';
+  mn.innerHTML='<button class="close" aria-label="Закрыть меню">✕</button>'+nav.innerHTML+
+    '<div class="mcontacts"><a href="tel:+79856692689">+7 (985) 669-26-89</a> · <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="https://t.me/fcsupernovamoscow">Telegram</a></div>';
+  document.body.appendChild(mn);
+  burger.addEventListener('click',function(){mn.classList.add('open')});
+  mn.querySelector('.close').addEventListener('click',function(){mn.classList.remove('open')});
+  mn.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mn.classList.remove('open')})});
+})();
+
+// лайтбокс для галерей
+(function(){
+  var imgs=Array.prototype.slice.call(document.querySelectorAll('.masonry img, .gallery img'));
+  if(!imgs.length)return;
+  var lb=document.createElement('div'); lb.className='lightbox';
+  lb.innerHTML='<button class="lb-close" aria-label="Закрыть">✕</button><button class="lb-prev" aria-label="Предыдущее">‹</button><img alt=""><button class="lb-next" aria-label="Следующее">›</button>';
+  document.body.appendChild(lb);
+  var im=lb.querySelector('img'), i=0;
+  function show(n){i=(n+imgs.length)%imgs.length; im.src=imgs[i].src; im.alt=imgs[i].alt; lb.classList.add('open')}
+  imgs.forEach(function(el,n){el.style.cursor='zoom-in'; el.addEventListener('click',function(){show(n)})});
+  lb.querySelector('.lb-close').addEventListener('click',function(){lb.classList.remove('open')});
+  lb.querySelector('.lb-prev').addEventListener('click',function(){show(i-1)});
+  lb.querySelector('.lb-next').addEventListener('click',function(){show(i+1)});
+  lb.addEventListener('click',function(e){if(e.target===lb)lb.classList.remove('open')});
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('open'))return;
+    if(e.key==='Escape')lb.classList.remove('open');
+    if(e.key==='ArrowLeft')show(i-1);
+    if(e.key==='ArrowRight')show(i+1);
+  });
+})();
+
+// верхняя полоса «Идёт набор»: закрытие на время сессии
+(function(){
+  var tb=document.getElementById('topbar');
+  if(!tb)return;
+  try{ if(sessionStorage.getItem('novaTopbarClosed')==='1'){tb.classList.add('hidden');return} }catch(e){}
+  var btn=tb.querySelector('.tb-close');
+  if(btn)btn.addEventListener('click',function(){
+    tb.classList.add('hidden');
+    try{sessionStorage.setItem('novaTopbarClosed','1')}catch(e){}
+  });
+})();
