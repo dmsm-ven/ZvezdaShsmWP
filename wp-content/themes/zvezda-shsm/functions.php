@@ -652,6 +652,23 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
 
+    // Signup section content: editable heading, copy and photo (ACF Free compatible).
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_signup',
+        'title' => 'Главная — Запись',
+        'menu_order' => 8,
+        'fields' => [
+            ['key' => 'field_zvezda_signup_title', 'label' => 'Заголовок H2', 'name' => 'signup_title', 'type' => 'text', 'default_value' => 'Первая тренировка — бесплатно'],
+            ['key' => 'field_zvezda_signup_description', 'label' => 'Текст под заголовком', 'name' => 'signup_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Оставьте заявку — перезвоним, подберём группу по возрасту и пригласим на пробное занятие. Или напишите нам в мессенджер, так быстрее.'],
+            ['key' => 'field_zvezda_signup_photo', 'label' => 'Фотография', 'name' => 'signup_photo', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'medium', 'library' => 'all'],
+            ['key' => 'field_zvezda_signup_photo_alt', 'label' => 'ALT-текст фотографии', 'name' => 'signup_photo_alt', 'type' => 'text', 'default_value' => 'Юные игроки ФК «СУПЕР НОВА»', 'instructions' => 'Кратко опишите, что изображено на фотографии.'],
+        ],
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_gallery',
         'title' => 'Главная — фотогалерея',
