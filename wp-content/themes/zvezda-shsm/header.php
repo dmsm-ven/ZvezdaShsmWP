@@ -3,38 +3,53 @@
 <head>
 <meta charset="<?php bloginfo('charset'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-
-<?php $promo = zvezda_opt('promo_text', 'Идёт набор в группы — первая тренировка бесплатно'); ?>
-<?php if ($promo) : ?>
-<div class="promo" id="promo" hidden>
-  <div class="promo__inner">
-    <span><?php echo esc_html($promo); ?></span>
-    <a href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться</a>
-    <button class="promo__close" type="button" aria-label="Закрыть">&times;</button>
+<div class="topbar" id="topbar">
+  <div class="wrap">
+    <span class="tb-text"><i class="tb-dot"></i><span class="tb-full">Открыт круглогодичный набор на сезон 2026/27 (дети 5–12 лет) — первая тренировка бесплатно</span><span class="tb-short">Набор 2026/27 · 5–12 лет · 1-я бесплатно</span></span>
+    <a class="tb-btn" href="<?php echo esc_url(home_url('/')); ?>">Записаться</a>
+    <button class="tb-close" type="button" aria-label="Закрыть объявление">×</button>
   </div>
 </div>
-<?php endif; ?>
 
-<header class="site-header">
-  <div class="container site-header__inner">
-    <a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>">
-      <?php if (has_custom_logo()) { the_custom_logo(); } ?>
-      <span>ФК «Звезда ШСМ»</span>
+<header class="header">
+  <div class="wrap">
+    <a class="logo" href="<?php echo esc_url(home_url('/')); ?>">
+      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/logo.png')); ?>" alt="ФК Супер Нова">
+      ФК «СУПЕР НОВА»
     </a>
-
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню</button>
-
-    <nav class="site-nav" id="site-nav" aria-label="Главное меню">
-      <?php wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'fallback_cb' => false]); ?>
+    <nav class="nav">
+      <a href="<?php echo esc_url(home_url('/')); ?>" class="active">Главная</a>
+      <a href="<?php echo esc_url(home_url('/about/')); ?>">О клубе</a>
+      <a href="<?php echo esc_url(home_url('/philosophy/')); ?>">Философия</a>
+      <a href="<?php echo esc_url(home_url('/coaches/')); ?>">Тренеры</a>
+      <a href="<?php echo esc_url(home_url('/schedule/')); ?>">Расписание</a>
+      <a href="<?php echo esc_url(home_url('/media/')); ?>">Медиа</a>
+      <a href="<?php echo esc_url(home_url('/useful/')); ?>">Полезное</a>
+      <a href="<?php echo esc_url(home_url('/payment/')); ?>">Оплата</a>
+      <a href="<?php echo esc_url(home_url('/contacts/')); ?>">Контакты</a>
     </nav>
-
-    <?php $phone = zvezda_opt('phone', '+7 (000) 000-00-00'); ?>
-    <a class="site-header__phone" href="tel:<?php echo esc_attr(preg_replace('/[^\d+]/', '', $phone)); ?>"><?php echo esc_html($phone); ?></a>
-    <div class="site-header__cta"><a class="btn" href="<?php echo esc_url(home_url('/#signup')); ?>">Пробная тренировка</a></div>
+    <a class="phone" href="tel:+79856692689">+7 (985) 669-26-89</a>
+    <button class="burger" aria-label="Открыть меню"><span></span><span></span><span></span></button><a class="btn btn-p cta" href="<?php echo esc_url(home_url('/')); ?>">Пробная тренировка</a>
   </div>
 </header>
+<div class="mobile-nav" aria-hidden="true">
+<button class="close" type="button" aria-label="Закрыть меню">✕</button>
+<a href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
+<a href="<?php echo esc_url(home_url('/about/')); ?>">О клубе</a>
+<a href="<?php echo esc_url(home_url('/philosophy/')); ?>">Философия</a>
+<a href="<?php echo esc_url(home_url('/coaches/')); ?>">Тренеры</a>
+<a href="<?php echo esc_url(home_url('/schedule/')); ?>">Расписание</a>
+<a href="<?php echo esc_url(home_url('/media/')); ?>">Медиа</a>
+<a href="<?php echo esc_url(home_url('/useful/')); ?>">Полезное</a>
+<a href="<?php echo esc_url(home_url('/payment/')); ?>">Оплата</a>
+<a href="<?php echo esc_url(home_url('/contacts/')); ?>">Контакты</a>
+<div class="mcontacts"><a href="tel:+79856692689">+7 (985) 669-26-89</a> · <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="https://t.me/fcsupernovamoscow">Telegram</a></div>
+</div>
 <main id="content">

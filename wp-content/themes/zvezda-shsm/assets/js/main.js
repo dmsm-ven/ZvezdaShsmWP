@@ -1,23 +1,11 @@
-(function () {
-  // Верхняя полоса: показать, если ещё не закрывали
-  var promo = document.getElementById('promo');
-  if (promo) {
-    var closed = false;
-    try { closed = localStorage.getItem('promoClosed') === '1'; } catch (e) {}
-    if (!closed) promo.hidden = false;
-    var btn = promo.querySelector('.promo__close');
-    if (btn) btn.addEventListener('click', function () {
-      promo.hidden = true;
-      try { localStorage.setItem('promoClosed', '1'); } catch (e) {}
-    });
-  }
-  // Мобильное меню
-  var toggle = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('site-nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  }
-})();
+document.addEventListener('DOMContentLoaded', () => {
+ const burger=document.querySelector('.burger'), menu=document.querySelector('.mobile-nav');
+ const close=()=>{menu?.classList.remove('open');menu?.setAttribute('aria-hidden','true');burger?.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open');};
+ burger?.addEventListener('click',()=>{menu?.classList.add('open');menu?.setAttribute('aria-hidden','false');burger.setAttribute('aria-expanded','true');document.body.classList.add('menu-open');});
+ menu?.querySelector('.close')?.addEventListener('click',close);
+ menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+ document.querySelector('.topbar .tb-close')?.addEventListener('click',()=>document.querySelector('.topbar')?.classList.add('hidden'));
+ const items=document.querySelectorAll('.reveal:not(.on)');
+ if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');observer.unobserve(e.target);}}),{threshold:.12});items.forEach(x=>observer.observe(x));}
+ else items.forEach(x=>x.classList.add('on'));
+});
