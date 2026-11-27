@@ -19,7 +19,7 @@ $community_image_alt = zvezda_inner_page_field('about_community_image_alt', '');
 if ($community_image_alt === '' && is_array($community_image)) $community_image_alt = $community_image['alt'] ?? '';
 ?>
 
-<section class="section about-section">
+<section class="section about-section about-section-soft">
   <div class="wrap split reveal <?php echo (is_array($who_image) && !empty($who_image['ID'])) ? 'has-image' : ''; ?>">
     <div class="prose">
       <div class="kicker"><?php echo esc_html(zvezda_inner_page_field('about_who_kicker', 'Кто мы')); ?></div>
