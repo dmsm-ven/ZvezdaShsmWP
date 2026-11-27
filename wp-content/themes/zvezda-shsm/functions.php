@@ -1068,6 +1068,7 @@ add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-schedule.php')) $classes[] = 'page-schedule';
     if (is_page_template('templates/page-media.php')) $classes[] = 'page-media';
     if (is_page_template('templates/page-useful.php')) $classes[] = 'page-useful';
+    if (is_page_template('templates/page-payment.php')) $classes[] = 'page-payment';
     if (is_singular('post')) $classes[] = 'useful-post';
     return $classes;
 });
@@ -1311,6 +1312,31 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
 });
+
+/** ACF banner content for the Payment page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_payment_page_banner',
+        'title' => 'Оплата — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_payment_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'Оплата'],
+            ['key' => 'field_zvezda_payment_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Оплата и цены занятий'],
+            ['key' => 'field_zvezda_payment_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Оплатить можно картой любого банка'],
+        ],
+        'location' => [[[
+            'param' => 'page_template',
+            'operator' => '==',
+            'value' => 'templates/page-payment.php',
+        ]]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
 
 /** Ensure standard posts expose their excerpt field in the editor. */
 add_action('init', function () {
