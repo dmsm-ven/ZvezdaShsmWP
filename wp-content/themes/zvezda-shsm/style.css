@@ -1070,7 +1070,7 @@ section[style*="background: #fff"] {
   border-radius: var(--r);
 }
 .page-about .about-section-soft {
-  background: #F6F8FD !important;
+  background: #fff !important;
   color: #171717;
 }
 .page-about .about-section-soft h2 { color: #171717 !important; }
