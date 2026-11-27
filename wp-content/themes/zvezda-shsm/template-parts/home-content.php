@@ -4,7 +4,14 @@
  * Контент статический; ACF будет подключён отдельным этапом.
  */
 ?>
-<section class="hero">
+<?php
+$banner_background = zvezda_home_field('banner_background_image');
+$banner_background_url = is_array($banner_background) ? ($banner_background['url'] ?? '') : '';
+$hero_background_style = $banner_background_url
+    ? '--hero-background-image: url("' . esc_url($banner_background_url) . '");'
+    : '';
+?>
+<section class="hero"<?php if ($hero_background_style !== '') : ?> style="<?php echo esc_attr($hero_background_style); ?>"<?php endif; ?>>
   <div class="wrap">
     <div class="badge"><i></i>Сезон 2026/27 · круглогодичный набор детей 5–12 лет</div>
     <h1><?php echo esc_html(zvezda_home_field('banner_title', 'Академия')); ?> <span style="white-space:nowrap"><?php echo esc_html(zvezda_setting('club_name')); ?></span> — <em><?php echo esc_html(zvezda_home_field('banner_subtitle', 'совершенствуйся играя')); ?></em></h1>
