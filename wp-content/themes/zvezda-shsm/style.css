@@ -972,3 +972,15 @@ section[style*="background: #fff"] {
   .section.contacts .map-embed,
   .section.contacts .map-embed iframe{min-height:300px}
 }
+
+
+/* Contacts: place the map beside the contact details on wide screens. */
+@media(min-width:981px){
+  .section.contacts .grid.g2{
+    grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+    align-items:stretch;
+  }
+}
+@media(max-width:980px){
+  .section.contacts .grid.g2{grid-template-columns:1fr}
+}
