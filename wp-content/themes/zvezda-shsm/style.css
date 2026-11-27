@@ -950,3 +950,25 @@ section[style*="background: #fff"] {
 .steps-section h2{color:var(--brand-dark)!important}
 .steps-section .step h3{color:var(--brand-dark)!important}
 .steps-section .step p{color:var(--gray)!important}
+
+
+/* Responsive embedded map in the homepage contacts section. */
+.section.contacts .map-embed{
+  min-height:340px;
+  overflow:hidden;
+  border-radius:var(--r);
+  border:1px solid #E2E5EC;
+  background:#f2f2f2;
+  box-shadow:0 10px 28px rgba(0,0,0,.08);
+}
+.section.contacts .map-embed iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:340px;
+  border:0;
+}
+@media(max-width:720px){
+  .section.contacts .map-embed,
+  .section.contacts .map-embed iframe{min-height:300px}
+}
