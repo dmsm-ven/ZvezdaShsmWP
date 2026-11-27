@@ -15,11 +15,11 @@ $ErrorActionPreference = 'Stop'
 
 function Get-BrowserPath {
     $candidates = @(
-        "$env:ProgramFiles(x86)\Microsoft\Edge\Application\msedge.exe",
+        "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
         "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
         "$env:LOCALAPPDATA\Microsoft\Edge\Application\msedge.exe",
         "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
-        "$env:ProgramFiles(x86)\Google\Chrome\Application\chrome.exe",
+        "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
         "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
     )
     foreach ($candidate in $candidates) {
@@ -88,7 +88,17 @@ try {
     $passwordHtml = ConvertTo-HtmlText $adminPassword
     $adminUrl = ConvertTo-HtmlText "$siteUrl/wp-admin/"
 
-    $cover = @"
+    [System.IO.Directory]::CreateDirectory($tempDirectory) | Out-Null
+    $tempMarkdown = Join-Path $tempDirectory 'website_instruction.md'
+    $htmlPath = Join-Path $tempDirectory 'website_instruction.html'
+    [System.IO.File]::WriteAllText($tempMarkdown, $markdown, (New-Object System.Text.UTF8Encoding($false)))
+
+    & $pandocCommand.Source $tempMarkdown '--from=gfm' '--to=html5' '--standalone' '--metadata=lang:ru' '--metadata=title:Инструкция по управлению сайтом' '--output' $htmlPath
+    if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $htmlPath)) {
+        throw 'Pandoc не смог преобразовать Markdown в HTML.'
+    }
+
+    $coverHtml = @"
 <section class="credentials-page">
   <div class="credentials-card">
     <p class="eyebrow">ИНСТРУКЦИЯ ДЛЯ АДМИНИСТРАТОРА</p>
@@ -99,22 +109,11 @@ try {
     <p class="security-note">Сохраните эти данные в безопасном месте. Не передавайте PDF посторонним.</p>
   </div>
 </section>
-<div class="manual-content">
-
 "@
 
-    $combinedMarkdown = $cover + $markdown + "`n`n</div>"
-    [System.IO.Directory]::CreateDirectory($tempDirectory) | Out-Null
-    $tempMarkdown = Join-Path $tempDirectory 'website_instruction.md'
-    $htmlPath = Join-Path $tempDirectory 'website_instruction.html'
-    [System.IO.File]::WriteAllText($tempMarkdown, $combinedMarkdown, (New-Object System.Text.UTF8Encoding($false)))
-
-    & $pandocCommand.Source $tempMarkdown '--from=gfm' '--to=html5' '--standalone' '--metadata=lang:ru' '--metadata=title:Инструкция по управлению сайтом' '--output' $htmlPath
-    if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $htmlPath)) {
-        throw 'Pandoc не смог преобразовать Markdown в HTML.'
-    }
-
     $html = [System.IO.File]::ReadAllText($htmlPath, [System.Text.Encoding]::UTF8)
+    $html = [regex]::Replace($html, '(?i)<body[^>]*>', { param($match) $match.Value + $coverHtml }, 1)
+
     $styles = @'
 <style>
 @page { size: A4; margin: 17mm 16mm; }
