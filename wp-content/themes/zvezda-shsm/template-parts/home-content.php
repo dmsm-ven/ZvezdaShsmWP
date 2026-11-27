@@ -124,7 +124,7 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
 </section>
 
 
-<section class="section" style="padding-top:0;background:var(--bg-soft)">
+<section class="section gallery-section" style="background:var(--bg-soft)">
   <div class="wrap reveal">
     <?php
     $gallery_items = [];
@@ -260,39 +260,31 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
 </section>
 
 
-<section class="section faq" id="faq" style="padding-top:0">
+<section class="section faq" id="faq">
   <div class="wrap reveal" style="max-width:840px">
     <div class="kicker">Вопросы и ответы</div>
     <h2>Частые вопросы родителей</h2>
-    <div style="margin-top:20px">
-      <details open="">
-        <summary>Сколько стоит обучение?</summary>
-        <div class="a">Месячный абонемент: 9 500 ₽ — 3 тренировки в неделю, 7 000 ₽ — 2 тренировки, 5 000 ₽ — 1 тренировка. Первая пробная тренировка бесплатна для всех.</div>
-      </details>
-      <details>
-        <summary>Детей какого возраста вы принимаете?</summary>
-        <div class="a">Принимаем детей 5–12 лет. Набор в школу проходит круглый год, группы формируются по возрасту.</div>
-      </details>
-      <details>
-        <summary>Что взять с собой на пробную тренировку?</summary>
-        <div class="a">Спортивную форму и обувь по погоде. Приезжайте за 15 минут до начала занятия. Записаться можно через форму на сайте или по телефону <?php echo esc_html(zvezda_setting('phone')); ?>.</div>
-      </details>
-      <details>
-        <summary>Нужна ли медицинская справка?</summary>
-        <div class="a">Клуб организует централизованное прохождение медосмотра в физкультурном диспансере — самостоятельно оформлять справку о допуске не нужно.</div>
-      </details>
-      <details>
-        <summary>Где и когда проходят тренировки?</summary>
-        <div class="a">В спортивном комплексе «Фили» (<?php echo esc_html(zvezda_setting('address')); ?>): вторник и четверг 19:00–20:15, воскресенье 15:00–16:15. Зимой занятия проходят в зале и на поле с искусственной травой. Выходные — игровые дни.</div>
-      </details>
-      <details>
-        <summary>Как следить за прогрессом ребёнка?</summary>
-        <div class="a">У каждого родителя есть личный кабинет в системе ProTrainUp: посещаемость, статистика тренировок и матчей, расписание, оплата абонемента и связь с тренером — всё в мобильном приложении.</div>
-      </details>
-      <details>
-        <summary>Участвуют ли команды в соревнованиях?</summary>
-        <div class="a">Да, команды клуба регулярно играют в соревнованиях Московской Федерации Футбола в разных возрастных категориях, проводят товарищеские матчи и выезжают на турниры и сборы, включая международные.</div>
-      </details>
+    <div class="faq-list" style="margin-top:20px">
+      <?php
+      $home_faq = new WP_Query([
+          'post_type' => 'faq',
+          'post_status' => 'publish',
+          'posts_per_page' => -1,
+          'orderby' => ['menu_order' => 'ASC', 'date' => 'ASC'],
+          'no_found_rows' => true,
+      ]);
+      ?>
+      <?php if ($home_faq->have_posts()) : ?>
+        <?php $faq_index = 0; while ($home_faq->have_posts()) : $home_faq->the_post();
+          $faq_answer = function_exists('get_field') ? get_field('faq_answer', get_the_ID()) : get_post_meta(get_the_ID(), 'faq_answer', true);
+          if (!$faq_answer) continue;
+        ?>
+          <details<?php echo $faq_index === 0 ? ' open' : ''; ?>>
+            <summary><?php the_title(); ?></summary>
+            <div class="a"><?php echo nl2br(esc_html($faq_answer)); ?></div>
+          </details>
+        <?php $faq_index++; endwhile; wp_reset_postdata(); ?>
+      <?php endif; ?>
     </div>
   </div>
 </section>
