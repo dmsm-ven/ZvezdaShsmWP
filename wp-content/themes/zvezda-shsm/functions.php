@@ -256,21 +256,65 @@ add_action('manage_coach_posts_custom_column', function ($column, $post_id) {
     echo esc_html($name ?: get_the_title($post_id) ?: 'Без ФИО');
 }, 10, 2);
 
-// The Posts List Table builds its title link from post_title and does not use
-// manage_coach_posts_custom_column() for the built-in title column.
-// Coach names are stored in ACF, so provide that value when the WP title is empty.
-add_filter('the_title', function ($title, $post_id) {
-    if (!is_admin() || $title !== '' || get_post_type($post_id) !== 'coach') {
-        return $title;
+// Keep the native WordPress post title in sync with the ACF coach full name.
+// The admin Posts List Table reads post_title directly when building its row link.
+function zvezda_sync_coach_post_title($post_id) {
+    $post_id = (int) $post_id;
+    if (!$post_id || get_post_type($post_id) !== 'coach' || !function_exists('get_field')) {
+        return;
     }
 
-    if (!function_exists('get_field')) {
-        return $title;
+    $coach_name = trim((string) get_field('coach_full_name', $post_id));
+    if ($coach_name === '') {
+        return;
     }
 
-    $coach_name = get_field('coach_full_name', $post_id);
-    return $coach_name ? $coach_name : $title;
-}, 20, 2);
+    $post = get_post($post_id);
+    if (!$post || $post->post_title === $coach_name) {
+        return;
+    }
+
+    remove_action('acf/save_post', 'zvezda_sync_coach_post_title', 20);
+    wp_update_post([
+        'ID' => $post_id,
+        'post_title' => $coach_name,
+    ]);
+    add_action('acf/save_post', 'zvezda_sync_coach_post_title', 20);
+}
+add_action('acf/save_post', 'zvezda_sync_coach_post_title', 20);
+
+// One-time migration for coach records created before post_title synchronization.
+add_action('admin_init', function () {
+    if (get_option('zvezda_coach_titles_synced_to_post_title') || !function_exists('get_field')) {
+        return;
+    }
+
+    $coach_ids = get_posts([
+        'post_type' => 'coach',
+        'post_status' => 'any',
+        'numberposts' => -1,
+        'fields' => 'ids',
+        'orderby' => 'ID',
+        'order' => 'ASC',
+    ]);
+
+    foreach ($coach_ids as $coach_id) {
+        $post = get_post($coach_id);
+        if (!$post || $post->post_title !== '') {
+            continue;
+        }
+
+        $coach_name = trim((string) get_field('coach_full_name', $coach_id));
+        if ($coach_name !== '') {
+            wp_update_post([
+                'ID' => $coach_id,
+                'post_title' => $coach_name,
+            ]);
+        }
+    }
+
+    update_option('zvezda_coach_titles_synced_to_post_title', 1);
+});
 
 /** ACF fields for the front page. */
 function zvezda_home_field($key, $default = '') {
