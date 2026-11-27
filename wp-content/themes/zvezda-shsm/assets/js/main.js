@@ -4,7 +4,29 @@ document.addEventListener('DOMContentLoaded', () => {
  burger?.addEventListener('click',()=>{menu?.classList.add('open');menu?.setAttribute('aria-hidden','false');burger.setAttribute('aria-expanded','true');document.body.classList.add('menu-open');});
  menu?.querySelector('.close')?.addEventListener('click',close);
  menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
- document.querySelector('.topbar .tb-close')?.addEventListener('click',()=>document.querySelector('.topbar')?.classList.add('hidden'));
+ const topbar=document.querySelector('.topbar');
+ if(topbar){
+  const dismissDays=Number.parseInt(topbar.dataset.dismissDays||'7',10);
+  const storageKey='zvezda_topbar_closed_at';
+  let isDismissed=false;
+  if(dismissDays>0){
+   try{
+    const closedAt=Number(localStorage.getItem(storageKey));
+    if(Number.isFinite(closedAt)&&closedAt>0){
+     if(Date.now()-closedAt<dismissDays*24*60*60*1000) isDismissed=true;
+     else localStorage.removeItem(storageKey);
+    }
+   }catch(error){}
+  }
+  topbar.classList.remove('topbar-pending');
+  if(isDismissed) topbar.classList.add('hidden');
+  topbar.querySelector('.tb-close')?.addEventListener('click',()=>{
+   topbar.classList.add('hidden');
+   if(dismissDays>0){
+    try{localStorage.setItem(storageKey,String(Date.now()));}catch(error){}
+   }
+  });
+ }
  const videoCard=document.querySelector('#videoCard[data-video-url]');
  const loadVideo=()=>{
   if(!videoCard || videoCard.dataset.loaded==='true') return;
