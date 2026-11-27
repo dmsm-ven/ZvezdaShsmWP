@@ -18,12 +18,13 @@
       </div>
       <div class="col">
         <h4>Контакты</h4>
+        <div class="footer-address"><?php echo esc_html(zvezda_setting('address')); ?></div>
         <a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a>
         <a href="<?php echo esc_url('mailto:' . zvezda_setting('email')); ?>"><?php echo esc_html(zvezda_setting('email')); ?></a>
         <a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a>
         <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
-        <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a>
-        <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a>
+        <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>" target="_blank" rel="noopener">VK</a>
+        <a href="<?php echo esc_url(zvezda_setting('youtube_url')); ?>" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
     <div class="bottom">
