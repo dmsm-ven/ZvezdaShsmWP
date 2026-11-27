@@ -86,7 +86,13 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
         <?php while ($home_coaches->have_posts()) : $home_coaches->the_post();
           $coach_id = get_the_ID();
           $coach_name = function_exists('get_field') ? get_field('coach_full_name', $coach_id) : '';
-          $coach_titles = get_post_meta($coach_id, '_coach_titles_list', true);\n          if (!is_array($coach_titles) || !$coach_titles) {\n            $legacy_titles = function_exists('get_field') ? get_field('coach_titles', $coach_id) : '';\n            $coach_titles = $legacy_titles ? preg_split('/\\s*·\\s*|\\r?\\n/', $legacy_titles) : [];\n          }\n          $coach_titles = array_filter(array_map('trim', $coach_titles));\n          $coach_titles_text = implode(' · ', $coach_titles);
+          $coach_titles = get_post_meta($coach_id, '_coach_titles_list', true);
+          if (!is_array($coach_titles) || !$coach_titles) {
+            $legacy_titles = function_exists('get_field') ? get_field('coach_titles', $coach_id) : '';
+            $coach_titles = $legacy_titles ? preg_split('/\s*·\s*|\r?\n/', $legacy_titles) : [];
+          }
+          $coach_titles = array_filter(array_map('trim', $coach_titles));
+          $coach_titles_text = implode(' · ', $coach_titles);
           $coach_description = function_exists('get_field') ? get_field('coach_description', $coach_id) : '';
           $coach_experience = function_exists('get_field') ? get_field('coach_experience', $coach_id) : '';
           $coach_image = get_the_post_thumbnail_url($coach_id, 'large');
