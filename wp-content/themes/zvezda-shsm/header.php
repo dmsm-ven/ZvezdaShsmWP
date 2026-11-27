@@ -12,7 +12,7 @@
 <?php wp_body_open(); ?>
 <div class="topbar" id="topbar">
   <div class="wrap">
-    <span class="tb-text"><i class="tb-dot"></i><span class="tb-full"><?php echo esc_html(zvezda_home_field('topbar_full_text', 'Открыт круглогодичный набор на сезон 2026/27 (дети 5–12 лет) — первая тренировка бесплатно')); ?></span><span class="tb-short">Набор 2026/27 · 5–12 лет · 1-я бесплатно</span></span>
+    <span class="tb-text"><i class="tb-dot"></i><span class="tb-full"><?php echo esc_html(zvezda_front_page_field('topbar_full_text', 'Открыт круглогодичный набор на сезон 2026/27 (дети 5–12 лет) — первая тренировка бесплатно')); ?></span><span class="tb-short">Набор 2026/27 · 5–12 лет · 1-я бесплатно</span></span>
     <a class="tb-btn" href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться</a>
     <button class="tb-close" type="button" aria-label="Закрыть объявление">×</button>
   </div>
