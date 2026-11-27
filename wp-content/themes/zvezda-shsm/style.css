@@ -1091,6 +1091,7 @@ section[style*="background: #fff"] {
 .page-philosophy .philosophy-section-light h2,
 .page-philosophy .philosophy-section-light h3 { color: #171717 !important; }
 .page-philosophy .philosophy-section-light .kicker { color: #DF000C !important; }
+.page-philosophy .philosophy-section-light .prose p { color: #555 !important; line-height: 1.75; }
 .page-philosophy .philosophy-section-light .card {
   background: #F7F7F7 !important;
   color: #171717 !important;
