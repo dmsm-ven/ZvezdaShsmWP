@@ -917,3 +917,8 @@ section[style*="background: #fff"] {
   .section.sched td { padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
   .section.sched .tariff { min-height: 0; }
 }
+
+
+/* A video preview is clickable only when a YouTube URL has been configured. */
+.video-card:not(.is-playable) { cursor: default; }
+.video-card:not(.is-playable):hover img { transform: none; }
