@@ -112,7 +112,9 @@ try {
 "@
 
     $html = [System.IO.File]::ReadAllText($htmlPath, [System.Text.Encoding]::UTF8)
-    $html = [regex]::Replace($html, '(?i)<body[^>]*>', { param($match) $match.Value + $coverHtml }, 1)
+    $bodyTag = [regex]::Match($html, '(?i)<body[^>]*>')
+    if (-not $bodyTag.Success) { throw 'Не удалось подготовить HTML-документ для печати.' }
+    $html = $html.Insert($bodyTag.Index + $bodyTag.Length, $coverHtml)
 
     $styles = @'
 <style>
@@ -147,6 +149,7 @@ pre, code { overflow-wrap: anywhere; white-space: pre-wrap; }
 
     $safeHost = $siteUri.Host -replace '[^a-zA-Z0-9.-]', '_'
     $pdfPath = Join-Path $desktopPath "Website_Instruction_$safeHost.pdf"
+    if (Test-Path -LiteralPath $pdfPath) { Remove-Item -LiteralPath $pdfPath -Force }
     $htmlUri = ([Uri]$htmlPath).AbsoluteUri
     $quote = [char]34
     $arguments = '--headless --disable-gpu --no-first-run --no-pdf-header-footer ' +
