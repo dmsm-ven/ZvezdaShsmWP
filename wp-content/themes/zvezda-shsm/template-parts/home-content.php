@@ -177,31 +177,63 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
 </section>
 
 
+<?php
+$schedule_title = zvezda_home_field('schedule_title', 'Тренировки в СК «Фили»');
+$schedule_subtitle = zvezda_home_field('schedule_subtitle', 'Поле с искусственной травой последнего поколения, зимой — занятия в зале.');
+$schedule_days_title = zvezda_home_field('schedule_days_title', 'Расписание · сезон 2026/27');
+$schedule_days = zvezda_home_field('schedule_days', []);
+if (!is_array($schedule_days) || !$schedule_days) {
+    $schedule_days = [
+        ['day' => 'Вторник', 'time' => '19:00 — 20:15'],
+        ['day' => 'Четверг', 'time' => '19:00 — 20:15'],
+        ['day' => 'Воскресенье', 'time' => '15:00 — 16:15'],
+        ['day' => 'Суббота / воскресенье', 'time' => 'игровые дни'],
+    ];
+}
+$schedule_footer = zvezda_home_field('schedule_footer', 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.');
+$membership_title = zvezda_home_field('membership_title', 'Что входит в абонемент');
+$membership_items = zvezda_home_field('membership_items', []);
+if (!is_array($membership_items) || !$membership_items) {
+    $membership_items = [
+        ['text' => 'Первая пробная тренировка — бесплатно'],
+        ['text' => 'Тренеры с лицензиями UEFA'],
+        ['text' => 'Тестирование игроков 2 раза в год'],
+        ['text' => 'Личный кабинет родителя в ProTrainUp'],
+        ['text' => 'Централизованный медосмотр'],
+        ['text' => 'Игровые дни по выходным'],
+    ];
+}
+?>
 <section class="section sched" id="schedule" style="background:#fff">
   <div class="wrap reveal">
     <div class="kicker">Расписание и стоимость</div>
-    <h2>Тренировки в СК «Фили»</h2>
-    <p class="sub" style="margin-bottom:32px"><?php echo esc_html(zvezda_setting('address')); ?>. Поле с искусственной травой последнего поколения, зимой — занятия в зале.</p>
+    <h2><?php echo esc_html($schedule_title); ?></h2>
+    <p class="sub" style="margin-bottom:32px"><?php echo esc_html(zvezda_setting('address')); ?>. <?php echo esc_html($schedule_subtitle); ?></p>
     <div class="grid g2">
       <div class="card">
-        <h3>Расписание · сезон 2026/27</h3>
+        <h3><?php echo esc_html($schedule_days_title); ?></h3>
         <table>
-          <tbody><tr><td>Вторник</td><td>19:00 — 20:15</td></tr>
-          <tr><td>Четверг</td><td>19:00 — 20:15</td></tr>
-          <tr><td>Воскресенье</td><td>15:00 — 16:15</td></tr>
-          <tr><td>Суббота / воскресенье</td><td>игровые дни</td></tr>
-        </tbody></table>
-        <p class="note" style="margin-top:14px">Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.</p>
+          <tbody>
+            <?php foreach ($schedule_days as $schedule_day) :
+              $day_label = $schedule_day['day'] ?? '';
+              $day_time = $schedule_day['time'] ?? '';
+              if ($day_label === '' && $day_time === '') continue;
+            ?>
+              <tr><td><?php echo esc_html($day_label); ?></td><td><?php echo esc_html($day_time); ?></td></tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <?php if ($schedule_footer !== '') : ?><p class="note" style="margin-top:14px"><?php echo nl2br(esc_html($schedule_footer)); ?></p><?php endif; ?>
       </div>
       <div class="card price">
-        <h3>Что входит в абонемент</h3>
+        <h3><?php echo esc_html($membership_title); ?></h3>
         <ul>
-          <li>Первая пробная тренировка — бесплатно</li>
-          <li>Тренеры с лицензиями UEFA</li>
-          <li>Тестирование игроков 2 раза в год</li>
-          <li>Личный кабинет родителя в ProTrainUp</li>
-          <li>Централизованный медосмотр</li>
-          <li>Игровые дни по выходным</li>
+          <?php foreach ($membership_items as $membership_item) :
+            $membership_text = is_array($membership_item) ? ($membership_item['text'] ?? '') : $membership_item;
+            if ($membership_text === '') continue;
+          ?>
+            <li><?php echo esc_html($membership_text); ?></li>
+          <?php endforeach; ?>
         </ul>
         <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>" style="width:100%">Записаться бесплатно</a>
       </div>
@@ -229,15 +261,30 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
 </section>
 
 
+<?php
+$video_title = zvezda_home_field('video_title', 'Смотрите матчи клуба');
+$video_subtitle = zvezda_home_field('video_subtitle', 'Записи матчей и трансляции — на YouTube-канале ' . zvezda_setting('club_name') . ' ТВ.');
+$video_url = zvezda_home_field('video_url', '');
+$video_preview = zvezda_home_field('video_preview_image', []);
+$video_preview_url = is_array($video_preview) && !empty($video_preview['url'])
+    ? $video_preview['url']
+    : get_theme_file_uri('/assets/images/maxresdefault.jpg');
+?>
 <section class="section video-sec">
   <div class="wrap reveal">
     <div class="kicker">Видео</div>
-    <h2>Смотрите матчи клуба</h2>
-    <p class="sub" style="margin-bottom:28px">Записи матчей и трансляции — на YouTube-канале <?php echo esc_html(zvezda_setting('club_name')); ?> ТВ.</p>
-    <div class="video-card" id="videoCard" role="button" tabindex="0" aria-label="Смотреть видео матча">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/maxresdefault.jpg')); ?>" alt="<?php echo esc_attr('Матч ' . zvezda_setting('club_name') . ' — ФК Герион'); ?>" loading="lazy">
-      <div class="play"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"></path></svg></div>
-      <div class="vtitle">AFL Kids · Матч за 3-е место · <?php echo esc_html(zvezda_setting('club_name')); ?> — Герион 3:0</div>
+    <h2><?php echo esc_html($video_title); ?></h2>
+    <p class="sub" style="margin-bottom:28px"><?php echo esc_html($video_subtitle); ?></p>
+    <div
+      class="video-card<?php echo $video_url ? ' is-playable' : ''; ?>"
+      id="videoCard"
+      <?php if ($video_url) : ?>role="button" tabindex="0" data-video-url="<?php echo esc_url($video_url); ?>" aria-label="Смотреть видео матча"<?php endif; ?>
+    >
+      <img src="<?php echo esc_url($video_preview_url); ?>" alt="<?php echo esc_attr($video_title); ?>" loading="lazy">
+      <?php if ($video_url) : ?>
+        <div class="play"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"></path></svg></div>
+        <div class="vtitle">Смотреть видео</div>
+      <?php endif; ?>
     </div>
     <div style="text-align:center;margin-top:26px">
       <a class="btn btn-ghost" href="<?php echo esc_url(zvezda_setting('youtube_url')); ?>" target="_blank" rel="noopener">Все видео на YouTube</a>
@@ -250,7 +297,7 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
   <div class="wrap reveal">
     <div class="kicker">Отзывы</div>
     <h2>Что говорят родители</h2>
-    <div class="yrating"><span class="stars">★★★★★</span> 4,4 на Яндекс.Картах · 23 оценки · <a href="https://yandex.com/maps/org/fc_super_nova_moscow/155444875307/reviews/" target="_blank" rel="noopener">читать все</a></div>
+    <div class="yrating"><span class="stars">★★★★★</span> 4,4 на Яндекс.Картах · 23 оценки · <a href="<?php echo esc_url(zvezda_setting('yandex_reviews_url')); ?>" target="_blank" rel="noopener">читать все</a></div>
     <div class="grid g3">
       <div class="card"><p>Хорошая спортивная школа, тренера все опытные, дети многому научатся, посещая данную школу. Советую всем!</p><b>Яна К.</b><span class="rdate">Отзыв с Яндекс.Карт</span></div>
       <div class="card"><p>Хорошая школа для будущих спортсменов. Сын занимается с большим удовольствием.</p><b>Александр Баджурак</b><span class="rdate">Отзыв с Яндекс.Карт</span></div>
