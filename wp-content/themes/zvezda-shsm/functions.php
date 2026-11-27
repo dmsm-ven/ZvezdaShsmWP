@@ -345,6 +345,16 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
     $fields = [
+        [
+            'key' => 'field_zvezda_banner_background_image',
+            'label' => 'Фоновое изображение баннера',
+            'name' => 'banner_background_image',
+            'type' => 'image',
+            'return_format' => 'array',
+            'preview_size' => 'large',
+            'library' => 'all',
+            'instructions' => 'Выберите фотографию для фона верхнего баннера главной страницы.',
+        ],
         ['key' => 'field_zvezda_banner_title', 'label' => 'Заголовок', 'name' => 'banner_title', 'type' => 'text', 'default_value' => 'Академия'],
         ['key' => 'field_zvezda_banner_subtitle', 'label' => 'Подзаголовок', 'name' => 'banner_subtitle', 'type' => 'text', 'default_value' => 'совершенствуйся играя'],
         ['key' => 'field_zvezda_banner_description', 'label' => 'Краткое описание', 'name' => 'banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.'],
@@ -543,7 +553,7 @@ add_action('acf/init', function () {
 
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_main_banner',
-        'title' => 'Main Banner',
+        'title' => 'Главная — Баннер',
         'fields' => $fields,
         'location' => $location,
         'position' => 'normal',
