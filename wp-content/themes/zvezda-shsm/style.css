@@ -1258,6 +1258,39 @@ section[style*="background: #fff"] {
 
 
 
+/* Single useful post hero: use the post's featured image as a darkened banner background. */
+.useful-post-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--brand-deep);
+}
+.useful-post-hero::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(10,10,10,.88) 0%, rgba(10,10,10,.58) 58%, rgba(10,10,10,.28) 100%),
+    linear-gradient(0deg, rgba(10,10,10,.42), rgba(10,10,10,.12)),
+    var(--useful-post-background-image, none);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.useful-post-hero .wrap {
+  position: relative;
+  z-index: 1;
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+@media (max-width: 720px) {
+  .useful-post-hero .wrap {
+    padding-top: 54px;
+    padding-bottom: 54px;
+  }
+}
+
 /* ===== Useful materials archive and standard post pages ===== */
 .page-useful .useful-archive-section,
 .useful-post .useful-article-section {
