@@ -183,19 +183,27 @@ $schedule_subtitle = zvezda_home_field('schedule_subtitle', 'Поле с иск�
 $schedule_days_title = zvezda_home_field('schedule_days_title', 'Расписание · сезон 2026/27');
 $schedule_footer = zvezda_home_field('schedule_footer', 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.');
 $membership_title = zvezda_home_field('membership_title', 'Что входит в абонемент');
+$page_id = (int) get_queried_object_id();
+$get_editable_text = function ($field_name, $default = '') use ($page_id) {
+    if (function_exists('get_field') && $page_id && metadata_exists('post', $page_id, $field_name)) {
+        $value = get_field($field_name, $page_id);
+        return $value === null || $value === false ? '' : $value;
+    }
+    return $default;
+};
 $schedule_slots = [
-    ['label' => 'Понедельник', 'value' => zvezda_home_field('schedule_monday', '')],
-    ['label' => 'Вторник', 'value' => zvezda_home_field('schedule_tuesday', '19:00 — 20:15')],
-    ['label' => 'Среда', 'value' => zvezda_home_field('schedule_wednesday', '')],
-    ['label' => 'Четверг', 'value' => zvezda_home_field('schedule_thursday', '19:00 — 20:15')],
-    ['label' => 'Пятница', 'value' => zvezda_home_field('schedule_friday', '')],
-    ['label' => 'Суббота', 'value' => zvezda_home_field('schedule_saturday', '')],
-    ['label' => 'Воскресенье', 'value' => zvezda_home_field('schedule_sunday', '15:00 — 16:15')],
-    ['label' => 'Суббота / Воскресенье', 'value' => zvezda_home_field('schedule_weekend', 'игровые дни')],
+    ['label' => 'Понедельник', 'value' => $get_editable_text('schedule_monday', '')],
+    ['label' => 'Вторник', 'value' => $get_editable_text('schedule_tuesday', '19:00 — 20:15')],
+    ['label' => 'Среда', 'value' => $get_editable_text('schedule_wednesday', '')],
+    ['label' => 'Четверг', 'value' => $get_editable_text('schedule_thursday', '19:00 — 20:15')],
+    ['label' => 'Пятница', 'value' => $get_editable_text('schedule_friday', '')],
+    ['label' => 'Суббота', 'value' => $get_editable_text('schedule_saturday', '')],
+    ['label' => 'Воскресенье', 'value' => $get_editable_text('schedule_sunday', '15:00 — 16:15')],
+    ['label' => 'Суббота / Воскресенье', 'value' => $get_editable_text('schedule_weekend', 'игровые дни')],
 ];
 $membership_items = [];
 for ($i = 1; $i <= 6; $i++) {
-    $membership_items[] = zvezda_home_field("membership_item_{$i}", [
+    $membership_items[] = $get_editable_text("membership_item_{$i}", [
         1 => 'Первая пробная тренировка — бесплатно',
         2 => 'Тренеры с лицензиями UEFA',
         3 => 'Тестирование игроков 2 раза в год',
