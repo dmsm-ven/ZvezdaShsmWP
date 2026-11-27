@@ -143,3 +143,53 @@ add_action('init', function () {
         'show_in_rest' => true,
     ]);
 });
+
+/** ACF fields for the front page. */
+function zvezda_home_field($key, $default = '') {
+    if (function_exists('get_field')) {
+        $page_id = (int) get_queried_object_id();
+        $value = get_field($key, $page_id ?: false);
+        if ($value !== null && $value !== false && $value !== '') return $value;
+    }
+    return $default;
+}
+
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+    $location = [[['param' => 'page_type', 'operator' => '==', 'value' => 'front_page']]];
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_topbar',
+        'title' => 'Главная — верхняя полоса',
+        'fields' => [[
+            'key' => 'field_zvezda_topbar_full_text',
+            'label' => 'Полный текст объявления',
+            'name' => 'topbar_full_text',
+            'type' => 'text',
+            'default_value' => 'Открыт круглогодичный набор на сезон 2026/27 (дети 5–12 лет) — первая тренировка бесплатно',
+        ]],
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+    $fields = [
+        ['key' => 'field_zvezda_banner_title', 'label' => 'Заголовок', 'name' => 'banner_title', 'type' => 'text', 'default_value' => 'Академия'],
+        ['key' => 'field_zvezda_banner_subtitle', 'label' => 'Подзаголовок', 'name' => 'banner_subtitle', 'type' => 'text', 'default_value' => 'совершенствуйся играя'],
+        ['key' => 'field_zvezda_banner_description', 'label' => 'Краткое описание', 'name' => 'banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.'],
+        ['key' => 'field_zvezda_banner_fact_1_value', 'label' => 'Факт 1 — выделенное значение', 'name' => 'banner_fact_1_value', 'type' => 'text', 'default_value' => 'A / B / C'],
+        ['key' => 'field_zvezda_banner_fact_1_text', 'label' => 'Факт 1 — подпись', 'name' => 'banner_fact_1_text', 'type' => 'text', 'default_value' => 'лицензии UEFA у тренеров'],
+        ['key' => 'field_zvezda_banner_fact_2_value', 'label' => 'Факт 2 — выделенное значение', 'name' => 'banner_fact_2_value', 'type' => 'text', 'default_value' => 'СК «Фили»'],
+        ['key' => 'field_zvezda_banner_fact_2_text', 'label' => 'Факт 2 — подпись', 'name' => 'banner_fact_2_text', 'type' => 'text', 'default_value' => 'м. Багратионовская'],
+        ['key' => 'field_zvezda_banner_fact_3_value', 'label' => 'Факт 3 — выделенное значение', 'name' => 'banner_fact_3_value', 'type' => 'text', 'default_value' => '0 ₽'],
+        ['key' => 'field_zvezda_banner_fact_3_text', 'label' => 'Факт 3 — подпись', 'name' => 'banner_fact_3_text', 'type' => 'text', 'default_value' => 'первая тренировка'],
+    ];
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_main_banner',
+        'title' => 'Main Banner',
+        'fields' => $fields,
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
