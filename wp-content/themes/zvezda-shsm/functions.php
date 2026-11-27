@@ -581,88 +581,76 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
 
-    // Schedule and membership contents. Repeaters allow rows to be added/removed in the editor.
+    // Schedule and membership content use ordinary text fields (compatible with ACF Free).
+    $schedule_fields = [
+        ['key' => 'field_zvezda_schedule_title', 'label' => 'Заголовок H2', 'name' => 'schedule_title', 'type' => 'text', 'default_value' => 'Тренировки в СК «Фили»'],
+        ['key' => 'field_zvezda_schedule_subtitle', 'label' => 'Подзаголовок', 'name' => 'schedule_subtitle', 'type' => 'textarea', 'rows' => 2, 'default_value' => 'Поле с искусственной травой последнего поколения, зимой — занятия в зале.'],
+        ['key' => 'field_zvezda_schedule_tab', 'label' => 'Расписание', 'type' => 'tab', 'placement' => 'top'],
+        ['key' => 'field_zvezda_schedule_days_title', 'label' => 'Заголовок карточки расписания', 'name' => 'schedule_days_title', 'type' => 'text', 'default_value' => 'Расписание · сезон 2026/27'],
+    ];
+    $schedule_slots = [
+        ['monday', 'Понедельник', ''],
+        ['tuesday', 'Вторник', '19:00 — 20:15'],
+        ['wednesday', 'Среда', ''],
+        ['thursday', 'Четверг', '19:00 — 20:15'],
+        ['friday', 'Пятница', ''],
+        ['saturday', 'Суббота', ''],
+        ['sunday', 'Воскресенье', '15:00 — 16:15'],
+        ['weekend', 'Суббота / Воскресенье', 'игровые дни'],
+    ];
+    foreach ($schedule_slots as $slot) {
+        [$slug, $label, $default] = $slot;
+        $schedule_fields[] = [
+            'key' => "field_zvezda_schedule_{$slug}",
+            'label' => $label,
+            'name' => "schedule_{$slug}",
+            'type' => 'text',
+            'default_value' => $default,
+        ];
+    }
+    $schedule_fields[] = [
+        'key' => 'field_zvezda_schedule_footer',
+        'label' => 'Текст под расписанием',
+        'name' => 'schedule_footer',
+        'type' => 'textarea',
+        'rows' => 3,
+        'default_value' => 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.',
+    ];
+    $schedule_fields[] = ['key' => 'field_zvezda_membership_tab', 'label' => 'Что входит в абонемент', 'type' => 'tab', 'placement' => 'top'];
+    $schedule_fields[] = [
+        'key' => 'field_zvezda_membership_title',
+        'label' => 'Заголовок карточки',
+        'name' => 'membership_title',
+        'type' => 'text',
+        'default_value' => 'Что входит в абонемент',
+    ];
+    $membership_defaults = [
+        'Первая пробная тренировка — бесплатно',
+        'Тренеры с лицензиями UEFA',
+        'Тестирование игроков 2 раза в год',
+        'Личный кабинет родителя в ProTrainUp',
+        'Централизованный медосмотр',
+        'Игровые дни по выходным',
+    ];
+    for ($i = 1; $i <= 6; $i++) {
+        $schedule_fields[] = [
+            'key' => "field_zvezda_membership_item_{$i}",
+            'label' => "Пункт {$i}",
+            'name' => "membership_item_{$i}",
+            'type' => 'text',
+            'default_value' => $membership_defaults[$i - 1],
+        ];
+    }
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_schedule',
         'title' => 'Главная — Расписание и стоимость',
         'menu_order' => 7,
-        'fields' => [
-            ['key' => 'field_zvezda_schedule_title', 'label' => 'Заголовок H2', 'name' => 'schedule_title', 'type' => 'text', 'default_value' => 'Тренировки в СК «Фили»'],
-            ['key' => 'field_zvezda_schedule_subtitle', 'label' => 'Подзаголовок', 'name' => 'schedule_subtitle', 'type' => 'textarea', 'rows' => 2, 'default_value' => 'Поле с искусственной травой последнего поколения, зимой — занятия в зале.'],
-            [
-                'key' => 'field_zvezda_schedule_days_title',
-                'label' => 'Расписание — заголовок карточки',
-                'name' => 'schedule_days_title',
-                'type' => 'text',
-                'default_value' => 'Расписание · сезон 2026/27',
-            ],
-            [
-                'key' => 'field_zvezda_schedule_days',
-                'label' => 'Пункты расписания',
-                'name' => 'schedule_days',
-                'type' => 'repeater',
-                'layout' => 'table',
-                'button_label' => 'Добавить день',
-                'sub_fields' => [
-                    ['key' => 'field_zvezda_schedule_day', 'label' => 'День', 'name' => 'day', 'type' => 'text'],
-                    ['key' => 'field_zvezda_schedule_time', 'label' => 'Время', 'name' => 'time', 'type' => 'text'],
-                ],
-            ],
-            [
-                'key' => 'field_zvezda_schedule_footer',
-                'label' => 'Текст под расписанием',
-                'name' => 'schedule_footer',
-                'type' => 'textarea',
-                'rows' => 3,
-                'default_value' => 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.',
-            ],
-            [
-                'key' => 'field_zvezda_membership_title',
-                'label' => 'Что входит в абонемент — заголовок',
-                'name' => 'membership_title',
-                'type' => 'text',
-                'default_value' => 'Что входит в абонемент',
-            ],
-            [
-                'key' => 'field_zvezda_membership_items',
-                'label' => 'Пункты абонемента',
-                'name' => 'membership_items',
-                'type' => 'repeater',
-                'layout' => 'table',
-                'button_label' => 'Добавить пункт',
-                'sub_fields' => [
-                    ['key' => 'field_zvezda_membership_item_text', 'label' => 'Текст', 'name' => 'text', 'type' => 'text'],
-                ],
-            ],
-        ],
+        'fields' => $schedule_fields,
         'location' => $location,
         'position' => 'normal',
         'style' => 'default',
         'active' => true,
     ]);
-
-    // Populate the repeaters with the current homepage content on first edit.
-    // Values are returned only when the page has no saved rows yet.
-    add_filter('acf/load_value/name=schedule_days', function ($value, $post_id, $field) {
-        if (!empty($value) || (string) $post_id !== (string) get_option('page_on_front')) return $value;
-        return [
-            ['day' => 'Вторник', 'time' => '19:00 — 20:15'],
-            ['day' => 'Четверг', 'time' => '19:00 — 20:15'],
-            ['day' => 'Воскресенье', 'time' => '15:00 — 16:15'],
-            ['day' => 'Суббота / воскресенье', 'time' => 'игровые дни'],
-        ];
-    }, 10, 3);
-    add_filter('acf/load_value/name=membership_items', function ($value, $post_id, $field) {
-        if (!empty($value) || (string) $post_id !== (string) get_option('page_on_front')) return $value;
-        return [
-            ['text' => 'Первая пробная тренировка — бесплатно'],
-            ['text' => 'Тренеры с лицензиями UEFA'],
-            ['text' => 'Тестирование игроков 2 раза в год'],
-            ['text' => 'Личный кабинет родителя в ProTrainUp'],
-            ['text' => 'Централизованный медосмотр'],
-            ['text' => 'Игровые дни по выходным'],
-        ];
-    }, 10, 3);
 
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_gallery',
