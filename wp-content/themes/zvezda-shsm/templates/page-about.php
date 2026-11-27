@@ -20,12 +20,17 @@ if ($community_image_alt === '' && is_array($community_image)) $community_image_
 ?>
 
 <section class="section about-section">
-  <div class="wrap split reveal <?php echo !empty($who_image['ID']) ? 'has-image' : ''; ?>">
+  <div class="wrap split reveal <?php echo (is_array($who_image) && !empty($who_image['ID'])) ? 'has-image' : ''; ?>">
     <div class="prose">
       <div class="kicker"><?php echo esc_html(zvezda_inner_page_field('about_who_kicker', 'Кто мы')); ?></div>
       <h2><?php echo esc_html(zvezda_inner_page_field('about_who_title', 'Клуб, где ребёнка учат играть')); ?></h2>
       <?php for ($i = 1; $i <= 3; $i++) :
-        $paragraph = trim((string) zvezda_inner_page_field("about_who_text_{$i}", ''));
+        $who_text_defaults = [
+            1 => 'Занятия проходят под руководством квалифицированных лицензированных тренеров с опытом работы в сильнейших московских академиях и сборных командах.',
+            2 => 'Команды Академии регулярно проводят товарищеские матчи, участвуют в соревнованиях Московской Федерации Футбола, международных турнирах и тренировочных лагерях.',
+            3 => 'Основная тренировочная база — спортивный комплекс «Фили» (м. Багратионовская, ул. Новозаводская, 27А, стр. 1).',
+        ];
+        $paragraph = trim((string) zvezda_inner_page_field("about_who_text_{$i}", $who_text_defaults[$i]));
         if ($paragraph !== '') : ?><p><?php echo esc_html($paragraph); ?></p><?php endif;
       endfor; ?>
     </div>
@@ -36,11 +41,11 @@ if ($community_image_alt === '' && is_array($community_image)) $community_image_
 </section>
 
 <section class="section about-section about-section-soft">
-  <div class="wrap split reveal <?php echo !empty($philosophy_image['ID']) ? 'has-image' : ''; ?>">
+  <div class="wrap split reveal <?php echo (is_array($philosophy_image) && !empty($philosophy_image['ID'])) ? 'has-image' : ''; ?>">
     <div class="prose">
       <div class="kicker"><?php echo esc_html(zvezda_inner_page_field('about_philosophy_kicker', 'Философия')); ?></div>
       <h2><?php echo esc_html(zvezda_inner_page_field('about_philosophy_title', 'Играй. Общайся. Расти. Развивайся.')); ?></h2>
-      <?php $philosophy_text = trim((string) zvezda_inner_page_field('about_philosophy_text', '')); ?>
+      <?php $philosophy_text = trim((string) zvezda_inner_page_field('about_philosophy_text', 'В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока.')); ?>
       <?php if ($philosophy_text !== '') : ?><p><?php echo esc_html($philosophy_text); ?></p><?php endif; ?>
       <?php
       $philosophy_button_text = zvezda_inner_page_field('about_philosophy_button_text', 'Философия клуба');
@@ -57,7 +62,7 @@ if ($community_image_alt === '' && is_array($community_image)) $community_image_
 </section>
 
 <section class="section about-section">
-  <div class="wrap split reveal <?php echo !empty($community_image['ID']) ? 'has-image' : ''; ?>">
+  <div class="wrap split reveal <?php echo (is_array($community_image) && !empty($community_image['ID'])) ? 'has-image' : ''; ?>">
     <?php if (!empty($community_image['ID'])) : ?>
       <?php echo wp_get_attachment_image((int) $community_image['ID'], 'large', false, ['alt' => $community_image_alt, 'loading' => 'lazy']); ?>
     <?php endif; ?>
@@ -65,7 +70,11 @@ if ($community_image_alt === '' && is_array($community_image)) $community_image_
       <div class="kicker"><?php echo esc_html(zvezda_inner_page_field('about_community_kicker', 'Сообщество')); ?></div>
       <h2><?php echo esc_html(zvezda_inner_page_field('about_community_title', 'Часть международного сообщества Super Nova')); ?></h2>
       <?php for ($i = 1; $i <= 2; $i++) :
-        $paragraph = trim((string) zvezda_inner_page_field("about_community_text_{$i}", ''));
+        $community_text_defaults = [
+            1 => 'Сообщество Super Nova работает с 2000 года и объединяет детско-юношеские клубы, в которых обучается более 1000 детей в возрастных группах от 5 до 19 лет.',
+            2 => 'Клубы сообщества тесно взаимодействуют между собой: постоянный обмен знаниями и методиками помогает всестороннему развитию игроков и тренеров.',
+        ];
+        $paragraph = trim((string) zvezda_inner_page_field("about_community_text_{$i}", $community_text_defaults[$i]));
         if ($paragraph !== '') : ?><p><?php echo esc_html($paragraph); ?></p><?php endif;
       endfor; ?>
     </div>
