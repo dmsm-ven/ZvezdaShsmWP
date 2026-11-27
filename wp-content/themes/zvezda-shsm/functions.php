@@ -332,6 +332,7 @@ add_action('acf/init', function () {
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_topbar',
         'title' => 'Главная — верхняя полоса',
+        'menu_order' => 0,
         'fields' => [[
             'key' => 'field_zvezda_topbar_full_text',
             'label' => 'Полный текст объявления',
@@ -353,7 +354,7 @@ add_action('acf/init', function () {
             'return_format' => 'array',
             'preview_size' => 'large',
             'library' => 'all',
-            'instructions' => 'Выберите фотографию для фона верхнего баннера главной страницы.',
+            'instructions' => 'Рекомендуемый размер: 2560 × 1200 px (минимум 1920 × 900 px), горизонтальное изображение примерно 2:1. Формат JPG или WebP, качество 80–90%. Для максимальной чёткости загружайте оригинал, а не миниатюру или изображение из мессенджера. Фон отображается с обрезкой по краям (cover), поэтому не размещайте лица и важные детали у самых краёв.'
         ],
         ['key' => 'field_zvezda_banner_title', 'label' => 'Заголовок', 'name' => 'banner_title', 'type' => 'text', 'default_value' => 'Академия'],
         ['key' => 'field_zvezda_banner_subtitle', 'label' => 'Подзаголовок', 'name' => 'banner_subtitle', 'type' => 'text', 'default_value' => 'совершенствуйся играя'],
@@ -375,6 +376,7 @@ add_action('acf/init', function () {
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_stats',
         'title' => 'Главная — статистика',
+        'menu_order' => 2,
         'fields' => $stats_fields,
         'location' => $location,
         'position' => 'normal',
@@ -400,6 +402,7 @@ add_action('acf/init', function () {
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_age_groups',
         'title' => 'Главная — Кого мы ждём',
+        'menu_order' => 3,
         'fields' => $age_fields,
         'location' => $location,
         'position' => 'normal',
@@ -436,6 +439,7 @@ add_action('acf/init', function () {
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_benefits',
         'title' => 'Главная — Что получает ваш ребёнок',
+        'menu_order' => 4,
         'fields' => $benefit_fields,
         'location' => $location,
         'position' => 'normal',
@@ -446,6 +450,7 @@ add_action('acf/init', function () {
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_gallery',
         'title' => 'Главная — фотогалерея',
+        'menu_order' => 5,
         'fields' => [
             [
                 'key' => 'field_zvezda_gallery_image_1',
@@ -554,6 +559,7 @@ add_action('acf/init', function () {
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_main_banner',
         'title' => 'Главная — Баннер',
+        'menu_order' => 1,
         'fields' => $fields,
         'location' => $location,
         'position' => 'normal',
