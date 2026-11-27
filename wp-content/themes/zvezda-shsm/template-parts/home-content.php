@@ -245,23 +245,27 @@ for ($i = 1; $i <= 6; $i++) {
       </div>
     </div>
     <div class="grid g3" style="margin-top:20px">
-      <div class="card tariff">
-        <div class="num">5 000 ₽<small>/мес</small></div>
-        <div class="per">1 тренировка в неделю</div>
-        <p>Мягкий старт: для самых маленьких и для совмещения с другими секциями.</p>
-      </div>
-      <div class="card tariff">
-        <div class="num">7 000 ₽<small>/мес</small></div>
-        <div class="per">2 тренировки в неделю</div>
-        <p>Стабильный ритм: техника и игровая практика каждую неделю.</p>
-      </div>
-      <div class="card tariff hl">
-        <div class="tag">Полная программа</div>
-        <div class="num">9 500 ₽<small>/мес</small></div>
-        <div class="per">3 тренировки в неделю</div>
-        <p>Максимальный прогресс: полный тренировочный цикл плюс игровые дни.</p>
-        <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>" style="width:100%;margin-top:14px">Выбрать</a>
-      </div>
+      <?php
+      $tariff_defaults = [
+          ['5 000 ₽', '1 тренировка в неделю', 'Мягкий старт: для самых маленьких и для совмещения с другими секциями.'],
+          ['7 000 ₽', '2 тренировки в неделю', 'Стабильный ритм: техника и игровая практика каждую неделю.'],
+          ['9 500 ₽', '3 тренировки в неделю', 'Максимальный прогресс: полный тренировочный цикл плюс игровые дни.'],
+      ];
+      for ($i = 1; $i <= 3; $i++) :
+          $tariff_price = zvezda_home_field("tariff_{$i}_price", $tariff_defaults[$i - 1][0]);
+          $tariff_per = zvezda_home_field("tariff_{$i}_per", $tariff_defaults[$i - 1][1]);
+          $tariff_description = zvezda_home_field("tariff_{$i}_description", $tariff_defaults[$i - 1][2]);
+      ?>
+        <div class="card tariff<?php echo $i === 3 ? ' hl' : ''; ?>">
+          <?php if ($i === 3) : ?><div class="tag">Полная программа</div><?php endif; ?>
+          <div class="num"><?php echo esc_html($tariff_price); ?><small>/мес</small></div>
+          <div class="per"><?php echo esc_html($tariff_per); ?></div>
+          <p><?php echo esc_html($tariff_description); ?></p>
+          <?php if ($i === 3) : ?>
+            <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>" style="width:100%;margin-top:14px">Выбрать</a>
+          <?php endif; ?>
+        </div>
+      <?php endfor; ?>
     </div>
   </div>
 </section>
@@ -305,9 +309,30 @@ $video_preview_url = is_array($video_preview) && !empty($video_preview['url'])
     <h2>Что говорят родители</h2>
     <div class="yrating"><span class="stars">★★★★★</span> 4,4 на Яндекс.Картах · 23 оценки · <a href="<?php echo esc_url(zvezda_setting('yandex_reviews_url')); ?>" target="_blank" rel="noopener">читать все</a></div>
     <div class="grid g3">
-      <div class="card"><p>Хорошая спортивная школа, тренера все опытные, дети многому научатся, посещая данную школу. Советую всем!</p><b>Яна К.</b><span class="rdate">Отзыв с Яндекс.Карт</span></div>
-      <div class="card"><p>Хорошая школа для будущих спортсменов. Сын занимается с большим удовольствием.</p><b>Александр Баджурак</b><span class="rdate">Отзыв с Яндекс.Карт</span></div>
-      <div class="card"><p>Ребёнку нравится, ходим 3 раза в неделю.</p><b>Галина Хорошуненко</b><span class="rdate">Отзыв с Яндекс.Карт</span></div>
+      <?php
+      $home_reviews = new WP_Query([
+          'post_type' => 'review',
+          'post_status' => 'publish',
+          'posts_per_page' => -1,
+          'orderby' => ['menu_order' => 'ASC', 'date' => 'ASC'],
+          'no_found_rows' => true,
+      ]);
+      ?>
+      <?php if ($home_reviews->have_posts()) : while ($home_reviews->have_posts()) : $home_reviews->the_post();
+          $review_id = get_the_ID();
+          $review_text = function_exists('get_field') ? get_field('review_text', $review_id) : get_post_meta($review_id, 'review_text', true);
+          $review_author = function_exists('get_field') ? get_field('review_author', $review_id) : get_post_meta($review_id, 'review_author', true);
+          $review_source = function_exists('get_field') ? get_field('review_source', $review_id) : get_post_meta($review_id, 'review_source', true);
+          $review_date = function_exists('get_field') ? get_field('review_date', $review_id) : get_post_meta($review_id, 'review_date', true);
+          if (!$review_text) continue;
+      ?>
+        <div class="card">
+          <p><?php echo nl2br(esc_html($review_text)); ?></p>
+          <b><?php echo esc_html($review_author ?: get_the_title()); ?></b>
+          <?php if ($review_source) : ?><span class="rdate"><?php echo esc_html($review_source); ?></span><?php endif; ?>
+          <?php if ($review_date) : ?><span class="rdate"><?php echo esc_html($review_date); ?></span><?php endif; ?>
+        </div>
+      <?php endwhile; wp_reset_postdata(); endif; ?>
     </div>
   </div>
 </section>
@@ -395,19 +420,30 @@ if ($signup_photo_alt === '') {
 </section>
 
 
+<?php $map_embed_url = zvezda_map_embed_url(); ?>
 <section class="section contacts" id="contacts">
   <div class="wrap reveal">
     <div class="kicker">Контакты</div>
     <h2>Как нас найти</h2>
-    <div class="grid g2" style="margin-top:28px">
+    <div class="grid <?php echo $map_embed_url ? 'g2' : ''; ?>" style="margin-top:28px">
       <div class="card">
         <p><b>Адрес:</b> <?php echo esc_html(zvezda_setting('address')); ?></p>
         <p><b>Телефон:</b> <a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a></p>
         <p><b>E-mail:</b> <a href="<?php echo esc_url('mailto:' . zvezda_setting('email')); ?>"><?php echo esc_html(zvezda_setting('email')); ?></a></p>
         <p><b>Мессенджеры:</b> <a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></p>
-        <p><b>Соцсети:</b> <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a> · <a href="<?php echo esc_url(zvezda_setting('youtube_url')); ?>">YouTube</a> </p>
+        <p><b>Соцсети:</b> <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a> · <a href="<?php echo esc_url(zvezda_setting('youtube_url')); ?>">YouTube</a></p>
       </div>
-      
+      <?php if ($map_embed_url) : ?>
+        <div class="map-embed">
+          <iframe
+            src="<?php echo esc_url($map_embed_url); ?>"
+            title="Карта расположения футбольного клуба"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </section>
