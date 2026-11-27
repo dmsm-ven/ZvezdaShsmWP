@@ -156,7 +156,7 @@ section[id]{scroll-margin-top:92px}
 
 /* reviews */
 .rev .card{position:relative;padding-top:52px}
-.rev .card::before{content:"\\00AB";position:absolute;top:6px;left:24px;font-family:'Inter Tight';font-size:56px;font-weight:800;line-height:1;color:var(--tint)}
+.rev .card::before{content:"\00AB";position:absolute;top:6px;left:24px;font-family:'Inter Tight';font-size:56px;font-weight:800;line-height:1;color:var(--tint)}
 .rev .card p{color:var(--gray);font-size:15px;margin-bottom:16px}
 .rev .card b{color:var(--brand-dark);font-size:14px}
 .placeholder{border-style:dashed;border-color:#c9d0ea}
