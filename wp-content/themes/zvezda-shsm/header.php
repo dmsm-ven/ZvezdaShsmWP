@@ -21,8 +21,8 @@
 <header class="header">
   <div class="wrap">
     <a class="logo" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/logo.png')); ?>" alt="ФК Супер Нова">
-      ФК «СУПЕР НОВА»
+      <img src="<?php echo esc_url(zvezda_club_logo_url()); ?>" alt="<?php echo esc_attr(zvezda_setting('club_name')); ?>">
+      <?php echo esc_html(zvezda_setting('club_name')); ?>
     </a>
     <nav class="nav">
       <a href="<?php echo esc_url(home_url('/')); ?>" class="active">Главная</a>
@@ -35,7 +35,7 @@
       <a href="<?php echo esc_url(home_url('/payment/')); ?>">Оплата</a>
       <a href="<?php echo esc_url(home_url('/contacts/')); ?>">Контакты</a>
     </nav>
-    <a class="phone" href="tel:+79856692689">+7 (985) 669-26-89</a>
+    <a class="phone" href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a>
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span><span></span></button><a class="btn btn-p cta" href="<?php echo esc_url(home_url('/#signup')); ?>">Пробная тренировка</a>
   </div>
 </header>
@@ -50,6 +50,6 @@
 <a href="<?php echo esc_url(home_url('/useful/')); ?>">Полезное</a>
 <a href="<?php echo esc_url(home_url('/payment/')); ?>">Оплата</a>
 <a href="<?php echo esc_url(home_url('/contacts/')); ?>">Контакты</a>
-<div class="mcontacts"><a href="tel:+79856692689">+7 (985) 669-26-89</a> · <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="https://t.me/fcsupernovamoscow">Telegram</a></div>
+<div class="mcontacts"><a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a> · <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></div>
 </div>
 <main id="content">
