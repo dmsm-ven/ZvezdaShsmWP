@@ -181,27 +181,28 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
 $schedule_title = zvezda_home_field('schedule_title', 'Тренировки в СК «Фили»');
 $schedule_subtitle = zvezda_home_field('schedule_subtitle', 'Поле с искусственной травой последнего поколения, зимой — занятия в зале.');
 $schedule_days_title = zvezda_home_field('schedule_days_title', 'Расписание · сезон 2026/27');
-$schedule_days = zvezda_home_field('schedule_days', []);
-if (!is_array($schedule_days) || !$schedule_days) {
-    $schedule_days = [
-        ['day' => 'Вторник', 'time' => '19:00 — 20:15'],
-        ['day' => 'Четверг', 'time' => '19:00 — 20:15'],
-        ['day' => 'Воскресенье', 'time' => '15:00 — 16:15'],
-        ['day' => 'Суббота / воскресенье', 'time' => 'игровые дни'],
-    ];
-}
 $schedule_footer = zvezda_home_field('schedule_footer', 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.');
 $membership_title = zvezda_home_field('membership_title', 'Что входит в абонемент');
-$membership_items = zvezda_home_field('membership_items', []);
-if (!is_array($membership_items) || !$membership_items) {
-    $membership_items = [
-        ['text' => 'Первая пробная тренировка — бесплатно'],
-        ['text' => 'Тренеры с лицензиями UEFA'],
-        ['text' => 'Тестирование игроков 2 раза в год'],
-        ['text' => 'Личный кабинет родителя в ProTrainUp'],
-        ['text' => 'Централизованный медосмотр'],
-        ['text' => 'Игровые дни по выходным'],
-    ];
+$schedule_slots = [
+    ['label' => 'Понедельник', 'value' => zvezda_home_field('schedule_monday', '')],
+    ['label' => 'Вторник', 'value' => zvezda_home_field('schedule_tuesday', '19:00 — 20:15')],
+    ['label' => 'Среда', 'value' => zvezda_home_field('schedule_wednesday', '')],
+    ['label' => 'Четверг', 'value' => zvezda_home_field('schedule_thursday', '19:00 — 20:15')],
+    ['label' => 'Пятница', 'value' => zvezda_home_field('schedule_friday', '')],
+    ['label' => 'Суббота', 'value' => zvezda_home_field('schedule_saturday', '')],
+    ['label' => 'Воскресенье', 'value' => zvezda_home_field('schedule_sunday', '15:00 — 16:15')],
+    ['label' => 'Суббота / Воскресенье', 'value' => zvezda_home_field('schedule_weekend', 'игровые дни')],
+];
+$membership_items = [];
+for ($i = 1; $i <= 6; $i++) {
+    $membership_items[] = zvezda_home_field("membership_item_{$i}", [
+        1 => 'Первая пробная тренировка — бесплатно',
+        2 => 'Тренеры с лицензиями UEFA',
+        3 => 'Тестирование игроков 2 раза в год',
+        4 => 'Личный кабинет родителя в ProTrainUp',
+        5 => 'Централизованный медосмотр',
+        6 => 'Игровые дни по выходным',
+    ][$i]);
 }
 ?>
 <section class="section sched" id="schedule" style="background:#fff">
@@ -214,12 +215,10 @@ if (!is_array($membership_items) || !$membership_items) {
         <h3><?php echo esc_html($schedule_days_title); ?></h3>
         <table>
           <tbody>
-            <?php foreach ($schedule_days as $schedule_day) :
-              $day_label = $schedule_day['day'] ?? '';
-              $day_time = $schedule_day['time'] ?? '';
-              if ($day_label === '' && $day_time === '') continue;
+            <?php foreach ($schedule_slots as $schedule_slot) :
+              if (trim((string) $schedule_slot['value']) === '') continue;
             ?>
-              <tr><td><?php echo esc_html($day_label); ?></td><td><?php echo esc_html($day_time); ?></td></tr>
+              <tr><td><?php echo esc_html($schedule_slot['label']); ?></td><td><?php echo esc_html($schedule_slot['value']); ?></td></tr>
             <?php endforeach; ?>
           </tbody>
         </table>
@@ -228,9 +227,8 @@ if (!is_array($membership_items) || !$membership_items) {
       <div class="card price">
         <h3><?php echo esc_html($membership_title); ?></h3>
         <ul>
-          <?php foreach ($membership_items as $membership_item) :
-            $membership_text = is_array($membership_item) ? ($membership_item['text'] ?? '') : $membership_item;
-            if ($membership_text === '') continue;
+          <?php foreach ($membership_items as $membership_text) :
+            if (trim((string) $membership_text) === '') continue;
           ?>
             <li><?php echo esc_html($membership_text); ?></li>
           <?php endforeach; ?>
