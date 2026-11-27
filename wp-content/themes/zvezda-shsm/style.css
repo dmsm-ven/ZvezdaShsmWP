@@ -922,3 +922,31 @@ section[style*="background: #fff"] {
 /* A video preview is clickable only when a YouTube URL has been configured. */
 .video-card:not(.is-playable) { cursor: default; }
 .video-card:not(.is-playable):hover img { transform: none; }
+
+
+/* ===== fixes: membership CTA, tariff prices and steps contrast ===== */
+.sched .price .btn-hero{
+  background:#f2c94c!important;
+  color:#171b45!important;
+}
+.sched .price .btn-hero:hover{
+  background:#ffda68!important;
+  color:#171b45!important;
+}
+.sched .tariff .num{
+  color:var(--brand-dark)!important;
+}
+.sched .tariff .num small{
+  color:var(--gray)!important;
+}
+.sched .tariff.hl .num{
+  color:#fff!important;
+}
+.sched .tariff.hl .num small{
+  color:#d5dcff!important;
+}
+.steps-section .kicker{color:var(--accent)!important}
+.steps-section .kicker::before{background:var(--accent)!important}
+.steps-section h2{color:var(--brand-dark)!important}
+.steps-section .step h3{color:var(--brand-dark)!important}
+.steps-section .step p{color:var(--gray)!important}
