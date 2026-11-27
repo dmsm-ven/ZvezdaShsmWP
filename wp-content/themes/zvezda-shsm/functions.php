@@ -1044,3 +1044,10 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
 });
+
+
+/** Add a stable body class for styles scoped to the About page template. */
+add_filter('body_class', function ($classes) {
+    if (is_page_template('templates/page-about.php')) $classes[] = 'page-about';
+    return $classes;
+});
