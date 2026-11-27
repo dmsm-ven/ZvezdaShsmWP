@@ -183,6 +183,84 @@ add_action('acf/init', function () {
         ['key' => 'field_zvezda_banner_fact_3_value', 'label' => 'Факт 3 — выделенное значение', 'name' => 'banner_fact_3_value', 'type' => 'text', 'default_value' => '0 ₽'],
         ['key' => 'field_zvezda_banner_fact_3_text', 'label' => 'Факт 3 — подпись', 'name' => 'banner_fact_3_text', 'type' => 'text', 'default_value' => 'первая тренировка'],
     ];
+
+    // Statistics strip: four editable value/label pairs.
+    $stats_fields = [];
+    for ($i = 1; $i <= 4; $i++) {
+        $stats_fields[] = ['key' => "field_zvezda_stat_{$i}_value", 'label' => "Статистика {$i} — значение", 'name' => "stat_{$i}_value", 'type' => 'text'];
+        $stats_fields[] = ['key' => "field_zvezda_stat_{$i}_text", 'label' => "Статистика {$i} — подпись", 'name' => "stat_{$i}_text", 'type' => 'text'];
+    }
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_stats',
+        'title' => 'Главная — статистика',
+        'fields' => $stats_fields,
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    // Age groups: section heading, subtitle and four age/description pairs.
+    $age_fields = [
+        ['key' => 'field_zvezda_age_title', 'label' => 'Заголовок', 'name' => 'age_title', 'type' => 'text', 'default_value' => 'Возрастные группы набора'],
+        ['key' => 'field_zvezda_age_subtitle', 'label' => 'Подзаголовок', 'name' => 'age_subtitle', 'type' => 'textarea', 'rows' => 2, 'default_value' => 'Круглогодичный набор юных футболистов. Группы формируются по годам рождения, программа адаптирована под возраст.'],
+    ];
+    $age_defaults = [
+        ['5–6', 'Первые шаги в футболе: игра, координация, любовь к мячу'],
+        ['7–8', 'Базовая техника, работа с мячом, командные игры'],
+        ['9–10', 'Техника, тактические основы, товарищеские матчи'],
+        ['11–12', 'Соревнования МФФ, тестирование, подготовка к академиям'],
+    ];
+    for ($i = 1; $i <= 4; $i++) {
+        $age_fields[] = ['key' => "field_zvezda_age_{$i}_years", 'label' => "Группа {$i} — возраст", 'name' => "age_{$i}_years", 'type' => 'text', 'default_value' => $age_defaults[$i - 1][0]];
+        $age_fields[] = ['key' => "field_zvezda_age_{$i}_text", 'label' => "Группа {$i} — описание", 'name' => "age_{$i}_text", 'type' => 'textarea', 'rows' => 2, 'default_value' => $age_defaults[$i - 1][1]];
+    }
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_age_groups',
+        'title' => 'Главная — Кого мы ждём',
+        'fields' => $age_fields,
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    // Benefits: heading/subheading and six icon/title/text items.
+    $benefit_fields = [
+        ['key' => 'field_zvezda_benefits_title', 'label' => 'Заголовок', 'name' => 'benefits_title', 'type' => 'text', 'default_value' => 'Что получает ваш ребёнок'],
+        ['key' => 'field_zvezda_benefits_subtitle', 'label' => 'Подзаголовок', 'name' => 'benefits_subtitle', 'type' => 'textarea', 'rows' => 2, 'default_value' => 'В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока.'],
+    ];
+    $benefit_defaults = [
+        ['Тренеры с лицензиями UEFA', 'Профессиональный штаб с лицензиями A, B и C UEFA и опытом работы в лучших академиях Москвы и России: «Динамо», «Сатурн», «Строгино», ФШМ, юношеские сборные.'],
+        ['Единая методика клуба', 'Работа всех тренеров выстроена по единой методике и философии: в центре внимания — игрок, его обучение и развитие.'],
+        ['Соревнования и турниры', 'Регулярное участие команд в соревнованиях Московской Федерации Футбола в разных возрастах, товарищеские матчи, международные турниры и лагеря.'],
+        ['Измеримый прогресс', 'Футбольное тестирование в начале и конце сезона. Личный кабинет родителя в системе ProTrainUp: посещаемость, статистика, расписание, оплата — всё в телефоне.'],
+        ['Медосмотр без хлопот', 'Централизованное прохождение медосмотра в физкультурном диспансере — родителям не нужно самостоятельно оформлять справку о допуске.'],
+        ['Продвижение игроков', 'Готовим и продвигаем юных футболистов в лучшие академии Москвы. Спортивный директор — Алексей Шерстнёв, главный тренер студенческой сборной России.'],
+    ];
+    $benefit_icons = [
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>',
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.4l6-.9z"></path></svg>',
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0z"></path><path d="M7 6H4a3 3 0 003 4M17 6h3a3 3 0 01-3 4"></path></svg>',
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M21 20H3"></path></svg>',
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M12 8v8M8 12h8"></path></svg>',
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-4 9 4-9 4z"></path><path d="M7 11v4c0 1.5 2.2 3 5 3s5-1.5 5-3v-4M21 9v5"></path></svg>',
+    ];
+    for ($i = 1; $i <= 6; $i++) {
+        $benefit_fields[] = ['key' => "field_zvezda_benefit_{$i}_icon", 'label' => "Пункт {$i} — иконка (SVG)", 'name' => "benefit_{$i}_icon", 'type' => 'textarea', 'rows' => 3, 'default_value' => $benefit_icons[$i - 1], 'instructions' => 'Можно вставить SVG-код иконки.'];
+        $benefit_fields[] = ['key' => "field_zvezda_benefit_{$i}_title", 'label' => "Пункт {$i} — заголовок", 'name' => "benefit_{$i}_title", 'type' => 'text', 'default_value' => $benefit_defaults[$i - 1][0]];
+        $benefit_fields[] = ['key' => "field_zvezda_benefit_{$i}_text", 'label' => "Пункт {$i} — текст", 'name' => "benefit_{$i}_text", 'type' => 'textarea', 'rows' => 4, 'default_value' => $benefit_defaults[$i - 1][1]];
+    }
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_benefits',
+        'title' => 'Главная — Что получает ваш ребёнок',
+        'fields' => $benefit_fields,
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_main_banner',
         'title' => 'Main Banner',
