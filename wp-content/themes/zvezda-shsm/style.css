@@ -1255,3 +1255,164 @@ section[style*="background: #fff"] {
     height: 190px;
   }
 }
+
+
+
+/* ===== Useful materials archive and standard post pages ===== */
+.page-useful .useful-archive-section,
+.useful-post .useful-article-section {
+  background: #fff !important;
+  color: #171717 !important;
+}
+.page-useful .useful-archive-section .kicker {
+  color: #DF000C !important;
+}
+.page-useful .useful-archive-section .kicker::before {
+  background: #DF000C !important;
+}
+.page-useful .useful-archive-section h2 {
+  color: #171717 !important;
+  margin-bottom: 0;
+}
+.page-useful .useful-posts-grid {
+  margin-top: 28px;
+  align-items: stretch;
+}
+.page-useful .useful-posts-grid .post-card {
+  min-width: 0;
+  min-height: 100%;
+  background: #fff !important;
+  color: #171717 !important;
+  border: 1px solid #E2E5EC !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.07) !important;
+}
+.page-useful .useful-posts-grid .post-card:hover {
+  border-color: #D7D7D7 !important;
+  box-shadow: 0 18px 38px rgba(0,0,0,.12) !important;
+}
+.page-useful .useful-posts-grid .post-card .thumb {
+  background: #F1F2F5 !important;
+}
+.page-useful .useful-posts-grid .post-card .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-useful .useful-posts-grid .post-card h3 {
+  color: #171717 !important;
+  font-size: 18px;
+  line-height: 1.35;
+}
+.page-useful .useful-posts-grid .post-card p {
+  color: #555 !important;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.page-useful .useful-posts-grid .post-card .more {
+  color: #DF000C !important;
+}
+.page-useful .post-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  background: linear-gradient(135deg, #E8E8E8, #F7F7F7);
+}
+.page-useful .useful-empty {
+  margin-top: 28px;
+  color: #555 !important;
+}
+.useful-pagination {
+  margin-top: 38px;
+}
+.useful-pagination ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.useful-pagination a,
+.useful-pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 8px 13px;
+  border: 1px solid #E2E5EC;
+  border-radius: 10px;
+  color: #171717;
+  background: #fff;
+  font-weight: 600;
+}
+.useful-pagination .current {
+  color: #fff;
+  background: #DF000C;
+  border-color: #DF000C;
+}
+.useful-pagination a:hover {
+  border-color: #DF000C;
+  color: #DF000C;
+}
+.useful-post .useful-article {
+  max-width: 900px;
+}
+.useful-post .useful-article-content {
+  color: #333 !important;
+  font-size: 16.5px;
+  line-height: 1.8;
+}
+.useful-post .useful-article-content p {
+  color: #444 !important;
+  margin: 0 0 18px;
+}
+.useful-post .useful-article-content h2,
+.useful-post .useful-article-content h3,
+.useful-post .useful-article-content h4 {
+  color: #171717 !important;
+  margin: 30px 0 14px;
+  line-height: 1.25;
+}
+.useful-post .useful-article-content h2 { font-size: 28px; }
+.useful-post .useful-article-content h3 { font-size: 22px; }
+.useful-post .useful-article-content ul,
+.useful-post .useful-article-content ol {
+  margin: 0 0 20px 24px;
+}
+.useful-post .useful-article-content li {
+  color: #444 !important;
+  margin-bottom: 8px;
+}
+.useful-post .useful-article-content a {
+  color: #C9000A !important;
+  text-decoration: underline;
+}
+.useful-post .useful-article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+.useful-post .useful-article-content blockquote {
+  margin: 24px 0;
+  padding: 8px 0 8px 20px;
+  border-left: 3px solid #DF000C;
+  color: #555 !important;
+}
+.useful-post .useful-all-link {
+  margin-top: 24px;
+  color: #171717 !important;
+  border-color: #D8D8D8 !important;
+}
+.useful-post .useful-all-link:hover {
+  color: #DF000C !important;
+  border-color: #DF000C !important;
+}
+@media (max-width: 720px) {
+  .page-useful .useful-posts-grid { margin-top: 22px; }
+  .useful-post .useful-article-content { font-size: 16px; }
+  .useful-post .useful-article-content h2 { font-size: 24px; }
+  .useful-post .useful-article-content h3 { font-size: 20px; }
+}
