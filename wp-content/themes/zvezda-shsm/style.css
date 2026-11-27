@@ -1464,3 +1464,35 @@ section[style*="background: #fff"] {
     gap: 16px;
   }
 }
+
+
+
+/* Contacts page: reuse the homepage contacts section with a dedicated page rhythm. */
+.page-contacts .section.contacts {
+  background: #F6F8FD !important;
+  color: #171717 !important;
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+.page-contacts .section.contacts .wrap {
+  max-width: 1180px;
+}
+.page-contacts .section.contacts .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 18px;
+}
+.page-contacts .section.contacts .card p {
+  line-height: 1.7;
+}
+@media (max-width: 720px) {
+  .page-contacts .section.contacts {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .page-contacts .section.contacts .card {
+    padding: 22px;
+  }
+}
