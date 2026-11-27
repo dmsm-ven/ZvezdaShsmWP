@@ -32,7 +32,8 @@
       <div><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">Политика конфиденциальности</a> · <a href="<?php echo esc_url(home_url('/user-agreement/')); ?>">Пользовательское соглашение</a></div>
     </div>
   </div>
-</footer>\n<div class="sticky-cta"><a href="#signup">Записаться на бесплатную тренировку</a></div>
+</footer>
+<div class="sticky-cta"><a href="#signup">Записаться на бесплатную тренировку</a></div>
 <?php wp_footer(); ?>
 </body>
 </html>
