@@ -158,7 +158,7 @@ pre, code { overflow-wrap: anywhere; white-space: pre-wrap; }
 p { margin: 0.45em 0; }
 ul, ol { margin: 0.35em 0; padding-left: 1.5em; }
 li { margin: 0.12em 0; }
-.credentials-page { height: 275mm; box-sizing: border-box; display: flex; align-items: center; justify-content: center; page-break-after: always; }
+.credentials-page { min-height: 255mm; height: auto; box-sizing: border-box; display: flex; align-items: center; justify-content: center; break-after: page; }
 .credentials-card { width: 100%; max-width: 155mm; margin: auto; }
 .eyebrow { color: #64748b; font-size: 9pt; font-weight: 700; letter-spacing: 1.5px; }
 .credentials-card h1 { margin: 10mm 0 3mm; font-size: 30pt; }
