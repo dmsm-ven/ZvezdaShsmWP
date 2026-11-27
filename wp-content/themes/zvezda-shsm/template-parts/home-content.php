@@ -11,7 +11,7 @@
     <p class="lead">Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.</p>
     <div class="actions">
       <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться на пробную тренировку</a>
-      <a class="btn btn-ghost" href="https://wa.me/79856692689">Написать в WhatsApp</a>
+      <a class="btn btn-ghost" href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">Написать в WhatsApp</a>
     </div>
     <div class="facts">
       <div><b>A / B / C</b>лицензии UEFA у тренеров</div>
@@ -246,7 +246,7 @@
       <h2>Первая тренировка — бесплатно</h2>
       <p>Оставьте заявку — перезвоним, подберём группу по возрасту и пригласим на пробное занятие. Или напишите нам в мессенджер, так быстрее.</p>
       <div class="mess">
-        <a class="btn" href="https://wa.me/79856692689">WhatsApp</a>
+        <a class="btn" href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a>
         <a class="btn" href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
       </div>
       <img class="photo" src="<?php echo esc_url(get_theme_file_uri('/assets/images/boys.jpg')); ?>" alt="Юные игроки ФК Супер Нова" loading="lazy">
@@ -275,7 +275,7 @@
         <p><b>Адрес:</b> <?php echo esc_html(zvezda_setting('address')); ?></p>
         <p><b>Телефон:</b> <a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a></p>
         <p><b>E-mail:</b> <a href="<?php echo esc_url('mailto:' . zvezda_setting('email')); ?>"><?php echo esc_html(zvezda_setting('email')); ?></a></p>
-        <p><b>Мессенджеры:</b> <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></p>
+        <p><b>Мессенджеры:</b> <a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></p>
         <p><b>Соцсети:</b> <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a> · <a href="https://www.youtube.com/@fcsupernova">YouTube</a> · <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a></p>
         <p class="note">Ссылки на Instagram* и Facebook* убраны из прототипа: продукты Meta, признанной экстремистской организацией в РФ, требуют обязательной маркировки — решение и формулировку согласовать с юристом.</p>
       </div>
