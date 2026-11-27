@@ -478,3 +478,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 /* Контактная секция без карты на первом этапе */
 .contacts .grid.g2{grid-template-columns:1fr}
+
+/* Responsive burger: hidden on desktop, three visible lines on mobile/tablet. */
+@media (min-width: 1121px) { .header .burger { display: none !important; } }
+@media (max-width: 1120px) {
+  .header .burger { display: inline-flex !important; flex: 0 0 44px; gap: 5px; }
+  .header .burger span { display: block !important; visibility: visible !important; opacity: 1 !important; flex: 0 0 20px; width: 20px; height: 2px; min-height: 2px; margin: 0; padding: 0; background: var(--brand-dark) !important; border: 0; transform: none; }
+}
