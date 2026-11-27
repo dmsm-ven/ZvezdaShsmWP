@@ -102,7 +102,7 @@ h2{font-size:clamp(26px,3.6vw,42px);font-weight:800;margin-bottom:14px}
 /* coaches: две широкие карточки */
 .coach2{display:flex;gap:24px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:.2s;align-items:flex-start}
 .coach2:hover{box-shadow:0 16px 40px -18px rgba(37,43,107,.20);transform:translateY(-3px)}
-.coach2 img{width:168px;height:200px;object-fit:cover;object-position:top;border-radius:14px;flex:0 0 168px}
+.coach2 img{width:168px;height:200px;object-fit:contain;object-position:center;background:#F1F2F5;border-radius:14px;flex:0 0 168px}
 .coach2 h3{font-size:19px;font-weight:800;margin-bottom:4px}
 .coach2 .role{color:var(--accent);font-size:13px;font-weight:700;margin-bottom:10px}
 .coach2 p{color:var(--gray);font-size:14px;margin-bottom:8px}
@@ -254,7 +254,7 @@ section[id]{scroll-margin-top:92px}
   .hero .wrap{padding-top:80px;padding-bottom:130px}
   .signup .inner{grid-template-columns:1fr}
   .coach2{flex-direction:column}
-  .coach2 img{width:100%;height:260px;flex:none}
+  .coach2 img{width:100%;height:260px;object-fit:contain;object-position:center;flex:none}
   .footer .top{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
