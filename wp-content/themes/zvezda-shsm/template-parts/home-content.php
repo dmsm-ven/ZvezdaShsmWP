@@ -31,8 +31,15 @@ $hero_background_style = $banner_background_url
 
 <div class="stats">
   <div class="wrap reveal on">
-<?php for ($i = 1; $i <= 4; $i++) : ?>
-    <div class="stat"><b><?php echo esc_html(zvezda_home_field("stat_{$i}_value", ['', '1000+', 'с 2000 г.', '5–12 лет', '2 раза в год'][$i])); ?></b><span><?php echo esc_html(zvezda_home_field("stat_{$i}_text", ['', 'детей в сообществе Super Nova', 'работает международное сообщество', 'возраст учеников школы', 'футбольное тестирование игроков'][$i])); ?></span></div>
+<?php
+$stats_default_titles = ['', '1000+', 'с 2000 г.', '5–12 лет', '2 раза в год'];
+$stats_default_texts = ['', 'детей в сообществе Super Nova', 'работает международное сообщество', 'возраст учеников школы', 'футбольное тестирование игроков'];
+for ($i = 1; $i <= 4; $i++) :
+    // Keep compatibility with values saved under the previous stat_N_value field name.
+    $stat_title = zvezda_home_field("stat_{$i}_title", zvezda_home_field("stat_{$i}_value", $stats_default_titles[$i]));
+    $stat_text = zvezda_home_field("stat_{$i}_text", $stats_default_texts[$i]);
+?>
+    <div class="stat"><b><?php echo esc_html($stat_title); ?></b><span><?php echo esc_html($stat_text); ?></span></div>
 <?php endfor; ?>
   </div>
 </div>
