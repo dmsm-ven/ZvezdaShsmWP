@@ -1081,3 +1081,64 @@ section[style*="background: #fff"] {
   .page-about .about-section .split { grid-template-columns: 1fr; }
   .page-about .about-section .split img { max-height: 420px; }
 }
+
+
+/* Philosophy page: three editable sections, alternating light/dark surfaces. */
+.page-philosophy .philosophy-section-light {
+  background: #fff !important;
+  color: #171717 !important;
+}
+.page-philosophy .philosophy-section-light h2,
+.page-philosophy .philosophy-section-light h3 { color: #171717 !important; }
+.page-philosophy .philosophy-section-light .kicker { color: #DF000C !important; }
+.page-philosophy .philosophy-section-light .card {
+  background: #F7F7F7 !important;
+  color: #171717 !important;
+  border: 1px solid #E5E5E5 !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+}
+.page-philosophy .philosophy-section-light .card h3 { color: #171717 !important; }
+.page-philosophy .philosophy-section-light .card p { color: #555 !important; }
+.page-philosophy .philosophy-section-light .ico {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  background: #FCE8E9;
+  color: #DF000C;
+}
+.page-philosophy .philosophy-priorities { margin-top: 28px; }
+.page-philosophy .philosophy-priorities .card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.page-philosophy .philosophy-priorities .card p {
+  color: #555 !important;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+.page-philosophy .philosophy-section-dark {
+  background: #101010 !important;
+  color: #F5F5F5 !important;
+}
+.page-philosophy .philosophy-section-dark h2,
+.page-philosophy .philosophy-section-dark h3 { color: #fff !important; }
+.page-philosophy .philosophy-section-dark .kicker { color: #FF454D !important; }
+.page-philosophy .philosophy-section-dark .prose p,
+.page-philosophy .philosophy-section-dark .checklist li { color: #C2C2C2 !important; }
+.page-philosophy .philosophy-section-dark .checklist li::before { color: #FF454D !important; }
+.page-philosophy .philosophy-section img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--r);
+}
+.page-philosophy .philosophy-section .split:not(.has-image) { grid-template-columns: 1fr; }
+@media (max-width: 980px) {
+  .page-philosophy .philosophy-section .split { grid-template-columns: 1fr; }
+  .page-philosophy .philosophy-section .split img { max-height: 420px; }
+}
