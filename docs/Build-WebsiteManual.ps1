@@ -120,7 +120,7 @@ try {
     $htmlPath = Join-Path $tempDirectory 'website_instruction.html'
     [System.IO.File]::WriteAllText($tempMarkdown, $markdown, (New-Object System.Text.UTF8Encoding($false)))
 
-    & $pandocCommand.Source $tempMarkdown '--from=gfm' '--to=html5' '--standalone' '--metadata=lang:ru' '--metadata=title:Инструкция по управлению сайтом' '--output' $htmlPath
+    & $pandocCommand.Source $tempMarkdown '--from=gfm' '--to=html5' '--standalone' '--metadata=lang:ru' '--output' $htmlPath
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $htmlPath)) {
         throw 'Pandoc не смог преобразовать Markdown в HTML.'
     }
@@ -142,6 +142,9 @@ try {
     $bodyTag = [regex]::Match($html, '(?i)<body[^>]*>')
     if (-not $bodyTag.Success) { throw 'Не удалось подготовить HTML-документ для печати.' }
     $html = $html.Insert($bodyTag.Index + $bodyTag.Length, $coverHtml)
+
+    # Open every PDF hyperlink in a separate browser tab/window.
+    $html = [regex]::Replace($html, '(?i)<a\b(?![^>]*\btarget\s*=)', '<a target="_blank" rel="noopener noreferrer"')
 
     $styles = @'
 <style>
