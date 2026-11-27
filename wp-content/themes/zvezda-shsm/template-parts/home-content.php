@@ -119,11 +119,32 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
 
 <section class="section" style="padding-top:0;background:var(--bg-soft)">
   <div class="wrap reveal">
+    <?php
+    $gallery_items = [];
+    for ($gallery_index = 1; $gallery_index <= 3; $gallery_index++) {
+        $gallery_image = zvezda_home_field("gallery_image_{$gallery_index}");
+        if (!$gallery_image || !is_array($gallery_image) || empty($gallery_image['url'])) {
+            continue;
+        }
+
+        $gallery_alt = zvezda_home_field("gallery_image_{$gallery_index}_alt");
+        if ($gallery_alt === '') {
+            $gallery_alt = $gallery_image['alt'] ?? '';
+        }
+
+        $gallery_items[] = [
+            'url' => $gallery_image['url'],
+            'alt' => $gallery_alt,
+        ];
+    }
+    ?>
+    <?php if ($gallery_items) : ?>
     <div class="gallery">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/huddle.jpg')); ?>" alt="<?php echo esc_attr('Команда ' . zvezda_setting('club_name') . ' с тренером перед игрой'); ?>" loading="lazy" style="cursor: zoom-in;">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/action.jpg')); ?>" alt="<?php echo esc_attr('Игровой момент на тренировке ' . zvezda_setting('club_name')); ?>" loading="lazy" style="cursor: zoom-in;">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/highfive.jpg')); ?>" alt="<?php echo esc_attr('Игроки ' . zvezda_setting('club_name') . ' празднуют гол'); ?>" loading="lazy" style="cursor: zoom-in;">
+      <?php foreach ($gallery_items as $gallery_item) : ?>
+        <img src="<?php echo esc_url($gallery_item['url']); ?>" alt="<?php echo esc_attr($gallery_item['alt']); ?>" loading="lazy" style="cursor: zoom-in;">
+      <?php endforeach; ?>
     </div>
+    <?php endif; ?>
   </div>
 </section>
 
