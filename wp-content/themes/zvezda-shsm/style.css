@@ -52,7 +52,7 @@ h2{font-size:clamp(26px,3.6vw,42px);font-weight:800;margin-bottom:14px}
 
 /* hero: командное фото с медалями на весь экран + синий градиент из логотипа */
 .hero{position:relative;color:#fff;overflow:hidden;background:var(--brand-deep)}
-.hero::before{content:"";position:absolute;inset:0;background:url('assets/images/huddle.jpg') center 24%/cover no-repeat}
+.hero::before{content:"";position:absolute;inset:0;background:var(--hero-background-image, none) center 24%/cover no-repeat}
 .hero::after{content:"";position:absolute;inset:0;background:
   linear-gradient(180deg,rgba(20,24,56,.25) 0%,rgba(20,24,56,0) 30%,rgba(20,24,56,0) 62%,rgba(20,24,56,.72) 100%),
   linear-gradient(100deg,rgba(20,24,56,.92) 16%,rgba(23,28,72,.60) 48%,rgba(26,31,82,.18) 100%)}
