@@ -641,6 +641,29 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
 
+    // Populate the repeaters with the current homepage content on first edit.
+    // Values are returned only when the page has no saved rows yet.
+    add_filter('acf/load_value/name=schedule_days', function ($value, $post_id, $field) {
+        if (!empty($value) || (string) $post_id !== (string) get_option('page_on_front')) return $value;
+        return [
+            ['day' => 'Вторник', 'time' => '19:00 — 20:15'],
+            ['day' => 'Четверг', 'time' => '19:00 — 20:15'],
+            ['day' => 'Воскресенье', 'time' => '15:00 — 16:15'],
+            ['day' => 'Суббота / воскресенье', 'time' => 'игровые дни'],
+        ];
+    }, 10, 3);
+    add_filter('acf/load_value/name=membership_items', function ($value, $post_id, $field) {
+        if (!empty($value) || (string) $post_id !== (string) get_option('page_on_front')) return $value;
+        return [
+            ['text' => 'Первая пробная тренировка — бесплатно'],
+            ['text' => 'Тренеры с лицензиями UEFA'],
+            ['text' => 'Тестирование игроков 2 раза в год'],
+            ['text' => 'Личный кабинет родителя в ProTrainUp'],
+            ['text' => 'Централизованный медосмотр'],
+            ['text' => 'Игровые дни по выходным'],
+        ];
+    }, 10, 3);
+
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_gallery',
         'title' => 'Главная — фотогалерея',
