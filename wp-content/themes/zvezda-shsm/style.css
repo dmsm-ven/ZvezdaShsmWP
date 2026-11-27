@@ -1051,3 +1051,33 @@ section[style*="background: #fff"] {
   .stats .stat b { font-size: 21px; }
   .stats .stat span { font-size: 12.5px; }
 }
+
+
+/* About page: three donor-layout sections. */
+.page-about .about-section {
+  background: #101010 !important;
+  color: #F5F5F5;
+}
+.page-about .about-section h2 { color: #fff !important; }
+.page-about .about-section .prose p { color: #C2C2C2 !important; line-height: 1.75; }
+.page-about .about-section .split { grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr); }
+.page-about .about-section .split:not(.has-image) { grid-template-columns: 1fr; }
+.page-about .about-section img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--r);
+}
+.page-about .about-section-soft {
+  background: #F6F8FD !important;
+  color: #171717;
+}
+.page-about .about-section-soft h2 { color: #171717 !important; }
+.page-about .about-section-soft .kicker { color: #DF000C !important; }
+.page-about .about-section-soft .prose p { color: #555 !important; }
+.page-about .about-section-soft .about-philosophy-button { margin-top: 10px; }
+@media (max-width: 980px) {
+  .page-about .about-section .split { grid-template-columns: 1fr; }
+  .page-about .about-section .split img { max-height: 420px; }
+}
