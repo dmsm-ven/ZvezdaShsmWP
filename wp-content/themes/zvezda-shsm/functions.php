@@ -434,6 +434,68 @@ add_action('acf/init', function () {
     ]);
 
     acf_add_local_field_group([
+        'key' => 'group_zvezda_home_gallery',
+        'title' => 'Главная — фотогалерея',
+        'fields' => [
+            [
+                'key' => 'field_zvezda_gallery_image_1',
+                'label' => 'Фото 1',
+                'name' => 'gallery_image_1',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+            [
+                'key' => 'field_zvezda_gallery_image_1_alt',
+                'label' => 'Фото 1 — ALT-текст',
+                'name' => 'gallery_image_1_alt',
+                'type' => 'text',
+                'default_value' => 'Команда с тренером перед игрой',
+                'instructions' => 'Краткое описание изображения для доступности и поисковых систем.',
+            ],
+            [
+                'key' => 'field_zvezda_gallery_image_2',
+                'label' => 'Фото 2',
+                'name' => 'gallery_image_2',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+            [
+                'key' => 'field_zvezda_gallery_image_2_alt',
+                'label' => 'Фото 2 — ALT-текст',
+                'name' => 'gallery_image_2_alt',
+                'type' => 'text',
+                'default_value' => 'Игровой момент на тренировке',
+                'instructions' => 'Краткое описание изображения для доступности и поисковых систем.',
+            ],
+            [
+                'key' => 'field_zvezda_gallery_image_3',
+                'label' => 'Фото 3',
+                'name' => 'gallery_image_3',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+            [
+                'key' => 'field_zvezda_gallery_image_3_alt',
+                'label' => 'Фото 3 — ALT-текст',
+                'name' => 'gallery_image_3_alt',
+                'type' => 'text',
+                'default_value' => 'Игроки празднуют гол',
+                'instructions' => 'Краткое описание изображения для доступности и поисковых систем.',
+            ],
+        ],
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    acf_add_local_field_group([
         'key' => 'group_zvezda_coach_details',
         'title' => 'Данные тренера',
         'fields' => [
