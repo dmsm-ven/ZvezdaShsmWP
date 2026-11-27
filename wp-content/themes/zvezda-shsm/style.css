@@ -3692,3 +3692,76 @@ section[style*="background: #fff"] {
     gap: 18px;
   }
 }
+
+
+/* Contact Form 7 inside the shared signup section. */
+.signup .signup-form-card .wpcf7 form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.signup .signup-form-card .form-field {
+  display: block;
+  margin: 14px 0 6px;
+  color: #3d4366;
+  font-size: 13px;
+  font-weight: 600;
+}
+.signup .signup-form-card .form-field > span {
+  display: block;
+  margin-bottom: 6px;
+}
+.signup .signup-form-card input:not([type="submit"]),
+.signup .signup-form-card textarea {
+  display: block;
+  width: 100%;
+  padding: 13px 15px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--bg-soft);
+}
+.signup .signup-form-card textarea {
+  min-height: 104px;
+  resize: vertical;
+}
+.signup .signup-form-card input:not([type="submit"]):focus,
+.signup .signup-form-card textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #fff;
+}
+.signup .signup-form-card .wpcf7-submit {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px 30px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font: 600 15.5px inherit;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+}
+.signup .signup-form-card .wpcf7-submit:hover {
+  background: var(--brand-dark);
+  transform: translateY(-1px);
+}
+.signup .signup-form-card .wpcf7-not-valid-tip {
+  display: block;
+  margin-top: 5px;
+  color: #c62828;
+  font-size: 12px;
+}
+.signup .signup-form-card .wpcf7-response-output {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.signup .signup-form-card .wpcf7-spinner {
+  display: block;
+  margin: 12px auto 0;
+}
