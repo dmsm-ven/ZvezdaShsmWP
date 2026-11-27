@@ -1206,8 +1206,8 @@ section[style*="background: #fff"] {
 
 /* Media page: responsive WordPress block gallery, unlimited images via the editor. */
 .page-media .media-gallery-section {
-  background: #fff;
-  color: #171717;
+  background: #fff !important;
+  color: #171717 !important;
 }
 .page-media .media-gallery-content > :first-child {
   margin-top: 0;
