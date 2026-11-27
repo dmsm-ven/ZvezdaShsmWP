@@ -146,9 +146,29 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
     }
     ?>
     <?php if ($gallery_items) : ?>
-    <div class="gallery">
-      <?php foreach ($gallery_items as $gallery_item) : ?>
-        <img src="<?php echo esc_url($gallery_item['url']); ?>" alt="<?php echo esc_attr($gallery_item['alt']); ?>" loading="lazy" style="cursor: zoom-in;">
+    <div class="gallery" aria-label="Фотогалерея клуба">
+      <?php foreach ($gallery_items as $gallery_index => $gallery_item) :
+        $gallery_image_id = !empty($gallery_item['ID']) ? absint($gallery_item['ID']) : 0;
+        $gallery_full_url = $gallery_image_id
+            ? wp_get_attachment_image_url($gallery_image_id, 'full')
+            : $gallery_item['url'];
+      ?>
+        <a
+          class="gallery-item"
+          href="<?php echo esc_url($gallery_full_url ?: $gallery_item['url']); ?>"
+          rel="lightbox[home-gallery]"
+          aria-label="<?php echo esc_attr($gallery_item['alt'] ?: 'Открыть фотографию ' . ($gallery_index + 1)); ?>"
+        >
+          <?php if ($gallery_image_id) : ?>
+            <?php echo wp_get_attachment_image($gallery_image_id, 'large', false, [
+                'alt' => $gallery_item['alt'],
+                'loading' => 'lazy',
+                'decoding' => 'async',
+            ]); ?>
+          <?php else : ?>
+            <img src="<?php echo esc_url($gallery_item['url']); ?>" alt="<?php echo esc_attr($gallery_item['alt']); ?>" loading="lazy" decoding="async">
+          <?php endif; ?>
+        </a>
       <?php endforeach; ?>
     </div>
     <?php endif; ?>
