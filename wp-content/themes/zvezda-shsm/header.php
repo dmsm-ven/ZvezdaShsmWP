@@ -50,6 +50,6 @@
 <a href="<?php echo esc_url(home_url('/useful/')); ?>">Полезное</a>
 <a href="<?php echo esc_url(home_url('/payment/')); ?>">Оплата</a>
 <a href="<?php echo esc_url(home_url('/contacts/')); ?>">Контакты</a>
-<div class="mcontacts"><a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a> · <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></div>
+<div class="mcontacts"><a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a> · <a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></div>
 </div>
 <main id="content">
