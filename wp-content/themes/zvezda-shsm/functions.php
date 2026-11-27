@@ -158,9 +158,13 @@ function zvezda_phone_digits() {
     return preg_replace('/[^0-9]/', '', zvezda_setting('phone'));
 }
 add_action('wp_enqueue_scripts', function () {
-    $ver = wp_get_theme()->get('Version');
-    wp_enqueue_style('zvezda-style', get_stylesheet_uri(), [], $ver);
-    wp_enqueue_script('zvezda-main', get_stylesheet_directory_uri() . '/assets/js/main.js', [], $ver, true);
+    $theme_version = wp_get_theme()->get('Version');
+    $style_path = get_stylesheet_directory() . '/style.css';
+    $script_path = get_stylesheet_directory() . '/assets/js/main.js';
+    $style_version = file_exists($style_path) ? (string) filemtime($style_path) : $theme_version;
+    $script_version = file_exists($script_path) ? (string) filemtime($script_path) : $theme_version;
+    wp_enqueue_style('zvezda-style', get_stylesheet_uri(), [], $style_version);
+    wp_enqueue_script('zvezda-main', get_stylesheet_directory_uri() . '/assets/js/main.js', [], $script_version, true);
 });
 add_action('after_setup_theme', function () {
     add_theme_support('title-tag');
