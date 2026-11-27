@@ -9,6 +9,7 @@ function zvezda_club_settings_defaults() {
         'vk_url' => 'https://vk.com/fcsupernova',
         'telegram_url' => 'https://t.me/fcsupernovamoscow',
         'youtube_url' => 'https://www.youtube.com/@fcsupernova',
+        'yandex_reviews_url' => 'https://yandex.com/maps/org/fc_super_nova_moscow/155444875307/reviews/',
         'address' => 'Россия, г. Москва, ул. Новозаводская, 27А стр. 1 (СК «Фили»), м. Багратионовская',
         'logo_id' => 0,
         'club_name' => 'ФК «СУПЕР НОВА»',
@@ -39,6 +40,7 @@ function zvezda_club_settings_sanitize($input) {
         'vk_url' => esc_url_raw($input['vk_url'] ?? ''),
         'telegram_url' => esc_url_raw($input['telegram_url'] ?? ''),
         'youtube_url' => esc_url_raw($input['youtube_url'] ?? ''),
+        'yandex_reviews_url' => esc_url_raw($input['yandex_reviews_url'] ?? ''),
         'address' => sanitize_text_field($input['address'] ?? ''),
         'logo_id' => absint($input['logo_id'] ?? 0),
         'club_name' => sanitize_text_field($input['club_name'] ?? ''),
@@ -67,6 +69,7 @@ function zvezda_render_club_settings_page() {
                 <tr><th><label for="zvezda-email">Email</label></th><td><input id="zvezda-email" class="regular-text" name="zvezda_club_settings[email]" value="<?php echo esc_attr($settings['email']); ?>" type="email"></td></tr>
                 <tr><th><label for="zvezda-vk">Адрес VK</label></th><td><input id="zvezda-vk" class="regular-text" name="zvezda_club_settings[vk_url]" value="<?php echo esc_attr($settings['vk_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-telegram">Адрес Telegram</label></th><td><input id="zvezda-telegram" class="regular-text" name="zvezda_club_settings[telegram_url]" value="<?php echo esc_attr($settings['telegram_url']); ?>" type="url"></td></tr>
+                <tr><th><label for="zvezda-yandex-reviews">Ссылка на отзывы в Яндекс.Картах</label></th><td><input id="zvezda-yandex-reviews" class="regular-text" name="zvezda_club_settings[yandex_reviews_url]" value="<?php echo esc_attr($settings['yandex_reviews_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-youtube">Адрес YouTube</label></th><td><input id="zvezda-youtube" class="regular-text" name="zvezda_club_settings[youtube_url]" value="<?php echo esc_attr($settings['youtube_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-address">Физический адрес</label></th><td><input id="zvezda-address" class="regular-text" name="zvezda_club_settings[address]" value="<?php echo esc_attr($settings['address']); ?>" type="text"></td></tr>
                 <tr><th>Логотип</th><td>
@@ -555,6 +558,83 @@ add_action('acf/init', function () {
         'title' => 'Главная — Что получает ваш ребёнок',
         'menu_order' => 4,
         'fields' => $benefit_fields,
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    // Homepage video: the video is loaded only after the visitor clicks the preview.
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_video',
+        'title' => 'Главная — Видео',
+        'menu_order' => 6,
+        'fields' => [
+            ['key' => 'field_zvezda_video_title', 'label' => 'Заголовок H2', 'name' => 'video_title', 'type' => 'text', 'default_value' => 'Смотрите матчи клуба'],
+            ['key' => 'field_zvezda_video_subtitle', 'label' => 'Подзаголовок', 'name' => 'video_subtitle', 'type' => 'textarea', 'rows' => 2, 'default_value' => 'Записи матчей и трансляции — на YouTube-канале ФК «СУПЕР НОВА» ТВ.'],
+            ['key' => 'field_zvezda_video_url', 'label' => 'URL видео YouTube', 'name' => 'video_url', 'type' => 'url', 'instructions' => 'Вставьте ссылку на конкретное видео YouTube (watch, youtu.be, shorts или embed).'],
+            ['key' => 'field_zvezda_video_preview_image', 'label' => 'Preview Image', 'name' => 'video_preview_image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'large', 'library' => 'all', 'instructions' => 'Изображение показывается до клика. Сам YouTube iframe загружается только после нажатия.'],
+        ],
+        'location' => $location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    // Schedule and membership contents. Repeaters allow rows to be added/removed in the editor.
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_home_schedule',
+        'title' => 'Главная — Расписание и стоимость',
+        'menu_order' => 7,
+        'fields' => [
+            ['key' => 'field_zvezda_schedule_title', 'label' => 'Заголовок H2', 'name' => 'schedule_title', 'type' => 'text', 'default_value' => 'Тренировки в СК «Фили»'],
+            ['key' => 'field_zvezda_schedule_subtitle', 'label' => 'Подзаголовок', 'name' => 'schedule_subtitle', 'type' => 'textarea', 'rows' => 2, 'default_value' => 'Поле с искусственной травой последнего поколения, зимой — занятия в зале.'],
+            [
+                'key' => 'field_zvezda_schedule_days_title',
+                'label' => 'Расписание — заголовок карточки',
+                'name' => 'schedule_days_title',
+                'type' => 'text',
+                'default_value' => 'Расписание · сезон 2026/27',
+            ],
+            [
+                'key' => 'field_zvezda_schedule_days',
+                'label' => 'Пункты расписания',
+                'name' => 'schedule_days',
+                'type' => 'repeater',
+                'layout' => 'table',
+                'button_label' => 'Добавить день',
+                'sub_fields' => [
+                    ['key' => 'field_zvezda_schedule_day', 'label' => 'День', 'name' => 'day', 'type' => 'text'],
+                    ['key' => 'field_zvezda_schedule_time', 'label' => 'Время', 'name' => 'time', 'type' => 'text'],
+                ],
+            ],
+            [
+                'key' => 'field_zvezda_schedule_footer',
+                'label' => 'Текст под расписанием',
+                'name' => 'schedule_footer',
+                'type' => 'textarea',
+                'rows' => 3,
+                'default_value' => 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.',
+            ],
+            [
+                'key' => 'field_zvezda_membership_title',
+                'label' => 'Что входит в абонемент — заголовок',
+                'name' => 'membership_title',
+                'type' => 'text',
+                'default_value' => 'Что входит в абонемент',
+            ],
+            [
+                'key' => 'field_zvezda_membership_items',
+                'label' => 'Пункты абонемента',
+                'name' => 'membership_items',
+                'type' => 'repeater',
+                'layout' => 'table',
+                'button_label' => 'Добавить пункт',
+                'sub_fields' => [
+                    ['key' => 'field_zvezda_membership_item_text', 'label' => 'Текст', 'name' => 'text', 'type' => 'text'],
+                ],
+            ],
+        ],
         'location' => $location,
         'position' => 'normal',
         'style' => 'default',
