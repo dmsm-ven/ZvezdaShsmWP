@@ -1064,7 +1064,33 @@ add_action('acf/init', function () {
 /** Add a stable body class for styles scoped to the About page template. */
 add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-about.php')) $classes[] = 'page-about';
+    if (is_page_template('templates/page-coaches.php')) $classes[] = 'page-coaches';
     return $classes;
+});
+
+
+/** ACF banner content for the Coaches page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_coaches_page_banner',
+        'title' => 'Тренеры — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_coaches_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'Тренерский штаб'],
+            ['key' => 'field_zvezda_coaches_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Тренеры Академии'],
+            ['key' => 'field_zvezda_coaches_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Лицензированные специалисты с опытом работы в сильнейших академиях Москвы и профессиональных клубах. Работу штаба курирует спортивный директор.'],
+        ],
+        'location' => [[[
+            'param' => 'page_template',
+            'operator' => '==',
+            'value' => 'templates/page-coaches.php',
+        ]]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
 });
 
 
