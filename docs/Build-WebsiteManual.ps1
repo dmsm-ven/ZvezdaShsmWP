@@ -84,6 +84,33 @@ try {
     $markdown = $markdown.Replace('http://localhost:8080', $siteUrl)
     $markdown = $markdown.Replace(' (после переноса сайта используйте его постоянный адрес).', '.')
 
+    # Turn important navigation labels into direct links.
+    $adminBase = "$siteUrl/wp-admin/"
+    $linkMap = [ordered]@{
+        'Настройки клуба' = "$adminBase" + 'admin.php?page=zvezda-club-settings'
+        'Контактные формы' = "$adminBase" + 'admin.php?page=wpcf7'
+        'Вопросы и ответы' = "$adminBase" + 'edit.php?post_type=faq'
+        'Тренеры' = "$adminBase" + 'edit.php?post_type=coach'
+        'Отзывы' = "$adminBase" + 'edit.php?post_type=review'
+        'Записи' = "$adminBase" + 'edit.php'
+        'Страницы' = "$adminBase" + 'edit.php?post_type=page'
+        'О клубе' = "$siteUrl/about/"
+        'Философия' = "$siteUrl/philosophy/"
+        'Расписание' = "$siteUrl/schedule/"
+        'Медиа' = "$siteUrl/media/"
+        'Полезное' = "$siteUrl/useful/"
+        'Оплата' = "$siteUrl/payment/"
+        'Контакты' = "$siteUrl/contacts/"
+        'Главная страница' = "$siteUrl/"
+    }
+
+    foreach ($label in $linkMap.Keys) {
+        $url = [System.Net.WebUtility]::HtmlEncode($linkMap[$label])
+        $markdownLink = "[$label]($url)"
+        $pattern = '(?<![\\p{L}\\p{N}_\\]])' + [regex]::Escape($label) + '(?![\\p{L}\\p{N}_\\[])'
+        $markdown = [regex]::Replace($markdown, $pattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $markdownLink })
+    }
+
     $loginHtml = ConvertTo-HtmlText $adminLogin
     $passwordHtml = ConvertTo-HtmlText $adminPassword
     $adminUrl = ConvertTo-HtmlText "$siteUrl/wp-admin/"
@@ -103,7 +130,7 @@ try {
   <div class="credentials-card">
     <p class="eyebrow">ИНСТРУКЦИЯ ДЛЯ АДМИНИСТРАТОРА</p>
     <h1>Доступ к сайту</h1>
-    <p class="site-address">$adminUrl</p>
+    <p class="site-address"><a href="$adminUrl">$adminUrl</a></p>
     <div class="credential-row"><span>Логин</span><strong>$loginHtml</strong></div>
     <div class="credential-row"><span>Пароль</span><strong>$passwordHtml</strong></div>
     <p class="security-note">Сохраните эти данные в безопасном месте. Не передавайте PDF посторонним.</p>
@@ -118,17 +145,17 @@ try {
 
     $styles = @'
 <style>
-@page { size: A4; margin: 17mm 16mm; }
-body { font-family: "Segoe UI", Arial, sans-serif; color: #242424; font-size: 10.5pt; line-height: 1.5; }
-h1, h2, h3 { color: #172b46; line-height: 1.25; page-break-after: avoid; }
-h1 { font-size: 25pt; } h2 { font-size: 17pt; margin-top: 1.5em; } h3 { font-size: 13pt; }
-a { color: #145ca8; text-decoration: none; overflow-wrap: anywhere; }
+@page { size: A4; margin: 9mm 10mm; }
+body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: #242424; font-size: 10pt; line-height: 1.38; }
+h1, h2, h3 { color: #172b46; line-height: 1.2; page-break-after: avoid; margin-bottom: 0.45em; }
+h1 { font-size: 23pt; } h2 { font-size: 16pt; margin-top: 1em; } h3 { font-size: 12pt; margin-top: 0.8em; }
+a { color: #075db5; text-decoration-line: underline; text-decoration-style: dotted; text-decoration-color: #075db5; text-underline-offset: 2px; overflow-wrap: anywhere; }
 table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
-th, td { border: 1px solid #d5dbe3; padding: 7px 9px; text-align: left; vertical-align: top; }
+th, td { border: 1px solid #d5dbe3; padding: 4px 6px; text-align: left; vertical-align: top; }
 th { background: #eef2f7; }
-blockquote { border-left: 3px solid #9aa9ba; margin-left: 0; padding-left: 12px; color: #555; }
-pre, code { overflow-wrap: anywhere; white-space: pre-wrap; }
-.credentials-page { min-height: 255mm; box-sizing: border-box; display: flex; align-items: center; justify-content: center; page-break-after: always; break-after: page; }
+blockquote { border-left: 3px solid #9aa9ba; margin: 0.6em 0; padding-left: 9px; color: #555; }
+pre, code { overflow-wrap: anywhere; white-space: pre-wrap; }\np { margin: 0.45em 0; }\nul, ol { margin: 0.35em 0; padding-left: 1.5em; }\nli { margin: 0.12em 0; }
+.credentials-page { height: 275mm; box-sizing: border-box; display: flex; align-items: center; justify-content: center; page-break-after: always; }
 .credentials-card { width: 100%; max-width: 155mm; margin: auto; }
 .eyebrow { color: #64748b; font-size: 9pt; font-weight: 700; letter-spacing: 1.5px; }
 .credentials-card h1 { margin: 10mm 0 3mm; font-size: 30pt; }
