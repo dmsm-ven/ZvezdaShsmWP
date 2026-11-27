@@ -49,7 +49,7 @@
 
 <section class="section adv">
   <div class="wrap reveal">
-    <div class="kicker">Почему «Супер Нова»</div>
+    <div class="kicker">Почему <?php echo esc_html(zvezda_setting('club_name')); ?></div>
     <h2>Что получает ваш ребёнок</h2>
     <p class="sub" style="margin-bottom:32px">В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока.</p>
     <div class="grid g2">
@@ -85,7 +85,7 @@
           <h3>Котенёв Антон Константинович</h3>
           <div class="role">Тренер Академии · КМС по футболу</div>
           <p>Кандидат в мастера спорта, чемпион Москвы по футболу среди команд спортивных школ.</p>
-          <p>Опыт: ФК «Красногвардеец», ФК «Сельмаш», Академия ФК «Супер Нова». Карьера игрока: ФК «Ростов», «Строгино», ФШМ.</p>
+          <p>Опыт: ФК «Красногвардеец», ФК «Сельмаш», Академия <?php echo esc_html(zvezda_setting('club_name')); ?>. Карьера игрока: ФК «Ростов», «Строгино», ФШМ.</p>
         </div>
       </div>
     </div>
@@ -97,9 +97,9 @@
 <section class="section" style="padding-top:0;background:var(--bg-soft)">
   <div class="wrap reveal">
     <div class="gallery">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/huddle.jpg')); ?>" alt="Команда ФК Супер Нова с тренером перед игрой" loading="lazy" style="cursor: zoom-in;">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/action.jpg')); ?>" alt="Игровой момент на тренировке ФК Супер Нова" loading="lazy" style="cursor: zoom-in;">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/highfive.jpg')); ?>" alt="Игроки ФК Супер Нова празднуют гол" loading="lazy" style="cursor: zoom-in;">
+      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/huddle.jpg')); ?>" alt="<?php echo esc_attr('Команда ' . zvezda_setting('club_name') . ' с тренером перед игрой'); ?>" loading="lazy" style="cursor: zoom-in;">
+      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/action.jpg')); ?>" alt="<?php echo esc_attr('Игровой момент на тренировке ' . zvezda_setting('club_name')); ?>" loading="lazy" style="cursor: zoom-in;">
+      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/highfive.jpg')); ?>" alt="<?php echo esc_attr('Игроки ' . zvezda_setting('club_name') . ' празднуют гол'); ?>" loading="lazy" style="cursor: zoom-in;">
     </div>
   </div>
 </section>
@@ -161,11 +161,11 @@
   <div class="wrap reveal">
     <div class="kicker">Видео</div>
     <h2>Смотрите матчи клуба</h2>
-    <p class="sub" style="margin-bottom:28px">Записи матчей и трансляции — на YouTube-канале ФК «Супер Нова» ТВ.</p>
+    <p class="sub" style="margin-bottom:28px">Записи матчей и трансляции — на YouTube-канале <?php echo esc_html(zvezda_setting('club_name')); ?> ТВ.</p>
     <div class="video-card" id="videoCard" role="button" tabindex="0" aria-label="Смотреть видео матча">
-      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/maxresdefault.jpg')); ?>" alt="Матч ФК Супер Нова — ФК Герион" loading="lazy">
+      <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/maxresdefault.jpg')); ?>" alt="<?php echo esc_attr('Матч ' . zvezda_setting('club_name') . ' — ФК Герион'); ?>" loading="lazy">
       <div class="play"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"></path></svg></div>
-      <div class="vtitle">AFL Kids · Матч за 3-е место · Супер Нова — Герион 3:0</div>
+      <div class="vtitle">AFL Kids · Матч за 3-е место · <?php echo esc_html(zvezda_setting('club_name')); ?> — Герион 3:0</div>
     </div>
     <div style="text-align:center;margin-top:26px">
       <a class="btn btn-ghost" href="https://www.youtube.com/@fcsupernova" target="_blank" rel="noopener">Все видео на YouTube</a>
@@ -249,7 +249,7 @@
         <a class="btn" href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a>
         <a class="btn" href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
       </div>
-      <img class="photo" src="<?php echo esc_url(get_theme_file_uri('/assets/images/boys.jpg')); ?>" alt="Юные игроки ФК Супер Нова" loading="lazy">
+      <img class="photo" src="<?php echo esc_url(get_theme_file_uri('/assets/images/boys.jpg')); ?>" alt="<?php echo esc_attr('Юные игроки ' . zvezda_setting('club_name')); ?>" loading="lazy">
     </div>
     <div class="form" style="box-shadow:0 20px 50px -30px rgba(20,24,56,.35)">
       <h3>Записаться на пробную тренировку</h3>
