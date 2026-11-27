@@ -8,6 +8,7 @@ function zvezda_club_settings_defaults() {
         'email' => 'info@fcsupernova.ru',
         'vk_url' => 'https://vk.com/fcsupernova',
         'telegram_url' => 'https://t.me/fcsupernovamoscow',
+        'youtube_url' => 'https://www.youtube.com/@fcsupernova',
         'address' => 'Россия, г. Москва, ул. Новозаводская, 27А стр. 1 (СК «Фили»), м. Багратионовская',
         'logo_id' => 0,
         'club_name' => 'ФК «СУПЕР НОВА»',
@@ -37,6 +38,7 @@ function zvezda_club_settings_sanitize($input) {
         'email' => sanitize_email($input['email'] ?? ''),
         'vk_url' => esc_url_raw($input['vk_url'] ?? ''),
         'telegram_url' => esc_url_raw($input['telegram_url'] ?? ''),
+        'youtube_url' => esc_url_raw($input['youtube_url'] ?? ''),
         'address' => sanitize_text_field($input['address'] ?? ''),
         'logo_id' => absint($input['logo_id'] ?? 0),
         'club_name' => sanitize_text_field($input['club_name'] ?? ''),
@@ -65,6 +67,7 @@ function zvezda_render_club_settings_page() {
                 <tr><th><label for="zvezda-email">Email</label></th><td><input id="zvezda-email" class="regular-text" name="zvezda_club_settings[email]" value="<?php echo esc_attr($settings['email']); ?>" type="email"></td></tr>
                 <tr><th><label for="zvezda-vk">Адрес VK</label></th><td><input id="zvezda-vk" class="regular-text" name="zvezda_club_settings[vk_url]" value="<?php echo esc_attr($settings['vk_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-telegram">Адрес Telegram</label></th><td><input id="zvezda-telegram" class="regular-text" name="zvezda_club_settings[telegram_url]" value="<?php echo esc_attr($settings['telegram_url']); ?>" type="url"></td></tr>
+                <tr><th><label for="zvezda-youtube">Адрес YouTube</label></th><td><input id="zvezda-youtube" class="regular-text" name="zvezda_club_settings[youtube_url]" value="<?php echo esc_attr($settings['youtube_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-address">Физический адрес</label></th><td><input id="zvezda-address" class="regular-text" name="zvezda_club_settings[address]" value="<?php echo esc_attr($settings['address']); ?>" type="text"></td></tr>
                 <tr><th>Логотип</th><td>
                     <input id="zvezda-logo-id" name="zvezda_club_settings[logo_id]" value="<?php echo esc_attr($settings['logo_id']); ?>" type="hidden">
