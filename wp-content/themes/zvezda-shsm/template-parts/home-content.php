@@ -7,7 +7,7 @@
 <section class="hero">
   <div class="wrap">
     <div class="badge"><i></i>Сезон 2026/27 · круглогодичный набор детей 5–12 лет</div>
-    <h1>Академия <span style="white-space:nowrap">ФК «Супер Нова»</span> — <em>совершенствуйся играя</em></h1>
+    <h1>Академия <span style="white-space:nowrap"><?php echo esc_html(zvezda_setting('club_name')); ?></span> — <em>совершенствуйся играя</em></h1>
     <p class="lead">Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.</p>
     <div class="actions">
       <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться на пробную тренировку</a>
@@ -109,7 +109,7 @@
   <div class="wrap reveal">
     <div class="kicker">Расписание и стоимость</div>
     <h2>Тренировки в СК «Фили»</h2>
-    <p class="sub" style="margin-bottom:32px">г. Москва, м. Багратионовская, ул. Новозаводская, д. 27А, стр. 1. Поле с искусственной травой последнего поколения, зимой — занятия в зале.</p>
+    <p class="sub" style="margin-bottom:32px"><?php echo esc_html(zvezda_setting('address')); ?>. Поле с искусственной травой последнего поколения, зимой — занятия в зале.</p>
     <div class="grid g2">
       <div class="card">
         <h3>Расписание · сезон 2026/27</h3>
@@ -203,7 +203,7 @@
       </details>
       <details>
         <summary>Что взять с собой на пробную тренировку?</summary>
-        <div class="a">Спортивную форму и обувь по погоде. Приезжайте за 15 минут до начала занятия. Записаться можно через форму на сайте или по телефону +7 (985) 669-26-89.</div>
+        <div class="a">Спортивную форму и обувь по погоде. Приезжайте за 15 минут до начала занятия. Записаться можно через форму на сайте или по телефону <?php echo esc_html(zvezda_setting('phone')); ?>.</div>
       </details>
       <details>
         <summary>Нужна ли медицинская справка?</summary>
@@ -211,7 +211,7 @@
       </details>
       <details>
         <summary>Где и когда проходят тренировки?</summary>
-        <div class="a">В спортивном комплексе «Фили» (м. Багратионовская, ул. Новозаводская, 27А, стр. 1): вторник и четверг 19:00–20:15, воскресенье 15:00–16:15. Зимой занятия проходят в зале и на поле с искусственной травой. Выходные — игровые дни.</div>
+        <div class="a">В спортивном комплексе «Фили» (<?php echo esc_html(zvezda_setting('address')); ?>): вторник и четверг 19:00–20:15, воскресенье 15:00–16:15. Зимой занятия проходят в зале и на поле с искусственной травой. Выходные — игровые дни.</div>
       </details>
       <details>
         <summary>Как следить за прогрессом ребёнка?</summary>
@@ -247,7 +247,7 @@
       <p>Оставьте заявку — перезвоним, подберём группу по возрасту и пригласим на пробное занятие. Или напишите нам в мессенджер, так быстрее.</p>
       <div class="mess">
         <a class="btn" href="https://wa.me/79856692689">WhatsApp</a>
-        <a class="btn" href="https://t.me/fcsupernovamoscow">Telegram</a>
+        <a class="btn" href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
       </div>
       <img class="photo" src="<?php echo esc_url(get_theme_file_uri('/assets/images/boys.jpg')); ?>" alt="Юные игроки ФК Супер Нова" loading="lazy">
     </div>
@@ -272,11 +272,11 @@
     <h2>Как нас найти</h2>
     <div class="grid g2" style="margin-top:28px">
       <div class="card">
-        <p><b>Адрес:</b> Россия, г. Москва, ул. Новозаводская, 27А стр. 1 (СК «Фили»), м. Багратионовская</p>
-        <p><b>Телефон:</b> <a href="tel:+79856692689">+7 (985) 669-26-89</a></p>
-        <p><b>E-mail:</b> <a href="mailto:info@fcsupernova.ru">info@fcsupernova.ru</a></p>
-        <p><b>Мессенджеры:</b> <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="https://t.me/fcsupernovamoscow">Telegram</a></p>
-        <p><b>Соцсети:</b> <a href="https://vk.com/fcsupernova">VK</a> · <a href="https://www.youtube.com/@fcsupernova">YouTube</a> · <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a></p>
+        <p><b>Адрес:</b> <?php echo esc_html(zvezda_setting('address')); ?></p>
+        <p><b>Телефон:</b> <a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a></p>
+        <p><b>E-mail:</b> <a href="<?php echo esc_url('mailto:' . zvezda_setting('email')); ?>"><?php echo esc_html(zvezda_setting('email')); ?></a></p>
+        <p><b>Мессенджеры:</b> <a href="https://wa.me/79856692689">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></p>
+        <p><b>Соцсети:</b> <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a> · <a href="https://www.youtube.com/@fcsupernova">YouTube</a> · <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a></p>
         <p class="note">Ссылки на Instagram* и Facebook* убраны из прототипа: продукты Meta, признанной экстремистской организацией в РФ, требуют обязательной маркировки — решение и формулировку согласовать с юристом.</p>
       </div>
       
