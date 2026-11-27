@@ -8,7 +8,7 @@
   <div class="wrap">
     <div class="badge"><i></i>Сезон 2026/27 · круглогодичный набор детей 5–12 лет</div>
     <h1><?php echo esc_html(zvezda_home_field('banner_title', 'Академия')); ?> <span style="white-space:nowrap"><?php echo esc_html(zvezda_setting('club_name')); ?></span> — <em><?php echo esc_html(zvezda_home_field('banner_subtitle', 'совершенствуйся играя')); ?></em></h1>
-    <p class="lead"><?php echo esc_html(zvezda_home_field('banner_description', 'Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.')); ?></p>
+    <p class="lead"><?php echo nl2br(esc_html(zvezda_home_field('banner_description', 'Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.'))); ?></p>
     <div class="actions">
       <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться на пробную тренировку</a>
       <a class="btn btn-ghost" href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">Написать в WhatsApp</a>
