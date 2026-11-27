@@ -1449,3 +1449,18 @@ section[style*="background: #fff"] {
   .useful-post .useful-article-content h2 { font-size: 24px; }
   .useful-post .useful-article-content h3 { font-size: 20px; }
 }
+
+
+/* Payment page: reuse the shared tariff cards on a clean light section. */
+.page-payment .payment-tariffs-section {
+  background: #fff !important;
+  color: #171717 !important;
+}
+.page-payment .payment-tariffs-section .payment-tariffs-grid {
+  margin-top: 0 !important;
+}
+@media (max-width: 720px) {
+  .page-payment .payment-tariffs-section .payment-tariffs-grid {
+    gap: 16px;
+  }
+}
