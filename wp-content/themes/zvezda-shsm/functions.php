@@ -1051,3 +1051,143 @@ add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-about.php')) $classes[] = 'page-about';
     return $classes;
 });
+
+
+/** ACF content for the Philosophy page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    $philosophy_location = [[[
+        'param' => 'page_template',
+        'operator' => '==',
+        'value' => 'templates/page-philosophy.php',
+    ]]];
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_philosophy_page_banner',
+        'title' => 'Философия — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_philosophy_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'Философия'],
+            ['key' => 'field_zvezda_philosophy_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Играй. Общайся. Расти. Развивайся.'],
+            ['key' => 'field_zvezda_philosophy_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока. Всё остальное — тренировки, турниры, тестирование — подчинено этой задаче.'],
+        ],
+        'location' => $philosophy_location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    $priority_defaults = [
+        ['Качество', 'Тренерский состав с лицензиями UEFA и опытом работы в лучших академиях Москвы. Используем только проверенные методики тренировок.'],
+        ['Позитивность', 'Развиваем позитивное отношение к физической активности, содействуем дисциплине и развитию личности, совершенствуем навыки талантов.'],
+        ['Ответственность', 'Являемся частью международного сообщества Super Nova, которое успешно работает с 2000 года.'],
+    ];
+    $priority_fields = [
+        ['key' => 'field_zvezda_philosophy_priorities_tab', 'label' => 'Наши приоритеты', 'type' => 'tab', 'placement' => 'top'],
+        ['key' => 'field_zvezda_philosophy_priorities_kicker', 'label' => 'Надзаголовок', 'name' => 'philosophy_priorities_kicker', 'type' => 'text', 'default_value' => 'Наши приоритеты'],
+        ['key' => 'field_zvezda_philosophy_priorities_title', 'label' => 'Заголовок', 'name' => 'philosophy_priorities_title', 'type' => 'text', 'default_value' => 'На чём строится работа школы'],
+    ];
+    for ($i = 1; $i <= 3; $i++) {
+        $priority_fields[] = [
+            'key' => "field_zvezda_philosophy_priority_{$i}_title",
+            'label' => "Приоритет {$i} — заголовок",
+            'name' => "philosophy_priority_{$i}_title",
+            'type' => 'text',
+            'default_value' => $priority_defaults[$i - 1][0],
+        ];
+        $priority_fields[] = [
+            'key' => "field_zvezda_philosophy_priority_{$i}_text",
+            'label' => "Приоритет {$i} — описание",
+            'name' => "philosophy_priority_{$i}_text",
+            'type' => 'textarea',
+            'rows' => 3,
+            'default_value' => $priority_defaults[$i - 1][1],
+        ];
+    }
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_philosophy_priorities',
+        'title' => 'Философия — Наши приоритеты',
+        'menu_order' => 1,
+        'fields' => $priority_fields,
+        'location' => $philosophy_location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    $goal_defaults = [
+        'Способствуем физическому развитию детей и юношей.',
+        'Содействуем развитию личности, дисциплине и навыкам взаимодействия в коллективе.',
+        'Развиваем позитивное отношение к физической активности.',
+        'Популяризируем спорт и здоровый образ жизни среди детей и молодёжи.',
+        'Совершенствуем футбольные навыки талантливой молодёжи.',
+        'Готовим конкурентоспособных футболистов для игры на местном и международном уровне.',
+        'Готовим и продвигаем юных футболистов в лучшие академии Москвы.',
+    ];
+    $goals_fields = [
+        ['key' => 'field_zvezda_philosophy_goals_tab', 'label' => 'Цели школы', 'type' => 'tab', 'placement' => 'top'],
+        ['key' => 'field_zvezda_philosophy_goals_kicker', 'label' => 'Надзаголовок', 'name' => 'philosophy_goals_kicker', 'type' => 'text', 'default_value' => 'Цели школы'],
+        ['key' => 'field_zvezda_philosophy_goals_title', 'label' => 'Заголовок', 'name' => 'philosophy_goals_title', 'type' => 'text', 'default_value' => 'Что мы делаем'],
+        ['key' => 'field_zvezda_philosophy_goals_image', 'label' => 'Фотография', 'name' => 'philosophy_goals_image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'large', 'library' => 'all'],
+        ['key' => 'field_zvezda_philosophy_goals_image_alt', 'label' => 'ALT фотографии', 'name' => 'philosophy_goals_image_alt', 'type' => 'text', 'default_value' => 'Команда ФК Супер Нова с тренером'],
+    ];
+    for ($i = 1; $i <= 7; $i++) {
+        $goals_fields[] = [
+            'key' => "field_zvezda_philosophy_goal_{$i}",
+            'label' => "Цель {$i}",
+            'name' => "philosophy_goal_{$i}",
+            'type' => 'text',
+            'default_value' => $goal_defaults[$i - 1],
+        ];
+    }
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_philosophy_goals',
+        'title' => 'Философия — Цели школы',
+        'menu_order' => 2,
+        'fields' => $goals_fields,
+        'location' => $philosophy_location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    $method_defaults = [
+        'Работа тренеров школы выстроена по единой методике и философии. Тренировки в каждой возрастной группе — часть общей программы подготовки, а не набор случайных упражнений.',
+        'Прогресс каждого игрока измеряется: футбольное тестирование проходит в начале и в конце сезона, результаты доступны родителям в личном кабинете ProTrainUp.',
+        'Команды клуба регулярно играют в соревнованиях Московской Федерации Футбола — дети применяют наработанное на тренировках в настоящих матчах.',
+    ];
+    $method_fields = [
+        ['key' => 'field_zvezda_philosophy_method_tab', 'label' => 'Как мы работаем', 'type' => 'tab', 'placement' => 'top'],
+        ['key' => 'field_zvezda_philosophy_method_kicker', 'label' => 'Надзаголовок', 'name' => 'philosophy_method_kicker', 'type' => 'text', 'default_value' => 'Как мы работаем'],
+        ['key' => 'field_zvezda_philosophy_method_title', 'label' => 'Заголовок', 'name' => 'philosophy_method_title', 'type' => 'text', 'default_value' => 'Единая методика во всех группах'],
+        ['key' => 'field_zvezda_philosophy_method_image', 'label' => 'Фотография', 'name' => 'philosophy_method_image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'large', 'library' => 'all'],
+        ['key' => 'field_zvezda_philosophy_method_image_alt', 'label' => 'ALT фотографии', 'name' => 'philosophy_method_image_alt', 'type' => 'text', 'default_value' => 'Тренировка ФК Супер Нова'],
+    ];
+    for ($i = 1; $i <= 3; $i++) {
+        $method_fields[] = [
+            'key' => "field_zvezda_philosophy_method_text_{$i}",
+            'label' => "Текст — абзац {$i}",
+            'name' => "philosophy_method_text_{$i}",
+            'type' => 'textarea',
+            'rows' => 3,
+            'default_value' => $method_defaults[$i - 1],
+        ];
+    }
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_philosophy_method',
+        'title' => 'Философия — Как мы работаем',
+        'menu_order' => 3,
+        'fields' => $method_fields,
+        'location' => $philosophy_location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
+/** Add a stable body class for styles scoped to the Philosophy page. */
+add_filter('body_class', function ($classes) {
+    if (is_page_template('templates/page-philosophy.php')) $classes[] = 'page-philosophy';
+    return $classes;
+});
