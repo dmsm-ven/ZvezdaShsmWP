@@ -1143,3 +1143,7 @@ section[style*="background: #fff"] {
   .page-philosophy .philosophy-section .split { grid-template-columns: 1fr; }
   .page-philosophy .philosophy-section .split img { max-height: 420px; }
 }
+
+
+/* Avoid showing the topbar before its localStorage state is checked. */
+.topbar.topbar-pending { display: none; }
