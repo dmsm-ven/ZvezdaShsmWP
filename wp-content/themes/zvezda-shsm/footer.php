@@ -20,7 +20,7 @@
         <h4>Контакты</h4>
         <a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a>
         <a href="<?php echo esc_url('mailto:' . zvezda_setting('email')); ?>"><?php echo esc_html(zvezda_setting('email')); ?></a>
-        <a href="https://wa.me/79856692689">WhatsApp</a>
+        <a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a>
         <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
         <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a>
         <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a>
@@ -32,7 +32,7 @@
     </div>
   </div>
 </footer>
-<div class="float-wa"><a href="https://wa.me/79856692689" aria-label="WhatsApp">✆</a></div>
+<div class="float-wa"><a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>" aria-label="WhatsApp">✆</a></div>
 <div class="sticky-cta"><a href="#signup">Записаться на бесплатную тренировку</a></div>
 <?php wp_footer(); ?>
 </body>
