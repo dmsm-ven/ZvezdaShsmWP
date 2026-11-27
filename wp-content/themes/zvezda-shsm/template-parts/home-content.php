@@ -70,26 +70,42 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
     <div class="kicker">Тренерский штаб</div>
     <h2>Тренеры Академии</h2>
     <p class="sub" style="margin-bottom:32px">Тренировочный процесс курирует спортивный директор, тренеры работают по единой методике клуба.</p>
-    <div class="grid g2">
-      <div class="coach2">
-        <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/sherstnev.jpg')); ?>" alt="Алексей Шерстнёв">
-        <div>
-          <h3>Шерстнёв Алексей Михайлович</h3>
-          <div class="role">Спортивный директор · старший тренер · лицензия A-UEFA</div>
-          <p>Главный тренер студенческой сборной России по футболу. Курирует работу тренеров и весь тренировочный процесс школы.</p>
-          <p>Опыт: академии «Динамо» Москва, «Сатурн», «Строгино», ФШМ, юношеские сборные Москвы. Карьера игрока: «Динамо» Москва, «Анжи», «Вентспилс».</p>
-        </div>
+    <?php
+    $home_coaches = new WP_Query([
+        'post_type' => 'coach',
+        'post_status' => 'publish',
+        'posts_per_page' => 2,
+        'meta_key' => 'coach_show_on_home',
+        'meta_value' => '1',
+        'orderby' => ['menu_order' => 'ASC', 'date' => 'ASC'],
+        'no_found_rows' => true,
+    ]);
+    ?>
+    <?php if ($home_coaches->have_posts()) : ?>
+      <div class="grid g2">
+        <?php while ($home_coaches->have_posts()) : $home_coaches->the_post();
+          $coach_id = get_the_ID();
+          $coach_name = function_exists('get_field') ? get_field('coach_full_name', $coach_id) : '';
+          $coach_titles = function_exists('get_field') ? get_field('coach_titles', $coach_id) : '';
+          $coach_description = function_exists('get_field') ? get_field('coach_description', $coach_id) : '';
+          $coach_experience = function_exists('get_field') ? get_field('coach_experience', $coach_id) : '';
+          $coach_image = get_the_post_thumbnail_url($coach_id, 'large');
+        ?>
+          <article class="coach2">
+            <?php if ($coach_image) : ?>
+              <img src="<?php echo esc_url($coach_image); ?>" alt="<?php echo esc_attr($coach_name ?: get_the_title()); ?>" loading="lazy">
+            <?php endif; ?>
+            <div>
+              <h3><?php echo esc_html($coach_name ?: get_the_title()); ?></h3>
+              <?php if ($coach_titles) : ?><div class="role"><?php echo nl2br(esc_html($coach_titles)); ?></div><?php endif; ?>
+              <?php if ($coach_description) : ?><p><?php echo nl2br(esc_html($coach_description)); ?></p><?php endif; ?>
+              <?php if ($coach_experience) : ?><p>Опыт: <?php echo nl2br(esc_html($coach_experience)); ?></p><?php endif; ?>
+            </div>
+          </article>
+        <?php endwhile; ?>
       </div>
-      <div class="coach2">
-        <img src="<?php echo esc_url(get_theme_file_uri('/assets/images/img_20191109_162342-p5y50y99n551268ja7bmrl60xmozu6qu56a2eggvzk.jpg')); ?>" alt="Антон Котенёв">
-        <div>
-          <h3>Котенёв Антон Константинович</h3>
-          <div class="role">Тренер Академии · КМС по футболу</div>
-          <p>Кандидат в мастера спорта, чемпион Москвы по футболу среди команд спортивных школ.</p>
-          <p>Опыт: ФК «Красногвардеец», ФК «Сельмаш», Академия <?php echo esc_html(zvezda_setting('club_name')); ?>. Карьера игрока: ФК «Ростов», «Строгино», ФШМ.</p>
-        </div>
-      </div>
-    </div>
+      <?php wp_reset_postdata(); ?>
+    <?php endif; ?>
     <p class="coaches-more">Полный тренерский штаб — на странице <a href="<?php echo esc_url(home_url('/coaches/')); ?>">«Тренеры»</a>.</p>
   </div>
 </section>
