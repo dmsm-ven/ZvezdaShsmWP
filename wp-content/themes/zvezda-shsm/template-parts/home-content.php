@@ -279,7 +279,7 @@
         <p><b>Соцсети:</b> <a href="https://vk.com/fcsupernova">VK</a> · <a href="https://www.youtube.com/@fcsupernova">YouTube</a> · <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a></p>
         <p class="note">Ссылки на Instagram* и Facebook* убраны из прототипа: продукты Meta, признанной экстремистской организацией в РФ, требуют обязательной маркировки — решение и формулировку согласовать с юристом.</p>
       </div>
-      <div class="map-placeholder">Карта будет добавлена позже</div>
+      
     </div>
   </div>
 </section>
