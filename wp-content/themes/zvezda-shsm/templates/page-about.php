@@ -40,7 +40,7 @@ if ($community_image_alt === '' && is_array($community_image)) $community_image_
   </div>
 </section>
 
-<section class="section about-section about-section-soft">
+<section class="section about-section">
   <div class="wrap split reveal <?php echo (is_array($philosophy_image) && !empty($philosophy_image['ID'])) ? 'has-image' : ''; ?>">
     <div class="prose">
       <div class="kicker"><?php echo esc_html(zvezda_inner_page_field('about_philosophy_kicker', 'Философия')); ?></div>
@@ -61,7 +61,7 @@ if ($community_image_alt === '' && is_array($community_image)) $community_image_
   </div>
 </section>
 
-<section class="section about-section">
+<section class="section about-section about-section-soft">
   <div class="wrap split reveal <?php echo (is_array($community_image) && !empty($community_image['ID'])) ? 'has-image' : ''; ?>">
     <?php if (!empty($community_image['ID'])) : ?>
       <?php echo wp_get_attachment_image((int) $community_image['ID'], 'large', false, ['alt' => $community_image_alt, 'loading' => 'lazy']); ?>
