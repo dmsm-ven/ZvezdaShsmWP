@@ -155,9 +155,9 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
             : $gallery_item['url'];
       ?>
         <a
-          class="gallery-item"
+          class="gallery-item fancybox"
           href="<?php echo esc_url($gallery_full_url ?: $gallery_item['url']); ?>"
-          rel="lightbox[home-gallery]"
+          rel="home-gallery"
           aria-label="<?php echo esc_attr($gallery_item['alt'] ?: 'Открыть фотографию ' . ($gallery_index + 1)); ?>"
         >
           <?php if ($gallery_image_id) : ?>
