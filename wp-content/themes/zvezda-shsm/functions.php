@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Настройки темы и регистрация функциональности.
  */
-function zvezda_club_settings_defaults() {
+function zvezda_club_settings_defaults()
+{
     return [
         'phone' => '+7 (985) 669-26-89',
         'email' => 'info@fcsupernova.ru',
@@ -18,14 +20,16 @@ function zvezda_club_settings_defaults() {
         'topbar_dismiss_days' => 7,
     ];
 }
-function zvezda_setting($key, $default = '') {
+function zvezda_setting($key, $default = '')
+{
     $settings = get_option('zvezda_club_settings', []);
     $defaults = zvezda_club_settings_defaults();
     if (isset($settings[$key]) && $settings[$key] !== '') return $settings[$key];
     if ($default !== '') return $default;
     return $defaults[$key] ?? '';
 }
-function zvezda_opt($key, $default = '') {
+function zvezda_opt($key, $default = '')
+{
     $value = zvezda_setting($key, '');
     if ($value !== '') return $value;
     if (function_exists('get_field')) {
@@ -34,7 +38,8 @@ function zvezda_opt($key, $default = '') {
     }
     return $default;
 }
-function zvezda_club_settings_sanitize($input) {
+function zvezda_club_settings_sanitize($input)
+{
     $input = is_array($input) ? $input : [];
     return [
         'phone' => sanitize_text_field($input['phone'] ?? ''),
@@ -65,67 +70,132 @@ add_action('admin_menu', function () {
 add_action('admin_init', function () {
     register_setting('zvezda_club_settings_group', 'zvezda_club_settings', ['sanitize_callback' => 'zvezda_club_settings_sanitize']);
 });
-function zvezda_render_club_settings_page() {
+function zvezda_render_club_settings_page()
+{
     if (!current_user_can('manage_options')) return;
     $defaults = zvezda_club_settings_defaults();
     $settings = wp_parse_args(get_option('zvezda_club_settings', []), $defaults);
     $logo_url = !empty($settings['logo_id']) ? wp_get_attachment_image_url($settings['logo_id'], 'medium') : '';
-    ?>
+?>
     <div class="wrap">
         <h1>Настройки клуба</h1>
         <p>Контактная информация и данные клуба используются в шапке, на главной странице и в подвале сайта.</p>
         <form method="post" action="options.php">
             <?php settings_fields('zvezda_club_settings_group'); ?>
             <table class="form-table" role="presentation">
-                <tr><th><label for="zvezda-phone">Телефон</label></th><td><input id="zvezda-phone" class="regular-text" name="zvezda_club_settings[phone]" value="<?php echo esc_attr($settings['phone']); ?>" type="text"></td></tr>
-                <tr><th><label for="zvezda-email">Email</label></th><td><input id="zvezda-email" class="regular-text" name="zvezda_club_settings[email]" value="<?php echo esc_attr($settings['email']); ?>" type="email"></td></tr>
-                <tr><th><label for="zvezda-vk">Адрес VK</label></th><td><input id="zvezda-vk" class="regular-text" name="zvezda_club_settings[vk_url]" value="<?php echo esc_attr($settings['vk_url']); ?>" type="url"></td></tr>
-                <tr><th><label for="zvezda-telegram">Адрес Telegram</label></th><td><input id="zvezda-telegram" class="regular-text" name="zvezda_club_settings[telegram_url]" value="<?php echo esc_attr($settings['telegram_url']); ?>" type="url"></td></tr>
-                <tr><th><label for="zvezda-yandex-reviews">Ссылка на отзывы в Яндекс.Картах</label></th><td><input id="zvezda-yandex-reviews" class="regular-text" name="zvezda_club_settings[yandex_reviews_url]" value="<?php echo esc_attr($settings['yandex_reviews_url']); ?>" type="url"></td></tr>
-                <tr><th><label for="zvezda-map-embed">Ссылка для встраивания карты</label></th><td><input id="zvezda-map-embed" class="large-text" name="zvezda_club_settings[map_embed_url]" value="<?php echo esc_attr($settings['map_embed_url']); ?>" type="url" placeholder="https://yandex.ru/map-widget/v1/..."><p class="description">В Яндекс.Картах откройте «Поделиться» → «Встроить карту» и скопируйте URL из атрибута src тега iframe (только сам URL, не весь HTML-код). Поддерживается URL виджета Яндекс.Карт или Google Maps Embed.</p></td></tr>
-                <tr><th><label for="zvezda-youtube">Адрес YouTube</label></th><td><input id="zvezda-youtube" class="regular-text" name="zvezda_club_settings[youtube_url]" value="<?php echo esc_attr($settings['youtube_url']); ?>" type="url"></td></tr>
-                <tr><th><label for="zvezda-address">Физический адрес</label></th><td><input id="zvezda-address" class="regular-text" name="zvezda_club_settings[address]" value="<?php echo esc_attr($settings['address']); ?>" type="text"></td></tr>
-                <tr><th>Логотип</th><td>
-                    <input id="zvezda-logo-id" name="zvezda_club_settings[logo_id]" value="<?php echo esc_attr($settings['logo_id']); ?>" type="hidden">
-                    <div id="zvezda-logo-preview"><?php if ($logo_url) : ?><img src="<?php echo esc_url($logo_url); ?>" style="max-width:180px;height:auto;display:block;margin-bottom:10px" alt=""><?php endif; ?></div>
-                    <button type="button" class="button" id="zvezda-select-logo">Выбрать логотип</button>
-                    <button type="button" class="button" id="zvezda-remove-logo">Убрать</button>
-                </td></tr>
-                <tr><th><label for="zvezda-club-name">Название клуба</label></th><td><input id="zvezda-club-name" class="regular-text" name="zvezda_club_settings[club_name]" value="<?php echo esc_attr($settings['club_name']); ?>" type="text"></td></tr>
-                <tr><th><label for="zvezda-footer-description">Короткое описание в подвале</label></th><td><textarea id="zvezda-footer-description" class="large-text" rows="3" name="zvezda_club_settings[footer_description]"><?php echo esc_textarea($settings['footer_description']); ?></textarea></td></tr>
-                <tr><th><label for="zvezda-topbar-dismiss-days">Срок скрытия верхнего баннера</label></th><td><input id="zvezda-topbar-dismiss-days" name="zvezda_club_settings[topbar_dismiss_days]" value="<?php echo esc_attr($settings['topbar_dismiss_days']); ?>" type="number" min="0" max="3650" step="1" class="small-text"> дней<p class="description">Через указанное количество дней после закрытия баннер появится снова. Значение 0 отключает запоминание закрытия. По умолчанию — 7 дней.</p></td></tr>
+                <tr>
+                    <th><label for="zvezda-phone">Телефон</label></th>
+                    <td><input id="zvezda-phone" class="regular-text" name="zvezda_club_settings[phone]" value="<?php echo esc_attr($settings['phone']); ?>" type="text"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-email">Email</label></th>
+                    <td><input id="zvezda-email" class="regular-text" name="zvezda_club_settings[email]" value="<?php echo esc_attr($settings['email']); ?>" type="email"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-vk">Адрес VK</label></th>
+                    <td><input id="zvezda-vk" class="regular-text" name="zvezda_club_settings[vk_url]" value="<?php echo esc_attr($settings['vk_url']); ?>" type="url"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-telegram">Адрес Telegram</label></th>
+                    <td><input id="zvezda-telegram" class="regular-text" name="zvezda_club_settings[telegram_url]" value="<?php echo esc_attr($settings['telegram_url']); ?>" type="url"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-yandex-reviews">Ссылка на отзывы в Яндекс.Картах</label></th>
+                    <td><input id="zvezda-yandex-reviews" class="regular-text" name="zvezda_club_settings[yandex_reviews_url]" value="<?php echo esc_attr($settings['yandex_reviews_url']); ?>" type="url"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-map-embed">Ссылка для встраивания карты</label></th>
+                    <td><input id="zvezda-map-embed" class="large-text" name="zvezda_club_settings[map_embed_url]" value="<?php echo esc_attr($settings['map_embed_url']); ?>" type="url" placeholder="https://yandex.ru/map-widget/v1/...">
+                        <p class="description">В Яндекс.Картах откройте «Поделиться» → «Встроить карту» и скопируйте URL из атрибута src тега iframe (только сам URL, не весь HTML-код). Поддерживается URL виджета Яндекс.Карт или Google Maps Embed.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-youtube">Адрес YouTube</label></th>
+                    <td><input id="zvezda-youtube" class="regular-text" name="zvezda_club_settings[youtube_url]" value="<?php echo esc_attr($settings['youtube_url']); ?>" type="url"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-address">Физический адрес</label></th>
+                    <td><input id="zvezda-address" class="regular-text" name="zvezda_club_settings[address]" value="<?php echo esc_attr($settings['address']); ?>" type="text"></td>
+                </tr>
+                <tr>
+                    <th>Логотип</th>
+                    <td>
+                        <input id="zvezda-logo-id" name="zvezda_club_settings[logo_id]" value="<?php echo esc_attr($settings['logo_id']); ?>" type="hidden">
+                        <div id="zvezda-logo-preview"><?php if ($logo_url) : ?><img src="<?php echo esc_url($logo_url); ?>" style="max-width:180px;height:auto;display:block;margin-bottom:10px" alt=""><?php endif; ?></div>
+                        <button type="button" class="button" id="zvezda-select-logo">Выбрать логотип</button>
+                        <button type="button" class="button" id="zvezda-remove-logo">Убрать</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-club-name">Название клуба</label></th>
+                    <td><input id="zvezda-club-name" class="regular-text" name="zvezda_club_settings[club_name]" value="<?php echo esc_attr($settings['club_name']); ?>" type="text"></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-footer-description">Короткое описание в подвале</label></th>
+                    <td><textarea id="zvezda-footer-description" class="large-text" rows="3" name="zvezda_club_settings[footer_description]"><?php echo esc_textarea($settings['footer_description']); ?></textarea></td>
+                </tr>
+                <tr>
+                    <th><label for="zvezda-topbar-dismiss-days">Срок скрытия верхнего баннера</label></th>
+                    <td><input id="zvezda-topbar-dismiss-days" name="zvezda_club_settings[topbar_dismiss_days]" value="<?php echo esc_attr($settings['topbar_dismiss_days']); ?>" type="number" min="0" max="3650" step="1" class="small-text"> дней<p class="description">Через указанное количество дней после закрытия баннер появится снова. Значение 0 отключает запоминание закрытия. По умолчанию — 7 дней.</p>
+                    </td>
+                </tr>
             </table>
             <?php submit_button('Сохранить настройки'); ?>
         </form>
     </div>
-    <?php
+<?php
 }
 add_action('admin_enqueue_scripts', function ($hook) {
-    if ($hook === 'appearance_page_zvezda-club-settings') wp_enqueue_media();
+    if ($hook === 'toplevel_page_zvezda-club-settings') wp_enqueue_media();
 });
-add_action('admin_footer-appearance_page_zvezda-club-settings', function () {
-    ?>
+add_action('admin_footer-toplevel_page_zvezda-club-settings', function () {
+?>
     <script>
-    jQuery(function ($) {
-        let logoFrame;
-        $('#zvezda-select-logo').on('click', function (event) {
-            event.preventDefault();
-            if (logoFrame) { logoFrame.open(); return; }
-            logoFrame = wp.media({ title: 'Выберите логотип клуба', button: { text: 'Использовать логотип' }, library: { type: 'image' }, multiple: false });
-            logoFrame.on('select', function () {
-                const attachment = logoFrame.state().get('selection').first().toJSON();
-                $('#zvezda-logo-id').val(attachment.id);
-                const imageUrl = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
-                $('#zvezda-logo-preview').empty().append($('<img>', { src: imageUrl, alt: '', css: { maxWidth: '180px', height: 'auto', display: 'block', marginBottom: '10px' } }));
+        jQuery(function($) {
+            let logoFrame;
+            $('#zvezda-select-logo').on('click', function(event) {
+                event.preventDefault();
+                if (logoFrame) {
+                    logoFrame.open();
+                    return;
+                }
+                logoFrame = wp.media({
+                    title: 'Выберите логотип клуба',
+                    button: {
+                        text: 'Использовать логотип'
+                    },
+                    library: {
+                        type: 'image'
+                    },
+                    multiple: false
+                });
+                logoFrame.on('select', function() {
+                    const attachment = logoFrame.state().get('selection').first().toJSON();
+                    $('#zvezda-logo-id').val(attachment.id);
+                    const imageUrl = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
+                    $('#zvezda-logo-preview').empty().append($('<img>', {
+                        src: imageUrl,
+                        alt: '',
+                        css: {
+                            maxWidth: '180px',
+                            height: 'auto',
+                            display: 'block',
+                            marginBottom: '10px'
+                        }
+                    }));
+                });
+                logoFrame.open();
             });
-            logoFrame.open();
+            $('#zvezda-remove-logo').on('click', function() {
+                $('#zvezda-logo-id').val('0');
+                $('#zvezda-logo-preview').empty();
+            });
         });
-        $('#zvezda-remove-logo').on('click', function () { $('#zvezda-logo-id').val('0'); $('#zvezda-logo-preview').empty(); });
-    });
     </script>
-    <?php
+<?php
 });
-function zvezda_club_logo_url() {
+function zvezda_club_logo_url()
+{
     $logo_id = absint(zvezda_setting('logo_id', 0));
     if ($logo_id) {
         $url = wp_get_attachment_image_url($logo_id, 'full');
@@ -137,7 +207,8 @@ function zvezda_club_logo_url() {
  * Return only a trusted embeddable map URL configured by the site administrator.
  * Ordinary organization/share links are intentionally not treated as iframe URLs.
  */
-function zvezda_map_embed_url() {
+function zvezda_map_embed_url()
+{
     $url = trim((string) zvezda_setting('map_embed_url'));
     if ($url === '') return '';
 
@@ -162,10 +233,12 @@ function zvezda_map_embed_url() {
     return in_array($host, $allowed_hosts, true) ? esc_url($url) : '';
 }
 
-function zvezda_phone_href() {
+function zvezda_phone_href()
+{
     return preg_replace('/[^0-9+]/', '', zvezda_setting('phone'));
 }
-function zvezda_phone_digits() {
+function zvezda_phone_digits()
+{
     return preg_replace('/[^0-9]/', '', zvezda_setting('phone'));
 }
 add_action('wp_enqueue_scripts', function () {
@@ -295,7 +368,8 @@ add_action('manage_review_posts_custom_column', function ($column, $post_id) {
     $author = function_exists('get_field') ? get_field('review_author', $post_id) : get_post_meta($post_id, 'review_author', true);
     echo esc_html($author ?: get_the_title($post_id) ?: 'Без имени');
 }, 10, 2);
-function zvezda_sync_review_post_title($post_id) {
+function zvezda_sync_review_post_title($post_id)
+{
     $post_id = (int) $post_id;
     if (!$post_id || get_post_type($post_id) !== 'review' || !function_exists('get_field')) return;
     $author = trim((string) get_field('review_author', $post_id));
@@ -445,14 +519,15 @@ add_action('add_meta_boxes_coach', function () {
     );
 });
 
-function zvezda_render_coach_titles_metabox($post) {
+function zvezda_render_coach_titles_metabox($post)
+{
     wp_nonce_field('zvezda_save_coach_titles', 'zvezda_coach_titles_nonce');
     $titles = get_post_meta($post->ID, '_coach_titles_list', true);
     if (!is_array($titles) || !$titles) {
         $legacy = function_exists('get_field') ? get_field('coach_titles', $post->ID) : '';
         $titles = $legacy ? preg_split('/\\s*·\\s*|\\r?\\n/', $legacy) : [''];
     }
-    ?>
+?>
     <div id="zvezda-coach-titles-list">
         <?php foreach ($titles as $title) : ?>
             <div class="zvezda-coach-title-row" style="display:flex;gap:8px;margin:0 0 8px;max-width:720px">
@@ -463,7 +538,7 @@ function zvezda_render_coach_titles_metabox($post) {
     </div>
     <button type="button" class="button button-secondary" id="zvezda-add-coach-title">+ Добавить титул</button>
     <p class="description">Каждый титул или должность добавляется отдельной строкой. На сайте они будут объединены символом « · ».</p>
-    <?php
+<?php
 }
 
 add_action('save_post_coach', function ($post_id) {
@@ -492,31 +567,32 @@ add_action('save_post_coach', function ($post_id) {
 
 add_action('admin_footer-post.php', 'zvezda_coach_titles_admin_script');
 add_action('admin_footer-post-new.php', 'zvezda_coach_titles_admin_script');
-function zvezda_coach_titles_admin_script() {
+function zvezda_coach_titles_admin_script()
+{
     $screen = get_current_screen();
     if (!$screen || $screen->post_type !== 'coach') return;
-    ?>
+?>
     <script>
-    (function () {
-        const list = document.getElementById('zvezda-coach-titles-list');
-        const add = document.getElementById('zvezda-add-coach-title');
-        if (!list || !add) return;
-        add.addEventListener('click', function () {
-            const row = document.createElement('div');
-            row.className = 'zvezda-coach-title-row';
-            row.style.cssText = 'display:flex;gap:8px;margin:0 0 8px;max-width:720px';
-            row.innerHTML = '<input type="text" name="coach_titles_list[]" class="widefat" placeholder="Например: Спортивный директор"><button type="button" class="button zvezda-remove-coach-title">Удалить</button>';
-            list.appendChild(row);
-            row.querySelector('input').focus();
-        });
-        list.addEventListener('click', function (event) {
-            if (event.target.classList.contains('zvezda-remove-coach-title')) {
-                event.target.closest('.zvezda-coach-title-row').remove();
-            }
-        });
-    })();
+        (function() {
+            const list = document.getElementById('zvezda-coach-titles-list');
+            const add = document.getElementById('zvezda-add-coach-title');
+            if (!list || !add) return;
+            add.addEventListener('click', function() {
+                const row = document.createElement('div');
+                row.className = 'zvezda-coach-title-row';
+                row.style.cssText = 'display:flex;gap:8px;margin:0 0 8px;max-width:720px';
+                row.innerHTML = '<input type="text" name="coach_titles_list[]" class="widefat" placeholder="Например: Спортивный директор"><button type="button" class="button zvezda-remove-coach-title">Удалить</button>';
+                list.appendChild(row);
+                row.querySelector('input').focus();
+            });
+            list.addEventListener('click', function(event) {
+                if (event.target.classList.contains('zvezda-remove-coach-title')) {
+                    event.target.closest('.zvezda-coach-title-row').remove();
+                }
+            });
+        })();
     </script>
-    <?php
+<?php
 }
 
 // Show the coach's ACF full name in the admin list instead of the empty post title.
@@ -532,7 +608,8 @@ add_action('manage_coach_posts_custom_column', function ($column, $post_id) {
 
 // Keep the native WordPress post title in sync with the ACF coach full name.
 // The admin Posts List Table reads post_title directly when building its row link.
-function zvezda_sync_coach_post_title($post_id) {
+function zvezda_sync_coach_post_title($post_id)
+{
     $post_id = (int) $post_id;
     if (!$post_id || get_post_type($post_id) !== 'coach' || !function_exists('get_field')) {
         return;
@@ -591,7 +668,8 @@ add_action('admin_init', function () {
 });
 
 /** ACF fields for the front page. */
-function zvezda_home_field($key, $default = '') {
+function zvezda_home_field($key, $default = '')
+{
     if (function_exists('get_field')) {
         $page_id = (int) get_queried_object_id();
         $value = get_field($key, $page_id ?: false);
@@ -978,7 +1056,8 @@ add_action('acf/init', function () {
 
 
 /** Read shared homepage fields from the page assigned as the front page. */
-function zvezda_front_page_field($key, $default = '') {
+function zvezda_front_page_field($key, $default = '')
+{
     if (function_exists('get_field')) {
         $front_page_id = (int) get_option('page_on_front');
         $value = get_field($key, $front_page_id ?: false);
@@ -988,7 +1067,8 @@ function zvezda_front_page_field($key, $default = '') {
 }
 
 /** Read ACF fields belonging to the currently queried inner page. */
-function zvezda_inner_page_field($key, $default = '') {
+function zvezda_inner_page_field($key, $default = '')
+{
     if (function_exists('get_field')) {
         $page_id = (int) get_queried_object_id();
         $value = get_field($key, $page_id ?: false);
