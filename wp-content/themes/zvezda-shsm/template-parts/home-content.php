@@ -24,24 +24,22 @@
 
 <div class="stats">
   <div class="wrap reveal on">
-    <div class="stat"><b>1000+</b><span>детей в сообществе Super Nova</span></div>
-    <div class="stat"><b>с 2000 г.</b><span>работает международное сообщество</span></div>
-    <div class="stat"><b>5–12 лет</b><span>возраст учеников школы</span></div>
-    <div class="stat"><b>2 раза в год</b><span>футбольное тестирование игроков</span></div>
+<?php for ($i = 1; $i <= 4; $i++) : ?>
+    <div class="stat"><b><?php echo esc_html(zvezda_home_field("stat_{$i}_value", ['', '1000+', 'с 2000 г.', '5–12 лет', '2 раза в год'][$i])); ?></b><span><?php echo esc_html(zvezda_home_field("stat_{$i}_text", ['', 'детей в сообществе Super Nova', 'работает международное сообщество', 'возраст учеников школы', 'футбольное тестирование игроков'][$i])); ?></span></div>
+<?php endfor; ?>
   </div>
 </div>
 
 
 <section class="section age" id="club">
   <div class="wrap reveal on">
-    <div class="kicker">Кого мы ждём</div>
-    <h2>Возрастные группы набора</h2>
-    <p class="sub" style="margin-bottom:32px">Круглогодичный набор юных футболистов. Группы формируются по годам рождения, программа адаптирована под возраст.</p>
+    <div class="kicker"><?php echo esc_html(zvezda_home_field('age_kicker', 'Кого мы ждём')); ?></div>
+    <h2><?php echo esc_html(zvezda_home_field('age_title', 'Возрастные группы набора')); ?></h2>
+    <p class="sub" style="margin-bottom:32px"><?php echo esc_html(zvezda_home_field('age_subtitle', 'Круглогодичный набор юных футболистов. Группы формируются по годам рождения, программа адаптирована под возраст.')); ?></p>
     <div class="grid g4">
-      <div class="card"><span class="num">5–6</span><b>5–6 лет</b><span>Первые шаги в футболе: игра, координация, любовь к мячу</span></div>
-      <div class="card"><span class="num">7–8</span><b>7–8 лет</b><span>Базовая техника, работа с мячом, командные игры</span></div>
-      <div class="card"><span class="num">9–10</span><b>9–10 лет</b><span>Техника, тактические основы, товарищеские матчи</span></div>
-      <div class="card"><span class="num">11–12</span><b>11–12 лет</b><span>Соревнования МФФ, тестирование, подготовка к академиям</span></div>
+<?php for ($i = 1; $i <= 4; $i++) : $default_years = ['', '5–6', '7–8', '9–10', '11–12'][$i]; $default_texts = ['', 'Первые шаги в футболе: игра, координация, любовь к мячу', 'Базовая техника, работа с мячом, командные игры', 'Техника, тактические основы, товарищеские матчи', 'Соревнования МФФ, тестирование, подготовка к академиям'][$i]; ?>
+      <div class="card"><span class="num"><?php echo esc_html(zvezda_home_field("age_{$i}_years", $default_years)); ?></span><b><?php echo esc_html(zvezda_home_field("age_{$i}_years", $default_years)); ?> лет</b><span><?php echo esc_html(zvezda_home_field("age_{$i}_text", $default_texts)); ?></span></div>
+<?php endfor; ?>
     </div>
   </div>
 </section>
@@ -49,16 +47,19 @@
 
 <section class="section adv">
   <div class="wrap reveal">
-    <div class="kicker">Почему <?php echo esc_html(zvezda_setting('club_name')); ?></div>
-    <h2>Что получает ваш ребёнок</h2>
-    <p class="sub" style="margin-bottom:32px">В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока.</p>
+    <div class="kicker"><?php echo esc_html(zvezda_home_field('benefits_kicker', 'Почему ' . zvezda_setting('club_name'))); ?></div>
+    <h2><?php echo esc_html(zvezda_home_field('benefits_title', 'Что получает ваш ребёнок')); ?></h2>
+    <p class="sub" style="margin-bottom:32px"><?php echo esc_html(zvezda_home_field('benefits_subtitle', 'В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока.')); ?></p>
     <div class="grid g2">
-      <div class="card"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg></div><div><h3>Тренеры с лицензиями UEFA</h3><p>Профессиональный штаб с лицензиями A, B и C UEFA и опытом работы в лучших академиях Москвы и России: «Динамо», «Сатурн», «Строгино», ФШМ, юношеские сборные.</p></div></div>
-      <div class="card"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.4l6-.9z"></path></svg></div><div><h3>Единая методика клуба</h3><p>Работа всех тренеров выстроена по единой методике и философии: в центре внимания — игрок, его обучение и развитие.</p></div></div>
-      <div class="card"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0z"></path><path d="M7 6H4a3 3 0 003 4M17 6h3a3 3 0 01-3 4"></path></svg></div><div><h3>Соревнования и турниры</h3><p>Регулярное участие команд в соревнованиях Московской Федерации Футбола в разных возрастах, товарищеские матчи, международные турниры и лагеря.</p></div></div>
-      <div class="card"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M21 20H3"></path></svg></div><div><h3>Измеримый прогресс</h3><p>Футбольное тестирование в начале и конце сезона. Личный кабинет родителя в системе ProTrainUp: посещаемость, статистика, расписание, оплата — всё в телефоне.</p></div></div>
-      <div class="card"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M12 8v8M8 12h8"></path></svg></div><div><h3>Медосмотр без хлопот</h3><p>Централизованное прохождение медосмотра в физкультурном диспансере — родителям не нужно самостоятельно оформлять справку о допуске.</p></div></div>
-      <div class="card"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-4 9 4-9 4z"></path><path d="M7 11v4c0 1.5 2.2 3 5 3s5-1.5 5-3v-4M21 9v5"></path></svg></div><div><h3>Продвижение игроков</h3><p>Готовим и продвигаем юных футболистов в лучшие академии Москвы. Спортивный директор — Алексей Шерстнёв, главный тренер студенческой сборной России.</p></div></div>
+<?php
+$benefit_icon_defaults = [
+'',
+];
+for ($i = 1; $i <= 6; $i++) :
+$icon = zvezda_home_field("benefit_{$i}_icon", '');
+?>
+      <div class="card"><div class="ico"><?php echo wp_kses($icon, ['svg' => ['width'=>true,'height'=>true,'viewBox'=>true,'fill'=>true,'stroke'=>true,'stroke-width'=>true,'stroke-linecap'=>true,'stroke-linejoin'=>true], 'path' => ['d'=>true], 'rect' => ['x'=>true,'y'=>true,'width'=>true,'height'=>true,'rx'=>true], 'circle' => ['cx'=>true,'cy'=>true,'r'=>true], 'line' => ['x1'=>true,'y1'=>true,'x2'=>true,'y2'=>true]]); ?></div><div><h3><?php echo esc_html(zvezda_home_field("benefit_{$i}_title", '')); ?></h3><p><?php echo esc_html(zvezda_home_field("benefit_{$i}_text", '')); ?></p></div></div>
+<?php endfor; ?>
     </div>
   </div>
 </section>
