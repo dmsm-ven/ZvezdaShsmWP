@@ -1067,6 +1067,8 @@ add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-coaches.php')) $classes[] = 'page-coaches';
     if (is_page_template('templates/page-schedule.php')) $classes[] = 'page-schedule';
     if (is_page_template('templates/page-media.php')) $classes[] = 'page-media';
+    if (is_page_template('templates/page-useful.php')) $classes[] = 'page-useful';
+    if (is_singular('post')) $classes[] = 'useful-post';
     return $classes;
 });
 
@@ -1283,4 +1285,34 @@ add_action('acf/init', function () {
         'style' => 'default',
         'active' => true,
     ]);
+});
+
+
+/** ACF banner content for the Useful materials archive page. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_useful_page_banner',
+        'title' => 'Полезное — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_useful_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'Полезное'],
+            ['key' => 'field_zvezda_useful_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Материалы клуба'],
+            ['key' => 'field_zvezda_useful_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'О детском футболе, тренерах и о том, как устроена работа школы. Ниже — хроника клуба: что происходило на поле и вокруг него.'],
+        ],
+        'location' => [[[
+            'param' => 'page_template',
+            'operator' => '==',
+            'value' => 'templates/page-useful.php',
+        ]]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
+/** Ensure standard posts expose their excerpt field in the editor. */
+add_action('init', function () {
+    add_post_type_support('post', 'excerpt');
 });
