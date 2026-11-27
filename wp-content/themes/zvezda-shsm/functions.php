@@ -1065,6 +1065,7 @@ add_action('acf/init', function () {
 add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-about.php')) $classes[] = 'page-about';
     if (is_page_template('templates/page-coaches.php')) $classes[] = 'page-coaches';
+    if (is_page_template('templates/page-schedule.php')) $classes[] = 'page-schedule';
     return $classes;
 });
 
@@ -1231,4 +1232,29 @@ add_action('acf/init', function () {
 add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-philosophy.php')) $classes[] = 'page-philosophy';
     return $classes;
+});
+
+
+/** ACF banner content for the Schedule page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_schedule_page_banner',
+        'title' => 'Расписание — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_schedule_page_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'Расписание и стоимость'],
+            ['key' => 'field_zvezda_schedule_page_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Тренировки в СК «Звездка»'],
+            ['key' => 'field_zvezda_schedule_page_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'г. Москва, м. Багратионовская, ул. Новозаводская, д. 27А, стр. 1. Поле с искусственной травой последнего поколения, зимой — занятия в зале.'],
+        ],
+        'location' => [[[
+            'param' => 'page_template',
+            'operator' => '==',
+            'value' => 'templates/page-schedule.php',
+        ]]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
 });
