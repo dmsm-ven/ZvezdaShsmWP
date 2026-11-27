@@ -107,7 +107,7 @@ try {
     foreach ($label in $linkMap.Keys) {
         $url = [System.Net.WebUtility]::HtmlEncode($linkMap[$label])
         $markdownLink = "[$label]($url)"
-        $pattern = '(?<![\\p{L}\\p{N}_\\]])' + [regex]::Escape($label) + '(?![\\p{L}\\p{N}_\\[])'
+        $pattern = '(?<![\p{L}\p{N}_\[])' + [regex]::Escape($label) + '(?![\p{L}\p{N}_\]])'
         $markdown = [regex]::Replace($markdown, $pattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $markdownLink })
     }
 
@@ -154,7 +154,10 @@ table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
 th, td { border: 1px solid #d5dbe3; padding: 4px 6px; text-align: left; vertical-align: top; }
 th { background: #eef2f7; }
 blockquote { border-left: 3px solid #9aa9ba; margin: 0.6em 0; padding-left: 9px; color: #555; }
-pre, code { overflow-wrap: anywhere; white-space: pre-wrap; }\np { margin: 0.45em 0; }\nul, ol { margin: 0.35em 0; padding-left: 1.5em; }\nli { margin: 0.12em 0; }
+pre, code { overflow-wrap: anywhere; white-space: pre-wrap; }
+p { margin: 0.45em 0; }
+ul, ol { margin: 0.35em 0; padding-left: 1.5em; }
+li { margin: 0.12em 0; }
 .credentials-page { height: 275mm; box-sizing: border-box; display: flex; align-items: center; justify-content: center; page-break-after: always; }
 .credentials-card { width: 100%; max-width: 155mm; margin: auto; }
 .eyebrow { color: #64748b; font-size: 9pt; font-weight: 700; letter-spacing: 1.5px; }
