@@ -116,6 +116,9 @@ function zvezda_club_logo_url() {
 function zvezda_phone_href() {
     return preg_replace('/[^0-9+]/', '', zvezda_setting('phone'));
 }
+function zvezda_phone_digits() {
+    return preg_replace('/[^0-9]/', '', zvezda_setting('phone'));
+}
 add_action('wp_enqueue_scripts', function () {
     $ver = wp_get_theme()->get('Version');
     wp_enqueue_style('zvezda-style', get_stylesheet_uri(), [], $ver);
