@@ -10,6 +10,7 @@ function zvezda_club_settings_defaults() {
         'telegram_url' => 'https://t.me/fcsupernovamoscow',
         'youtube_url' => 'https://www.youtube.com/@fcsupernova',
         'yandex_reviews_url' => 'https://yandex.com/maps/org/fc_super_nova_moscow/155444875307/reviews/',
+        'map_embed_url' => '',
         'address' => 'Россия, г. Москва, ул. Новозаводская, 27А стр. 1 (СК «Фили»), м. Багратионовская',
         'logo_id' => 0,
         'club_name' => 'ФК «СУПЕР НОВА»',
@@ -41,6 +42,7 @@ function zvezda_club_settings_sanitize($input) {
         'telegram_url' => esc_url_raw($input['telegram_url'] ?? ''),
         'youtube_url' => esc_url_raw($input['youtube_url'] ?? ''),
         'yandex_reviews_url' => esc_url_raw($input['yandex_reviews_url'] ?? ''),
+        'map_embed_url' => esc_url_raw($input['map_embed_url'] ?? ''),
         'address' => sanitize_text_field($input['address'] ?? ''),
         'logo_id' => absint($input['logo_id'] ?? 0),
         'club_name' => sanitize_text_field($input['club_name'] ?? ''),
@@ -70,6 +72,7 @@ function zvezda_render_club_settings_page() {
                 <tr><th><label for="zvezda-vk">Адрес VK</label></th><td><input id="zvezda-vk" class="regular-text" name="zvezda_club_settings[vk_url]" value="<?php echo esc_attr($settings['vk_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-telegram">Адрес Telegram</label></th><td><input id="zvezda-telegram" class="regular-text" name="zvezda_club_settings[telegram_url]" value="<?php echo esc_attr($settings['telegram_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-yandex-reviews">Ссылка на отзывы в Яндекс.Картах</label></th><td><input id="zvezda-yandex-reviews" class="regular-text" name="zvezda_club_settings[yandex_reviews_url]" value="<?php echo esc_attr($settings['yandex_reviews_url']); ?>" type="url"></td></tr>
+                <tr><th><label for="zvezda-map-embed">Ссылка для встраивания карты</label></th><td><input id="zvezda-map-embed" class="large-text" name="zvezda_club_settings[map_embed_url]" value="<?php echo esc_attr($settings['map_embed_url']); ?>" type="url" placeholder="https://yandex.ru/map-widget/v1/..."><p class="description">В Яндекс.Картах откройте «Поделиться» → «Встроить карту» и скопируйте URL из атрибута src тега iframe (только сам URL, не весь HTML-код). Поддерживается URL виджета Яндекс.Карт или Google Maps Embed.</p></td></tr>
                 <tr><th><label for="zvezda-youtube">Адрес YouTube</label></th><td><input id="zvezda-youtube" class="regular-text" name="zvezda_club_settings[youtube_url]" value="<?php echo esc_attr($settings['youtube_url']); ?>" type="url"></td></tr>
                 <tr><th><label for="zvezda-address">Физический адрес</label></th><td><input id="zvezda-address" class="regular-text" name="zvezda_club_settings[address]" value="<?php echo esc_attr($settings['address']); ?>" type="text"></td></tr>
                 <tr><th>Логотип</th><td>
@@ -119,6 +122,35 @@ function zvezda_club_logo_url() {
     }
     return get_theme_file_uri('/assets/images/logo.png');
 }
+/**
+ * Return only a trusted embeddable map URL configured by the site administrator.
+ * Ordinary organization/share links are intentionally not treated as iframe URLs.
+ */
+function zvezda_map_embed_url() {
+    $url = trim((string) zvezda_setting('map_embed_url'));
+    if ($url === '') return '';
+
+    $parts = wp_parse_url($url);
+    if (empty($parts['scheme']) || strtolower($parts['scheme']) !== 'https' || empty($parts['host'])) {
+        return '';
+    }
+
+    $host = strtolower($parts['host']);
+    $allowed_hosts = [
+        'yandex.ru',
+        'www.yandex.ru',
+        'yandex.com',
+        'www.yandex.com',
+        'maps.yandex.ru',
+        'www.google.com',
+        'maps.google.com',
+        'google.ru',
+        'www.google.ru',
+    ];
+
+    return in_array($host, $allowed_hosts, true) ? esc_url($url) : '';
+}
+
 function zvezda_phone_href() {
     return preg_replace('/[^0-9+]/', '', zvezda_setting('phone'));
 }
@@ -189,6 +221,116 @@ add_action('init', function () {
         'rewrite' => false,
         'show_in_rest' => true,
     ]);
+});
+
+/** Homepage testimonials managed as individual WordPress entries. */
+add_action('init', function () {
+    register_post_type('review', [
+        'labels' => [
+            'name' => 'Отзывы',
+            'singular_name' => 'Отзыв',
+            'add_new' => 'Добавить отзыв',
+            'add_new_item' => 'Добавить отзыв',
+            'edit_item' => 'Редактировать отзыв',
+            'new_item' => 'Новый отзыв',
+            'search_items' => 'Найти отзыв',
+            'not_found' => 'Отзывы не найдены',
+            'menu_name' => 'Отзывы',
+        ],
+        'public' => false,
+        'publicly_queryable' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_icon' => 'dashicons-format-quote',
+        'menu_position' => 28,
+        'supports' => ['title', 'page-attributes'],
+        'has_archive' => false,
+        'rewrite' => false,
+        'show_in_rest' => true,
+    ]);
+});
+
+/** Fields for each testimonial. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_review_details',
+        'title' => 'Данные отзыва',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_review_text', 'label' => 'Текст отзыва', 'name' => 'review_text', 'type' => 'textarea', 'rows' => 5, 'required' => 1],
+            ['key' => 'field_zvezda_review_author', 'label' => 'Имя пользователя', 'name' => 'review_author', 'type' => 'text', 'required' => 1],
+            ['key' => 'field_zvezda_review_source', 'label' => 'Источник', 'name' => 'review_source', 'type' => 'text', 'default_value' => 'Отзыв с Яндекс.Карт'],
+            ['key' => 'field_zvezda_review_date', 'label' => 'Дата отзыва (необязательно)', 'name' => 'review_date', 'type' => 'date_picker', 'display_format' => 'd.m.Y', 'return_format' => 'd.m.Y', 'first_day' => 1],
+        ],
+        'location' => [[['param' => 'post_type', 'operator' => '==', 'value' => 'review']]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
+/** Keep the review author visible in the WordPress list table and row title. */
+add_filter('manage_review_posts_columns', function ($columns) {
+    if (isset($columns['title'])) $columns['title'] = 'Автор отзыва';
+    return $columns;
+});
+add_action('manage_review_posts_custom_column', function ($column, $post_id) {
+    if ($column !== 'title') return;
+    $author = function_exists('get_field') ? get_field('review_author', $post_id) : get_post_meta($post_id, 'review_author', true);
+    echo esc_html($author ?: get_the_title($post_id) ?: 'Без имени');
+}, 10, 2);
+function zvezda_sync_review_post_title($post_id) {
+    $post_id = (int) $post_id;
+    if (!$post_id || get_post_type($post_id) !== 'review' || !function_exists('get_field')) return;
+    $author = trim((string) get_field('review_author', $post_id));
+    $post = get_post($post_id);
+    if ($author === '' || !$post || $post->post_title === $author) return;
+    remove_action('acf/save_post', 'zvezda_sync_review_post_title', 20);
+    wp_update_post(['ID' => $post_id, 'post_title' => $author]);
+    add_action('acf/save_post', 'zvezda_sync_review_post_title', 20);
+}
+add_action('acf/save_post', 'zvezda_sync_review_post_title', 20);
+
+/** Preserve the three testimonials currently shown on the homepage. */
+add_action('admin_init', function () {
+    if (get_option('zvezda_review_defaults_created')) return;
+    $existing = get_posts([
+        'post_type' => 'review',
+        'post_status' => 'any',
+        'numberposts' => 1,
+        'fields' => 'ids',
+    ]);
+    if ($existing) {
+        update_option('zvezda_review_defaults_created', 1);
+        return;
+    }
+
+    $defaults = [
+        ['text' => 'Хорошая спортивная школа, тренера все опытные, дети многому научатся, посещая данную школу. Советую всем!', 'author' => 'Яна К.'],
+        ['text' => 'Хорошая школа для будущих спортсменов. Сын занимается с большим удовольствием.', 'author' => 'Александр Баджурак'],
+        ['text' => 'Ребёнку нравится, ходим 3 раза в неделю.', 'author' => 'Галина Хорошуненко'],
+    ];
+
+    foreach ($defaults as $index => $item) {
+        $post_id = wp_insert_post([
+            'post_type' => 'review',
+            'post_status' => 'publish',
+            'post_title' => $item['author'],
+            'menu_order' => $index,
+        ], true);
+        if (is_wp_error($post_id)) continue;
+        if (function_exists('update_field')) {
+            update_field('field_zvezda_review_text', $item['text'], $post_id);
+            update_field('field_zvezda_review_author', $item['author'], $post_id);
+            update_field('field_zvezda_review_source', 'Отзыв с Яндекс.Карт', $post_id);
+        } else {
+            update_post_meta($post_id, 'review_text', $item['text']);
+            update_post_meta($post_id, 'review_author', $item['author']);
+            update_post_meta($post_id, 'review_source', 'Отзыв с Яндекс.Карт');
+        }
+    }
+    update_option('zvezda_review_defaults_created', 1);
 });
 
 /** ACF answer field for each FAQ entry. */
@@ -616,6 +758,17 @@ add_action('acf/init', function () {
         'rows' => 3,
         'default_value' => 'Время указано по действующему расписанию — перед стартом сезона уточняется для каждой возрастной группы.',
     ];
+    $schedule_fields[] = ['key' => 'field_zvezda_tariffs_tab', 'label' => 'Тарифы', 'type' => 'tab', 'placement' => 'top'];
+    $tariff_defaults = [
+        ['5 000 ₽', '1 тренировка в неделю', 'Мягкий старт: для самых маленьких и для совмещения с другими секциями.'],
+        ['7 000 ₽', '2 тренировки в неделю', 'Стабильный ритм: техника и игровая практика каждую неделю.'],
+        ['9 500 ₽', '3 тренировки в неделю', 'Максимальный прогресс: полный тренировочный цикл плюс игровые дни.'],
+    ];
+    for ($i = 1; $i <= 3; $i++) {
+        $schedule_fields[] = ['key' => "field_zvezda_tariff_{$i}_price", 'label' => "Предложение {$i} — цена за месяц", 'name' => "tariff_{$i}_price", 'type' => 'text', 'default_value' => $tariff_defaults[$i - 1][0]];
+        $schedule_fields[] = ['key' => "field_zvezda_tariff_{$i}_per", 'label' => "Предложение {$i} — количество тренировок", 'name' => "tariff_{$i}_per", 'type' => 'text', 'default_value' => $tariff_defaults[$i - 1][1]];
+        $schedule_fields[] = ['key' => "field_zvezda_tariff_{$i}_description", 'label' => "Предложение {$i} — описание", 'name' => "tariff_{$i}_description", 'type' => 'textarea', 'rows' => 3, 'default_value' => $tariff_defaults[$i - 1][2]];
+    }
     $schedule_fields[] = ['key' => 'field_zvezda_membership_tab', 'label' => 'Что входит в абонемент', 'type' => 'tab', 'placement' => 'top'];
     $schedule_fields[] = [
         'key' => 'field_zvezda_membership_title',
