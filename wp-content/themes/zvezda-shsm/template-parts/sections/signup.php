@@ -26,16 +26,9 @@ if ($signup_photo_alt === '') {
       </div>
       <img class="photo" src="<?php echo esc_url($signup_photo_url); ?>" alt="<?php echo esc_attr($signup_photo_alt); ?>" loading="lazy">
     </div>
-    <div class="form" style="box-shadow:0 20px 50px -30px rgba(20,24,56,.35)">
+    <div class="form signup-form-card">
       <h3>Записаться на пробную тренировку</h3>
-      <label for="signup-child">ФИО ребёнка</label><input id="signup-child" type="text" placeholder="Имя и фамилия">
-      <label for="signup-email">E-mail</label><input id="signup-email" type="email" placeholder="you@example.com">
-      <label for="signup-phone">Телефон</label><input id="signup-phone" type="tel" placeholder="+7 (___) ___-__-__">
-      <label for="signup-birth">Дата рождения ребёнка</label><input id="signup-birth" type="text" placeholder="дд.мм.гггг">
-      <label for="signup-parent">ФИО одного из родителей</label><input id="signup-parent" type="text">
-      <label for="signup-extra">Дополнительная информация</label><textarea id="signup-extra" rows="3"></textarea>
-      <button class="btn btn-p" type="button" disabled>Отправка будет подключена позже</button>
-      <p class="form-note">Форма пока демонстрационная и не отправляет данные.</p>
+      <?php echo do_shortcode('[contact-form-7 id="1221567" title="Контактная форма"]'); ?>
     </div>
   </div>
 </section>
