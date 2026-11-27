@@ -168,7 +168,7 @@
       <div class="vtitle">AFL Kids · Матч за 3-е место · <?php echo esc_html(zvezda_setting('club_name')); ?> — Герион 3:0</div>
     </div>
     <div style="text-align:center;margin-top:26px">
-      <a class="btn btn-ghost" href="https://www.youtube.com/@fcsupernova" target="_blank" rel="noopener">Все видео на YouTube</a>
+      <a class="btn btn-ghost" href="<?php echo esc_url(zvezda_setting('youtube_url')); ?>" target="_blank" rel="noopener">Все видео на YouTube</a>
     </div>
   </div>
 </section>
@@ -276,8 +276,7 @@
         <p><b>Телефон:</b> <a href="<?php echo esc_url('tel:' . zvezda_phone_href()); ?>"><?php echo esc_html(zvezda_setting('phone')); ?></a></p>
         <p><b>E-mail:</b> <a href="<?php echo esc_url('mailto:' . zvezda_setting('email')); ?>"><?php echo esc_html(zvezda_setting('email')); ?></a></p>
         <p><b>Мессенджеры:</b> <a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a> · <a href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a></p>
-        <p><b>Соцсети:</b> <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a> · <a href="https://www.youtube.com/@fcsupernova">YouTube</a> · <a href="https://www.instagram.com/fcsupernovamoscow" target="_blank" rel="noopener">Instagram</a></p>
-        <p class="note">Ссылки на Instagram* и Facebook* убраны из прототипа: продукты Meta, признанной экстремистской организацией в РФ, требуют обязательной маркировки — решение и формулировку согласовать с юристом.</p>
+        <p><b>Соцсети:</b> <a href="<?php echo esc_url(zvezda_setting('vk_url')); ?>">VK</a> · <a href="<?php echo esc_url(zvezda_setting('youtube_url')); ?>">YouTube</a> </p>
       </div>
       
     </div>
