@@ -140,6 +140,7 @@ $icon = zvezda_home_field("benefit_{$i}_icon", '');
         }
 
         $gallery_items[] = [
+            'ID' => !empty($gallery_image['ID']) ? absint($gallery_image['ID']) : 0,
             'url' => $gallery_image['url'],
             'alt' => $gallery_alt,
         ];
