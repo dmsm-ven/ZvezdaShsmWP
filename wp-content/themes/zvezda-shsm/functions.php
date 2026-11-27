@@ -15,6 +15,7 @@ function zvezda_club_settings_defaults() {
         'logo_id' => 0,
         'club_name' => 'ФК «СУПЕР НОВА»',
         'footer_description' => 'Детско-юношеский футбольный клуб и школа футбола. Тренировочный процесс — под руководством тренеров с лицензиями UEFA.',
+        'topbar_dismiss_days' => 7,
     ];
 }
 function zvezda_setting($key, $default = '') {
@@ -47,6 +48,7 @@ function zvezda_club_settings_sanitize($input) {
         'logo_id' => absint($input['logo_id'] ?? 0),
         'club_name' => sanitize_text_field($input['club_name'] ?? ''),
         'footer_description' => sanitize_textarea_field($input['footer_description'] ?? ''),
+        'topbar_dismiss_days' => min(3650, absint($input['topbar_dismiss_days'] ?? 7)),
     ];
 }
 add_action('admin_menu', function () {
@@ -83,6 +85,7 @@ function zvezda_render_club_settings_page() {
                 </td></tr>
                 <tr><th><label for="zvezda-club-name">Название клуба</label></th><td><input id="zvezda-club-name" class="regular-text" name="zvezda_club_settings[club_name]" value="<?php echo esc_attr($settings['club_name']); ?>" type="text"></td></tr>
                 <tr><th><label for="zvezda-footer-description">Короткое описание в подвале</label></th><td><textarea id="zvezda-footer-description" class="large-text" rows="3" name="zvezda_club_settings[footer_description]"><?php echo esc_textarea($settings['footer_description']); ?></textarea></td></tr>
+                <tr><th><label for="zvezda-topbar-dismiss-days">Срок скрытия верхнего баннера</label></th><td><input id="zvezda-topbar-dismiss-days" name="zvezda_club_settings[topbar_dismiss_days]" value="<?php echo esc_attr($settings['topbar_dismiss_days']); ?>" type="number" min="0" max="3650" step="1" class="small-text"> дней<p class="description">Через указанное количество дней после закрытия баннер появится снова. Значение 0 отключает запоминание закрытия. По умолчанию — 7 дней.</p></td></tr>
             </table>
             <?php submit_button('Сохранить настройки'); ?>
         </form>
