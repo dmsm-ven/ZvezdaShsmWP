@@ -729,7 +729,6 @@ section[style*="background: #fff"] {
 
 /* Alternate light sections, following the original donor layout. */
 .section.adv,
-.section#coaches,
 .section.rev,
 .section.faq,
 .section.contacts,
@@ -741,16 +740,30 @@ section[style*="background: #fff"] {
   color: #171717;
 }
 .section.adv h2, .section.adv h3,
-.section#coaches h2, .section#coaches h3,
 .section.rev h2, .section.faq h2, .section.contacts h2,
-.section.adv .sub, .section#coaches .sub,
-.section.rev .sub, .section.faq .sub, .section.contacts .sub,
-.section.adv .kicker, .section#coaches .kicker,
-.section.rev .kicker, .section.faq .kicker, .section.contacts .kicker {
+.section.adv .sub, .section.rev .sub, .section.faq .sub, .section.contacts .sub,
+.section.adv .kicker, .section.rev .kicker, .section.faq .kicker, .section.contacts .kicker {
   color: #171717;
 }
-.section.adv .sub, .section#coaches .sub,
-.section.rev .sub, .section.faq .sub, .section.contacts .sub { color: #555 !important; }
+.section.adv .sub, .section.rev .sub, .section.faq .sub, .section.contacts .sub { color: #555 !important; }
+
+/* The coaching staff is a dark section between the light benefits and gallery areas. */
+.section#coaches {
+  background: #101010 !important;
+  color: #F5F5F5;
+}
+.section#coaches h2, .section#coaches h3, .section#coaches .kicker {
+  color: #fff !important;
+}
+.section#coaches .sub { color: #C2C2C2 !important; }
+.section#coaches .coach2 {
+  background: #1B1B1B !important;
+  color: #F5F5F5 !important;
+  border-color: #383838 !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,.28);
+}
+.section#coaches .coach2 h3 { color: #fff !important; }
+.section#coaches .coach2 p { color: #C2C2C2 !important; }
 
 /* Cards on pale sections retain a clean white surface and dark readable text. */
 .section.adv .card, .section#coaches .coach2,
