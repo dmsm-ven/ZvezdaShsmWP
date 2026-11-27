@@ -256,6 +256,22 @@ add_action('manage_coach_posts_custom_column', function ($column, $post_id) {
     echo esc_html($name ?: get_the_title($post_id) ?: 'Без ФИО');
 }, 10, 2);
 
+// The Posts List Table builds its title link from post_title and does not use
+// manage_coach_posts_custom_column() for the built-in title column.
+// Coach names are stored in ACF, so provide that value when the WP title is empty.
+add_filter('the_title', function ($title, $post_id) {
+    if (!is_admin() || $title !== '' || get_post_type($post_id) !== 'coach') {
+        return $title;
+    }
+
+    if (!function_exists('get_field')) {
+        return $title;
+    }
+
+    $coach_name = get_field('coach_full_name', $post_id);
+    return $coach_name ? $coach_name : $title;
+}, 20, 2);
+
 /** ACF fields for the front page. */
 function zvezda_home_field($key, $default = '') {
     if (function_exists('get_field')) {
