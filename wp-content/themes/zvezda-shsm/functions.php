@@ -626,11 +626,29 @@ add_action('acf/init', function () {
         ['key' => 'field_zvezda_banner_fact_3_text', 'label' => 'Факт 3 — подпись', 'name' => 'banner_fact_3_text', 'type' => 'text', 'default_value' => 'первая тренировка'],
     ];
 
-    // Statistics strip: four editable value/label pairs.
+    // Statistics strip: four editable title/text pairs.
+    $stats_defaults = [
+        ['1000+', 'детей в сообществе Super Nova'],
+        ['с 2000 г.', 'работает международное сообщество'],
+        ['5–12 лет', 'возраст учеников школы'],
+        ['2 раза в год', 'футбольное тестирование игроков'],
+    ];
     $stats_fields = [];
     for ($i = 1; $i <= 4; $i++) {
-        $stats_fields[] = ['key' => "field_zvezda_stat_{$i}_value", 'label' => "Статистика {$i} — значение", 'name' => "stat_{$i}_value", 'type' => 'text'];
-        $stats_fields[] = ['key' => "field_zvezda_stat_{$i}_text", 'label' => "Статистика {$i} — подпись", 'name' => "stat_{$i}_text", 'type' => 'text'];
+        $stats_fields[] = [
+            'key' => "field_zvezda_stat_{$i}_title",
+            'label' => "Показатель {$i} — заголовок",
+            'name' => "stat_{$i}_title",
+            'type' => 'text',
+            'default_value' => $stats_defaults[$i - 1][0],
+        ];
+        $stats_fields[] = [
+            'key' => "field_zvezda_stat_{$i}_text",
+            'label' => "Показатель {$i} — текст",
+            'name' => "stat_{$i}_text",
+            'type' => 'text',
+            'default_value' => $stats_defaults[$i - 1][1],
+        ];
     }
     acf_add_local_field_group([
         'key' => 'group_zvezda_home_stats',
