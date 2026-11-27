@@ -159,6 +159,120 @@ add_action('init', function () {
     ]);
 });
 
+
+/** FAQ entries managed from the WordPress admin. */
+add_action('init', function () {
+    register_post_type('faq', [
+        'labels' => [
+            'name' => 'Вопросы и ответы',
+            'singular_name' => 'Вопрос',
+            'add_new' => 'Добавить вопрос',
+            'add_new_item' => 'Добавить вопрос',
+            'edit_item' => 'Редактировать вопрос',
+            'new_item' => 'Новый вопрос',
+            'view_item' => 'Просмотр вопроса',
+            'search_items' => 'Найти вопрос',
+            'not_found' => 'Вопросы не найдены',
+            'menu_name' => 'Вопросы и ответы',
+        ],
+        'public' => false,
+        'publicly_queryable' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_icon' => 'dashicons-editor-help',
+        'menu_position' => 27,
+        'supports' => ['title', 'page-attributes'],
+        'has_archive' => false,
+        'rewrite' => false,
+        'show_in_rest' => true,
+    ]);
+});
+
+/** ACF answer field for each FAQ entry. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_faq_details',
+        'title' => 'Ответ на вопрос',
+        'menu_order' => 0,
+        'fields' => [[
+            'key' => 'field_zvezda_faq_answer',
+            'label' => 'Ответ',
+            'name' => 'faq_answer',
+            'type' => 'textarea',
+            'rows' => 5,
+            'new_lines' => 'br',
+            'required' => 1,
+        ]],
+        'location' => [[['param' => 'post_type', 'operator' => '==', 'value' => 'faq']]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
+/** Add the current homepage questions once on existing installations. */
+add_action('admin_init', function () {
+    if (get_option('zvezda_faq_defaults_created')) return;
+    $existing = get_posts([
+        'post_type' => 'faq',
+        'post_status' => 'any',
+        'numberposts' => 1,
+        'fields' => 'ids',
+    ]);
+    if ($existing) {
+        update_option('zvezda_faq_defaults_created', 1);
+        return;
+    }
+
+    $defaults = [
+        [
+            'question' => 'Сколько стоит обучение?',
+            'answer' => 'Месячный абонемент: 9 500 ₽ — 3 тренировки в неделю, 7 000 ₽ — 2 тренировки, 5 000 ₽ — 1 тренировка. Первая пробная тренировка бесплатна для всех.',
+        ],
+        [
+            'question' => 'Детей какого возраста вы принимаете?',
+            'answer' => 'Принимаем детей 5–12 лет. Набор в школу проходит круглый год, группы формируются по возрасту.',
+        ],
+        [
+            'question' => 'Что взять с собой на пробную тренировку?',
+            'answer' => 'Спортивную форму и обувь по погоде. Приезжайте за 15 минут до начала занятия. Записаться можно через форму на сайте или по телефону ' . zvezda_setting('phone') . '.',
+        ],
+        [
+            'question' => 'Нужна ли медицинская справка?',
+            'answer' => 'Клуб организует централизованное прохождение медосмотра в физкультурном диспансере — самостоятельно оформлять справку о допуске не нужно.',
+        ],
+        [
+            'question' => 'Где и когда проходят тренировки?',
+            'answer' => 'В спортивном комплексе «Фили» (' . zvezda_setting('address') . '): вторник и четверг 19:00–20:15, воскресенье 15:00–16:15. Зимой занятия проходят в зале и на поле с искусственной травой. Выходные — игровые дни.',
+        ],
+        [
+            'question' => 'Как следить за прогрессом ребёнка?',
+            'answer' => 'У каждого родителя есть личный кабинет в системе ProTrainUp: посещаемость, статистика тренировок и матчей, расписание, оплата абонемента и связь с тренером — всё в мобильном приложении.',
+        ],
+        [
+            'question' => 'Участвуют ли команды в соревнованиях?',
+            'answer' => 'Да, команды клуба регулярно играют в соревнованиях Московской Федерации Футбола в разных возрастных категориях, проводят товарищеские матчи и выезжают на турниры и сборы, включая международные.',
+        ],
+    ];
+
+    foreach ($defaults as $index => $item) {
+        $post_id = wp_insert_post([
+            'post_type' => 'faq',
+            'post_status' => 'publish',
+            'post_title' => $item['question'],
+            'menu_order' => $index,
+        ], true);
+        if (!is_wp_error($post_id) && function_exists('update_field')) {
+            update_field('field_zvezda_faq_answer', $item['answer'], $post_id);
+        } elseif (!is_wp_error($post_id)) {
+            update_post_meta($post_id, 'faq_answer', $item['answer']);
+        }
+    }
+
+    update_option('zvezda_faq_defaults_created', 1);
+});
+
 // Repeatable coach titles editor (does not require ACF Pro).
 add_action('add_meta_boxes_coach', function () {
     add_meta_box(
