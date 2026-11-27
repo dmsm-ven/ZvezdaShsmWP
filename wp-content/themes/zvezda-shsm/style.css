@@ -717,3 +717,62 @@ section[style*="background: #fff"] {
     transform: none !important;
   }
 }
+
+
+/* Alternate section surfaces: restore the donor's soft background rhythm */
+:root { --bg-soft: #F6F8FD; }
+
+/* Default navigation labels stay neutral white; red is reserved for interaction. */
+.header .nav a { color: #fff !important; }
+.header .nav a:hover,
+.header .nav a.active { color: #DF000C !important; }
+
+/* Alternate light sections, following the original donor layout. */
+.section.adv,
+.section#coaches,
+.section.rev,
+.section.faq,
+.section.contacts,
+.section[style*="background:var(--bg-soft)"],
+.section[style*="background: var(--bg-soft)"],
+.section[style*="background:#fff"],
+.section[style*="background: #fff"] {
+  background: #F6F8FD !important;
+  color: #171717;
+}
+.section.adv h2, .section.adv h3,
+.section#coaches h2, .section#coaches h3,
+.section.rev h2, .section.faq h2, .section.contacts h2,
+.section.adv .sub, .section#coaches .sub,
+.section.rev .sub, .section.faq .sub, .section.contacts .sub,
+.section.adv .kicker, .section#coaches .kicker,
+.section.rev .kicker, .section.faq .kicker, .section.contacts .kicker {
+  color: #171717;
+}
+.section.adv .sub, .section#coaches .sub,
+.section.rev .sub, .section.faq .sub, .section.contacts .sub { color: #555 !important; }
+
+/* Cards on pale sections retain a clean white surface and dark readable text. */
+.section.adv .card, .section#coaches .coach2,
+.section.rev .card, .section.faq details,
+.section.contacts .card {
+  background: #fff !important;
+  color: #171717 !important;
+  border-color: #E2E5EC !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.07);
+}
+.section.adv .card h3, .section#coaches .coach2 h3,
+.section.rev .card b, .section.contacts .card b { color: #171717 !important; }
+.section.adv .card p, .section#coaches .coach2 p,
+.section.rev .card p, .section.contacts .card p { color: #555 !important; }
+.section.faq summary { color: #171717 !important; }
+.section.faq .a { color: #555 !important; }
+
+/* Keep the stats panel intentionally white, with dark figures for contrast. */
+.stats .wrap {
+  background: #fff !important;
+  border-color: #E5E7EB !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.22);
+}
+.stats .stat b { color: #111 !important; }
+.stats .stat span { color: #555 !important; }
