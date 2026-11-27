@@ -229,6 +229,7 @@ section[id]{scroll-margin-top:92px}
 .footer .flogo img{width:42px;height:42px;object-fit:contain}
 .footer h4{font-family:'Inter Tight';font-size:14px;font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase}
 .footer .col a{display:block;padding:4px 0;color:#9aa3cd}
+.footer .footer-address{padding:4px 0 8px;color:#9aa3cd;line-height:1.5}
 .footer .col a:hover{color:#fff}
 .footer .bottom{border-top:1px solid rgba(255,255,255,.10);padding:18px 0;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px}
 .footer .bottom a{color:#9aa3cd}
