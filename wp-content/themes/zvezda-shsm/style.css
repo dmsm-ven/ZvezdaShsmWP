@@ -816,3 +816,104 @@ section[style*="background: #fff"] {
 .section#coaches .coach2 h3 { color: #fff !important; }
 .section#coaches .coach2 p,
 .section#coaches .coach2 .role { color: #C2C2C2 !important; }
+
+
+/* Homepage gallery spacing after the coaching staff section. */
+.section.gallery-section {
+  padding-top: 72px !important;
+  padding-bottom: 72px;
+}
+@media (max-width: 720px) {
+  .section.gallery-section { padding-top: 48px !important; padding-bottom: 48px; }
+}
+
+/* Schedule section: light surface with dark, readable typography and roomier cards. */
+.section.sched {
+  background: #F6F8FD !important;
+  color: #171717 !important;
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+.section.sched .kicker { color: #DF000C !important; }
+.section.sched h2,
+.section.sched > .wrap > h2 { color: #171717 !important; }
+.section.sched > .wrap > .sub {
+  color: #555 !important;
+  max-width: 760px;
+  line-height: 1.65;
+  margin-bottom: 36px !important;
+}
+.section.sched .grid { gap: 24px; }
+.section.sched .card {
+  padding: 30px;
+  border-radius: 18px;
+  background: #fff !important;
+  color: #171717 !important;
+  border: 1px solid #E2E5EC !important;
+  box-shadow: 0 12px 32px rgba(15,23,42,.07) !important;
+}
+.section.sched .card h3 {
+  color: #171717 !important;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.section.sched table { font-size: 15px; }
+.section.sched td {
+  color: #555 !important;
+  padding: 15px 8px;
+  line-height: 1.5;
+  border-color: #E5E7EB !important;
+}
+.section.sched td:first-child { padding-left: 0; }
+.section.sched td:last-child {
+  color: #171717 !important;
+  font-weight: 700;
+  white-space: nowrap;
+  padding-right: 0;
+}
+.section.sched .note {
+  color: #666 !important;
+  line-height: 1.6;
+}
+.section.sched .card.price {
+  background: #DF000C !important;
+  color: #fff !important;
+  border-color: #DF000C !important;
+}
+.section.sched .card.price h3,
+.section.sched .card.price li { color: #fff !important; }
+.section.sched .card.price li { padding: 9px 0 9px 24px; line-height: 1.5; }
+.section.sched .card.price .btn {
+  margin-top: 14px;
+  padding: 16px 22px;
+}
+.section.sched .grid.g3 { margin-top: 24px !important; }
+.section.sched .tariff {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 220px;
+  padding: 30px;
+}
+.section.sched .tariff .num { font-size: 34px; margin-bottom: 10px; }
+.section.sched .tariff .per { margin-bottom: 14px; font-weight: 700; }
+.section.sched .tariff p { color: #555 !important; line-height: 1.6; margin: 0; }
+.section.sched .tariff.hl {
+  background: #1B1B1B !important;
+  color: #fff !important;
+  border-color: #1B1B1B !important;
+}
+.section.sched .tariff.hl .num,
+.section.sched .tariff.hl .per,
+.section.sched .tariff.hl p { color: #fff !important; }
+.section.sched .tariff.hl .tag {
+  position: static;
+  align-self: flex-start;
+  margin-bottom: 16px;
+}
+@media (max-width: 720px) {
+  .section.sched { padding-top: 60px; padding-bottom: 60px; }
+  .section.sched .card { padding: 22px; }
+  .section.sched td { padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
+  .section.sched .tariff { min-height: 0; }
+}
