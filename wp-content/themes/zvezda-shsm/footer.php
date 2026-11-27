@@ -32,9 +32,7 @@
       <div><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">Политика конфиденциальности</a> · <a href="<?php echo esc_url(home_url('/user-agreement/')); ?>">Пользовательское соглашение</a></div>
     </div>
   </div>
-</footer>
-<div class="float-wa"><a href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>" aria-label="WhatsApp">✆</a></div>
-<div class="sticky-cta"><a href="#signup">Записаться на бесплатную тренировку</a></div>
+</footer>\n<div class="sticky-cta"><a href="#signup">Записаться на бесплатную тренировку</a></div>
 <?php wp_footer(); ?>
 </body>
 </html>
