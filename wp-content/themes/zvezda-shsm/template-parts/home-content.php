@@ -10,7 +10,7 @@
     <h1>Академия <span style="white-space:nowrap">ФК «Супер Нова»</span> — <em>совершенствуйся играя</em></h1>
     <p class="lead">Играй. Общайся. Расти. Развивайся. Тренеры с лицензиями UEFA, единая методика подготовки и соревнования Московской Федерации Футбола.</p>
     <div class="actions">
-      <a class="btn btn-hero" href="<?php echo esc_url(home_url('/')); ?>">Записаться на пробную тренировку</a>
+      <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться на пробную тренировку</a>
       <a class="btn btn-ghost" href="https://wa.me/79856692689">Написать в WhatsApp</a>
     </div>
     <div class="facts">
@@ -131,7 +131,7 @@
           <li>Централизованный медосмотр</li>
           <li>Игровые дни по выходным</li>
         </ul>
-        <a class="btn btn-hero" href="<?php echo esc_url(home_url('/')); ?>" style="width:100%">Записаться бесплатно</a>
+        <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>" style="width:100%">Записаться бесплатно</a>
       </div>
     </div>
     <div class="grid g3" style="margin-top:20px">
@@ -150,7 +150,7 @@
         <div class="num">9 500 ₽<small>/мес</small></div>
         <div class="per">3 тренировки в неделю</div>
         <p>Максимальный прогресс: полный тренировочный цикл плюс игровые дни.</p>
-        <a class="btn btn-hero" href="<?php echo esc_url(home_url('/')); ?>" style="width:100%;margin-top:14px">Выбрать</a>
+        <a class="btn btn-hero" href="<?php echo esc_url(home_url('/#signup')); ?>" style="width:100%;margin-top:14px">Выбрать</a>
       </div>
     </div>
   </div>
