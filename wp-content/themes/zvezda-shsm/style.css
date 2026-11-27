@@ -485,3 +485,198 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .header .burger { display: inline-flex !important; flex: 0 0 44px; gap: 5px; }
   .header .burger span { display: block !important; visibility: visible !important; opacity: 1 !important; flex: 0 0 20px; width: 20px; height: 2px; min-height: 2px; margin: 0; padding: 0; background: var(--brand-dark) !important; border: 0; transform: none; }
 }
+
+
+/* =========================================================
+   TEAM PALETTE — FC Super Nova
+   Red #DF000C / black / white
+   ========================================================= */
+:root {
+  --brand: #DF000C;
+  --brand-dark: #B8000A;
+  --brand-deep: #080808;
+  --accent: #FF303A;
+  --tint: rgba(223, 0, 12, .12);
+  --ink: #F5F5F5;
+  --gray: #B8B8B8;
+  --line: #353535;
+  --bg: #101010;
+  --bg-soft: #181818;
+}
+
+/* Base: dark canvas and high-contrast typography */
+html, body { background: var(--bg); color: var(--ink); }
+body { color: var(--ink); }
+h1, h2, h3, h4, h5, h6 { color: #fff; }
+.sub, .note, .form-note { color: #B8B8B8; }
+a { color: inherit; }
+::selection { background: var(--brand); color: #fff; }
+
+/* Header and navigation */
+.header { background: rgba(8,8,8,.96); border-bottom: 1px solid #303030; }
+.header.scrolled { box-shadow: 0 8px 28px rgba(0,0,0,.5); }
+.logo, .header .phone { color: #fff; }
+.nav { color: #E7E7E7; }
+.nav a:hover, .nav a.active { color: #FF454D; }
+.nav a::after { background: var(--brand); }
+.burger { background: #171717; border-color: #444; }
+.burger span { background: #fff; }
+
+/* Team red is used for key actions, not for large text surfaces */
+.btn-p, .ff-nova .ff_btn_style { background: var(--brand); color: #fff; }
+.btn-p:hover, .ff-nova .ff_btn_style:hover { background: #B8000A; }
+.btn-g { color: #fff; border-color: #555; }
+.btn-g:hover { border-color: var(--brand); color: #fff; }
+.btn-w { background: #fff; color: #111; }
+.btn-hero { background: var(--brand); color: #fff; }
+.btn-hero:hover { background: #B8000A; }
+.btn-ghost { color: #fff; border-color: rgba(255,255,255,.55); }
+.btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,.1); }
+.btn:focus-visible, a:focus-visible { outline: 3px solid rgba(223,0,12,.65); }
+
+/* Hero: preserve the team photograph, strengthen the black overlay */
+.hero { background: #080808; }
+.hero::after {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.08) 34%, rgba(0,0,0,.28) 62%, rgba(0,0,0,.88) 100%),
+    linear-gradient(100deg, rgba(0,0,0,.94) 12%, rgba(0,0,0,.70) 52%, rgba(0,0,0,.28) 100%);
+}
+.hero h1 em { color: #FF454D; }
+.hero .lead { color: #F0F0F0; }
+.hero .facts div { color: #D0D0D0; }
+.hero .facts b { color: #fff; }
+.badge { background: rgba(0,0,0,.58); border-color: rgba(255,255,255,.24); }
+.badge i { background: var(--brand); }
+
+/* Announcement strip */
+.topbar { background: var(--brand); color: #fff; }
+.topbar .tb-dot { background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.55); }
+@keyframes tbPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,.55); }
+  70% { box-shadow: 0 0 0 9px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+.topbar .tb-btn { background: #111; color: #fff; }
+.topbar .tb-btn:hover { background: #292929; }
+.topbar .tb-close { color: rgba(255,255,255,.85); }
+
+/* All page sections use black/graphite surfaces */
+.section, .age, .sched, .qrpay, .contacts,
+section[style*="background:var(--bg-soft)"],
+section[style*="background:#fff"],
+section[style*="background: #fff"] {
+  background: var(--bg) !important;
+}
+.section:nth-of-type(even) { background: #141414; }
+.kicker, .tariff .per, .coaches-more a, .post-card .more,
+.post-body a, .contacts a, .yrating a { color: #FF454D; }
+.kicker::before { background: var(--brand); }
+.section h2, .section h3 { color: #fff; }
+.age .card, .card, .step, .coach2, .qr-card {
+  background: #1B1B1B;
+  color: #F5F5F5;
+  border-color: #383838;
+  box-shadow: 0 12px 32px rgba(0,0,0,.22);
+}
+.card:hover, .coach2:hover { border-color: rgba(223,0,12,.55); box-shadow: 0 18px 42px rgba(0,0,0,.38); }
+.age .card b, .sched .card h3, .tariff .num,
+.adv h3, .coach2 h3, .step h3, .faq summary,
+.contacts .card b, .post-card h3, .chron-item span,
+.qr-brand, .ptable td:last-child { color: #fff; }
+.age .card span, .adv p, .coach2 p, .step p,
+.tariff p, .tariff .num small, .faq .a,
+.rev .card p, .post-card p, .chron-item time,
+.post-body, .prose p, .checklist li, .qr-steps li,
+.sched td, .ptable td:first-child { color: #C2C2C2; }
+.age .num, .adv .ico, .step .n, .qr-steps li::before {
+  background: var(--brand);
+  color: #fff;
+}
+.stat { border-left-color: var(--brand); }
+.stats .wrap { background: #1B1B1B; border-color: #383838; box-shadow: 0 24px 64px rgba(0,0,0,.5); }
+.stat b { color: #fff; }
+.stat span { color: #BDBDBD; }
+.price, .tariff.hl { background: var(--brand); color: #fff; }
+.price h3, .tariff.hl .num { color: #fff !important; }
+.price .num small, .tariff.hl .num small,
+.price li, .tariff.hl p { color: #fff; }
+.price li::before { color: #fff; }
+.tariff .tag { background: #fff; color: var(--brand-dark); }
+.rev .card::before { color: rgba(223,0,12,.28); }
+.placeholder { border-color: #555; }
+
+/* Video, signup, CTA bands and footer */
+.video-sec { background: #080808; }
+.video-sec .sub { color: #C5C5C5; }
+.video-sec .kicker, .page-hero .kicker, .signup .kicker { color: #FF777D; }
+.video-sec .kicker::before, .page-hero .kicker::before, .signup .kicker::before { background: var(--brand); }
+.signup, .cta-band {
+  background: linear-gradient(135deg, #080808 0%, #171717 72%, #260306 100%);
+}
+.signup .inner p, .cta-band p { color: #D0D0D0; }
+.signup .form, .form {
+  background: #1D1D1D;
+  color: #F5F5F5;
+  border: 1px solid #414141;
+  box-shadow: 0 24px 60px rgba(0,0,0,.45);
+}
+.form h3 { color: #fff; }
+.form label, .ff-nova .ff-el-input--label label { color: #E5E5E5 !important; }
+.form input, .form select, .form textarea,
+.ff-nova .ff-el-form-control {
+  background: #111 !important;
+  color: #fff !important;
+  border-color: #4A4A4A !important;
+}
+.form input::placeholder, .form textarea::placeholder,
+.ff-nova .ff-el-form-control::placeholder { color: #999; }
+.form input:focus, .form select:focus, .form textarea:focus,
+.ff-nova .ff-el-form-control:focus {
+  border-color: var(--brand) !important;
+  background: #151515 !important;
+}
+.form .agree, .form-note { color: #B8B8B8; }
+.form .ok { background: #173522; color: #BDF0CE; }
+.mess .btn { border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.07); color: #fff; }
+.mess .btn:hover { background: rgba(255,255,255,.14); }
+.footer { background: #050505; color: #B8B8B8; }
+.footer .col a, .footer .footer-address, .footer .bottom a { color: #B8B8B8; }
+.footer .col a:hover, .footer .bottom a:hover { color: #fff; }
+.footer .bottom { border-color: #333; }
+
+/* Inner pages, article content and utility components */
+.page-hero { background: radial-gradient(900px 420px at 82% -12%, #42070B 0%, #080808 68%); }
+.page-hero p { color: #D0D0D0; }
+.prose p, .checklist li, .post-body { color: #D0D0D0; }
+.prose h2, .prose h3, .post-body h2, .post-body h3 { color: #fff; }
+.checklist li::before { color: #FF454D; }
+.post-card .thumb { background: #111; }
+.post-card h3, .chron-item span { color: #fff; }
+.post-body blockquote { border-color: var(--brand); color: #D0D0D0; }
+.chron { border-color: #383838; }
+.chron-item { border-color: #383838; }
+.yrating { background: #242424; color: #fff; }
+.yrating .stars { color: #FF454D; }
+.faq details { border-color: #383838; }
+.faq summary { color: #fff; }
+.faq summary::after { color: #FF454D; }
+.qr-card { background: #1B1B1B; }
+.qr-brand { color: #fff; }
+.qr-brand i { background: #444; }
+.qr-steps li::before { background: var(--brand); }
+.map-placeholder { background: #1B1B1B; color: #B8B8B8; border-color: #555; }
+.mobile-nav { background: rgba(5,5,5,.98); }
+.mobile-nav a.active { color: #FF454D; }
+.mobile-nav .mcontacts { color: #B8B8B8; }
+.mobile-nav .mcontacts a { color: #E0E0E0; }
+.sticky-cta { background: var(--brand); }
+.float-wa { box-shadow: 0 8px 26px rgba(0,0,0,.5); }
+
+/* Tables: subtle separators on dark backgrounds */
+.sched table, .ptable { color: #F0F0F0; }
+.sched td, .ptable td { border-color: #3A3A3A !important; }
+.sched td:last-child, .ptable td:last-child { color: #fff; }
+
+/* Avoid old blue values bleeding through from legacy rules */
+.nav a:hover, .nav a.active, .coaches-more a:hover,
+.post-card .more:hover, .post-body a:hover { color: #FF777D; }
