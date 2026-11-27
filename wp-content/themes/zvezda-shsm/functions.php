@@ -159,6 +159,103 @@ add_action('init', function () {
     ]);
 });
 
+// Repeatable coach titles editor (does not require ACF Pro).
+add_action('add_meta_boxes_coach', function () {
+    add_meta_box(
+        'zvezda_coach_titles',
+        'Титулы и должности',
+        'zvezda_render_coach_titles_metabox',
+        'coach',
+        'normal',
+        'high'
+    );
+});
+
+function zvezda_render_coach_titles_metabox($post) {
+    wp_nonce_field('zvezda_save_coach_titles', 'zvezda_coach_titles_nonce');
+    $titles = get_post_meta($post->ID, '_coach_titles_list', true);
+    if (!is_array($titles) || !$titles) {
+        $legacy = function_exists('get_field') ? get_field('coach_titles', $post->ID) : '';
+        $titles = $legacy ? preg_split('/\\s*·\\s*|\\r?\\n/', $legacy) : [''];
+    }
+    ?>
+    <div id="zvezda-coach-titles-list">
+        <?php foreach ($titles as $title) : ?>
+            <div class="zvezda-coach-title-row" style="display:flex;gap:8px;margin:0 0 8px;max-width:720px">
+                <input type="text" name="coach_titles_list[]" value="<?php echo esc_attr($title); ?>" class="widefat" placeholder="Например: Спортивный директор">
+                <button type="button" class="button zvezda-remove-coach-title">Удалить</button>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <button type="button" class="button button-secondary" id="zvezda-add-coach-title">+ Добавить титул</button>
+    <p class="description">Каждый титул или должность добавляется отдельной строкой. На сайте они будут объединены символом « · ».</p>
+    <?php
+}
+
+add_action('save_post_coach', function ($post_id) {
+    if (
+        !isset($_POST['zvezda_coach_titles_nonce']) ||
+        !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['zvezda_coach_titles_nonce'])), 'zvezda_save_coach_titles') ||
+        (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) ||
+        !current_user_can('edit_post', $post_id)
+    ) {
+        return;
+    }
+
+    $titles = isset($_POST['coach_titles_list']) && is_array($_POST['coach_titles_list'])
+        ? array_map('sanitize_text_field', wp_unslash($_POST['coach_titles_list']))
+        : [];
+    $titles = array_values(array_filter(array_map('trim', $titles), static function ($value) {
+        return $value !== '';
+    }));
+
+    if ($titles) {
+        update_post_meta($post_id, '_coach_titles_list', $titles);
+    } else {
+        delete_post_meta($post_id, '_coach_titles_list');
+    }
+}, 10);
+
+add_action('admin_footer-post.php', 'zvezda_coach_titles_admin_script');
+add_action('admin_footer-post-new.php', 'zvezda_coach_titles_admin_script');
+function zvezda_coach_titles_admin_script() {
+    $screen = get_current_screen();
+    if (!$screen || $screen->post_type !== 'coach') return;
+    ?>
+    <script>
+    (function () {
+        const list = document.getElementById('zvezda-coach-titles-list');
+        const add = document.getElementById('zvezda-add-coach-title');
+        if (!list || !add) return;
+        add.addEventListener('click', function () {
+            const row = document.createElement('div');
+            row.className = 'zvezda-coach-title-row';
+            row.style.cssText = 'display:flex;gap:8px;margin:0 0 8px;max-width:720px';
+            row.innerHTML = '<input type="text" name="coach_titles_list[]" class="widefat" placeholder="Например: Спортивный директор"><button type="button" class="button zvezda-remove-coach-title">Удалить</button>';
+            list.appendChild(row);
+            row.querySelector('input').focus();
+        });
+        list.addEventListener('click', function (event) {
+            if (event.target.classList.contains('zvezda-remove-coach-title')) {
+                event.target.closest('.zvezda-coach-title-row').remove();
+            }
+        });
+    })();
+    </script>
+    <?php
+}
+
+// Show the coach's ACF full name in the admin list instead of the empty post title.
+add_filter('manage_coach_posts_columns', function ($columns) {
+    if (isset($columns['title'])) $columns['title'] = 'ФИО';
+    return $columns;
+});
+add_action('manage_coach_posts_custom_column', function ($column, $post_id) {
+    if ($column !== 'title') return;
+    $name = function_exists('get_field') ? get_field('coach_full_name', $post_id) : '';
+    echo esc_html($name ?: get_the_title($post_id) ?: 'Без ФИО');
+}, 10, 2);
+
 /** ACF fields for the front page. */
 function zvezda_home_field($key, $default = '') {
     if (function_exists('get_field')) {
@@ -285,15 +382,6 @@ add_action('acf/init', function () {
                 'label' => 'ФИО',
                 'name' => 'coach_full_name',
                 'type' => 'text',
-                'required' => 1,
-            ],
-            [
-                'key' => 'field_zvezda_coach_titles',
-                'label' => 'Список титулов тренера',
-                'name' => 'coach_titles',
-                'type' => 'textarea',
-                'rows' => 2,
-                'instructions' => 'Например: Спортивный директор · старший тренер · лицензия A-UEFA',
                 'required' => 1,
             ],
             [
