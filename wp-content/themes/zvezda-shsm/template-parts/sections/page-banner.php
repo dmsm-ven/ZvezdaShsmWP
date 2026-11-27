@@ -1,17 +1,18 @@
 <?php
 $coaches_page = is_page_template('templates/page-coaches.php');
 $schedule_page = is_page_template('templates/page-schedule.php');
+$media_page = is_page_template('templates/page-media.php');
 $banner_kicker_default = $coaches_page
     ? 'Тренерский штаб'
-    : ($schedule_page ? 'Расписание и стоимость' : '');
+    : ($schedule_page ? 'Расписание и стоимость' : ($media_page ? 'МЕДИА' : ''));
 $banner_title_default = $coaches_page
     ? 'Тренеры Академии'
-    : ($schedule_page ? 'Тренировки в СК «Звездка»' : get_the_title());
+    : ($schedule_page ? 'Тренировки в СК «Звездка»' : ($media_page ? 'Фото и видео клуба' : get_the_title()));
 $banner_description_default = $coaches_page
     ? 'Лицензированные специалисты с опытом работы в сильнейших академиях Москвы и профессиональных клубах. Работу штаба курирует спортивный директор.'
     : ($schedule_page
         ? 'г. Москва, м. Багратионовская, ул. Новозаводская, д. 27А, стр. 1. Поле с искусственной травой последнего поколения, зимой — занятия в зале.'
-        : '');
+        : ($media_page ? 'Тренировки, матчи и турниры ФК «Супер Нова» — как это выглядит изнутри.' : ''));
 
 $banner_kicker = zvezda_inner_page_field('page_banner_kicker', $banner_kicker_default);
 $banner_title = zvezda_inner_page_field('page_banner_title', $banner_title_default);
