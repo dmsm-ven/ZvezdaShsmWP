@@ -960,3 +960,87 @@ add_action('acf/init', function () {
         'active' => true,
     ]);
 });
+
+
+/** Read shared homepage fields from the page assigned as the front page. */
+function zvezda_front_page_field($key, $default = '') {
+    if (function_exists('get_field')) {
+        $front_page_id = (int) get_option('page_on_front');
+        $value = get_field($key, $front_page_id ?: false);
+        if ($value !== null && $value !== false && $value !== '') return $value;
+    }
+    return $default;
+}
+
+/** Read ACF fields belonging to the currently queried inner page. */
+function zvezda_inner_page_field($key, $default = '') {
+    if (function_exists('get_field')) {
+        $page_id = (int) get_queried_object_id();
+        $value = get_field($key, $page_id ?: false);
+        if ($value !== null && $value !== false && $value !== '') return $value;
+    }
+    return $default;
+}
+
+/** ACF content for the About the Club page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    $about_page_location = [[[
+        'param' => 'page_template',
+        'operator' => '==',
+        'value' => 'templates/page-about.php',
+    ]]];
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_about_page_banner',
+        'title' => 'О клубе — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_page_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'О клубе'],
+            ['key' => 'field_zvezda_page_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Футбольная школа ФК «Супер Нова» Москва'],
+            ['key' => 'field_zvezda_page_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Детско-юношеский футбольный клуб. Круглый год принимаем детей 5–12 лет: зимой занятия проходят в зале, в остальное время — на полях с искусственным и натуральным покрытием.'],
+        ],
+        'location' => $about_page_location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_about_page_content',
+        'title' => 'О клубе — содержимое страницы',
+        'menu_order' => 1,
+        'fields' => [
+            ['key' => 'field_zvezda_about_who_tab', 'label' => 'Кто мы', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_zvezda_about_who_kicker', 'label' => 'Название раздела', 'name' => 'about_who_kicker', 'type' => 'text', 'default_value' => 'Кто мы'],
+            ['key' => 'field_zvezda_about_who_title', 'label' => 'Заголовок', 'name' => 'about_who_title', 'type' => 'text', 'default_value' => 'Клуб, где ребёнка учат играть'],
+            ['key' => 'field_zvezda_about_who_text_1', 'label' => 'Текст — абзац 1', 'name' => 'about_who_text_1', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Занятия проходят под руководством квалифицированных лицензированных тренеров с опытом работы в сильнейших московских академиях и сборных командах.'],
+            ['key' => 'field_zvezda_about_who_text_2', 'label' => 'Текст — абзац 2', 'name' => 'about_who_text_2', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Команды Академии регулярно проводят товарищеские матчи, участвуют в соревнованиях Московской Федерации Футбола, международных турнирах и тренировочных лагерях.'],
+            ['key' => 'field_zvezda_about_who_text_3', 'label' => 'Текст — абзац 3', 'name' => 'about_who_text_3', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Основная тренировочная база — спортивный комплекс «Фили» (м. Багратионовская, ул. Новозаводская, 27А, стр. 1).'],
+            ['key' => 'field_zvezda_about_who_image', 'label' => 'Фотография', 'name' => 'about_who_image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'large', 'library' => 'all'],
+            ['key' => 'field_zvezda_about_who_image_alt', 'label' => 'ALT фотографии', 'name' => 'about_who_image_alt', 'type' => 'text', 'default_value' => 'Команда ФК Супер Нова у ворот'],
+
+            ['key' => 'field_zvezda_about_philosophy_tab', 'label' => 'Философия', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_zvezda_about_philosophy_kicker', 'label' => 'Название раздела', 'name' => 'about_philosophy_kicker', 'type' => 'text', 'default_value' => 'Философия'],
+            ['key' => 'field_zvezda_about_philosophy_title', 'label' => 'Заголовок', 'name' => 'about_philosophy_title', 'type' => 'text', 'default_value' => 'Играй. Общайся. Расти. Развивайся.'],
+            ['key' => 'field_zvezda_about_philosophy_text', 'label' => 'Текст', 'name' => 'about_philosophy_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => 'В центре философии клуба — игрок. Главная задача школы — обучение и развитие игрока.'],
+            ['key' => 'field_zvezda_about_philosophy_button_text', 'label' => 'Текст кнопки', 'name' => 'about_philosophy_button_text', 'type' => 'text', 'default_value' => 'Философия клуба'],
+            ['key' => 'field_zvezda_about_philosophy_button_url', 'label' => 'Ссылка кнопки', 'name' => 'about_philosophy_button_url', 'type' => 'url', 'default_value' => home_url('/philosophy/')],
+            ['key' => 'field_zvezda_about_philosophy_image', 'label' => 'Фотография', 'name' => 'about_philosophy_image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'large', 'library' => 'all'],
+            ['key' => 'field_zvezda_about_philosophy_image_alt', 'label' => 'ALT фотографии', 'name' => 'about_philosophy_image_alt', 'type' => 'text', 'default_value' => 'Игроки ФК Супер Нова'],
+
+            ['key' => 'field_zvezda_about_community_tab', 'label' => 'Сообщество', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_zvezda_about_community_kicker', 'label' => 'Название раздела', 'name' => 'about_community_kicker', 'type' => 'text', 'default_value' => 'Сообщество'],
+            ['key' => 'field_zvezda_about_community_title', 'label' => 'Заголовок', 'name' => 'about_community_title', 'type' => 'text', 'default_value' => 'Часть международного сообщества Super Nova'],
+            ['key' => 'field_zvezda_about_community_text_1', 'label' => 'Текст — абзац 1', 'name' => 'about_community_text_1', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Сообщество Super Nova работает с 2000 года и объединяет детско-юношеские клубы, в которых обучается более 1000 детей в возрастных группах от 5 до 19 лет.'],
+            ['key' => 'field_zvezda_about_community_text_2', 'label' => 'Текст — абзац 2', 'name' => 'about_community_text_2', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Клубы сообщества тесно взаимодействуют между собой: постоянный обмен знаниями и методиками помогает всестороннему развитию игроков и тренеров.'],
+            ['key' => 'field_zvezda_about_community_image', 'label' => 'Фотография', 'name' => 'about_community_image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'large', 'library' => 'all'],
+            ['key' => 'field_zvezda_about_community_image_alt', 'label' => 'ALT фотографии', 'name' => 'about_community_image_alt', 'type' => 'text', 'default_value' => 'Команда с тренером'],
+        ],
+        'location' => $about_page_location,
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
