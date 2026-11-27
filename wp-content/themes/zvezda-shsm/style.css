@@ -156,7 +156,7 @@ section[id]{scroll-margin-top:92px}
 
 /* reviews */
 .rev .card{position:relative;padding-top:52px}
-.rev .card::before{content:"«";position:absolute;top:6px;left:24px;font-family:'Inter Tight';font-size:56px;font-weight:800;line-height:1;color:var(--tint)}
+.rev .card::before{content:"\\00AB";position:absolute;top:6px;left:24px;font-family:'Inter Tight';font-size:56px;font-weight:800;line-height:1;color:var(--tint)}
 .rev .card p{color:var(--gray);font-size:15px;margin-bottom:16px}
 .rev .card b{color:var(--brand-dark);font-size:14px}
 .placeholder{border-style:dashed;border-color:#c9d0ea}
@@ -193,7 +193,7 @@ section[id]{scroll-margin-top:92px}
 .faq summary{cursor:pointer;font-weight:700;font-size:16.5px;padding:20px 34px 20px 0;list-style:none;position:relative;color:var(--brand-dark)}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";position:absolute;right:4px;top:15px;font-size:24px;font-weight:400;color:var(--accent)}
-.faq details[open] summary::after{content:"–"}
+.faq details[open] summary::after{content:"-"}
 .faq .a{padding:0 0 20px;color:var(--gray);font-size:15px;max-width:720px}
 
 /* signup */
