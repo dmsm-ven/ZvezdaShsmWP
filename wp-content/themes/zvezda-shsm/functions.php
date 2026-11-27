@@ -52,7 +52,15 @@ function zvezda_club_settings_sanitize($input) {
     ];
 }
 add_action('admin_menu', function () {
-    add_theme_page('Настройки клуба', 'Настройки клуба', 'manage_options', 'zvezda-club-settings', 'zvezda_render_club_settings_page');
+    add_menu_page(
+        'Настройки клуба',
+        'Настройки клуба',
+        'manage_options',
+        'zvezda-club-settings',
+        'zvezda_render_club_settings_page',
+        'dashicons-admin-settings',
+        61
+    );
 });
 add_action('admin_init', function () {
     register_setting('zvezda_club_settings_group', 'zvezda_club_settings', ['sanitize_callback' => 'zvezda_club_settings_sanitize']);
