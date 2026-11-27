@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="bottom">
-      <div>© <?php echo esc_html(wp_date('Y')); ?> <?php echo esc_html(zvezda_setting('club_name')); ?> Москва</div>
+      <div>© <?php echo esc_html(wp_date('Y')); ?> <?php echo esc_html(zvezda_setting('club_name')); ?> Санкт-Петербург</div>
       <div><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">Политика конфиденциальности</a> · <a href="<?php echo esc_url(home_url('/user-agreement/')); ?>">Пользовательское соглашение</a></div>
     </div>
   </div>
@@ -36,4 +36,5 @@
 <div class="sticky-cta"><a href="#signup">Записаться на бесплатную тренировку</a></div>
 <?php wp_footer(); ?>
 </body>
+
 </html>
