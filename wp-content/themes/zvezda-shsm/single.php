@@ -5,9 +5,10 @@
 get_header();
 ?>
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-  <section class="page-hero useful-post-hero">
+  <?php $featured_image = get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>
+  <section class="page-hero useful-post-hero"<?php if ($featured_image) : ?> style="--useful-post-background-image: url('<?php echo esc_url($featured_image); ?>')"<?php endif; ?>>
     <div class="wrap">
-      <div class="kicker">— Полезное</div>
+      <div class="kicker">Полезное</div>
       <h1><?php the_title(); ?></h1>
     </div>
   </section>
