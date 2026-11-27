@@ -1066,6 +1066,7 @@ add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-about.php')) $classes[] = 'page-about';
     if (is_page_template('templates/page-coaches.php')) $classes[] = 'page-coaches';
     if (is_page_template('templates/page-schedule.php')) $classes[] = 'page-schedule';
+    if (is_page_template('templates/page-media.php')) $classes[] = 'page-media';
     return $classes;
 });
 
@@ -1252,6 +1253,31 @@ add_action('acf/init', function () {
             'param' => 'page_template',
             'operator' => '==',
             'value' => 'templates/page-schedule.php',
+        ]]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
+
+/** ACF banner content for the Media page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_media_page_banner',
+        'title' => 'Медиа — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_media_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'МЕДИА'],
+            ['key' => 'field_zvezda_media_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Фото и видео клуба'],
+            ['key' => 'field_zvezda_media_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Тренировки, матчи и турниры ФК «Супер Нова» — как это выглядит изнутри.'],
+        ],
+        'location' => [[[
+            'param' => 'page_template',
+            'operator' => '==',
+            'value' => 'templates/page-media.php',
         ]]],
         'position' => 'normal',
         'style' => 'default',
