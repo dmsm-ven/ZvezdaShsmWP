@@ -1069,6 +1069,7 @@ add_filter('body_class', function ($classes) {
     if (is_page_template('templates/page-media.php')) $classes[] = 'page-media';
     if (is_page_template('templates/page-useful.php')) $classes[] = 'page-useful';
     if (is_page_template('templates/page-payment.php')) $classes[] = 'page-payment';
+    if (is_page_template('templates/page-contacts.php')) $classes[] = 'page-contacts';
     if (is_singular('post')) $classes[] = 'useful-post';
     return $classes;
 });
@@ -1330,6 +1331,31 @@ add_action('acf/init', function () {
             'param' => 'page_template',
             'operator' => '==',
             'value' => 'templates/page-payment.php',
+        ]]],
+        'position' => 'normal',
+        'style' => 'default',
+        'active' => true,
+    ]);
+});
+
+
+/** ACF banner content for the Contacts page template. */
+add_action('acf/init', function () {
+    if (!function_exists('acf_add_local_field_group')) return;
+
+    acf_add_local_field_group([
+        'key' => 'group_zvezda_contacts_page_banner',
+        'title' => 'Контакты — баннер страницы',
+        'menu_order' => 0,
+        'fields' => [
+            ['key' => 'field_zvezda_contacts_banner_kicker', 'label' => 'Надзаголовок', 'name' => 'page_banner_kicker', 'type' => 'text', 'default_value' => 'Контакты'],
+            ['key' => 'field_zvezda_contacts_banner_title', 'label' => 'Заголовок H1', 'name' => 'page_banner_title', 'type' => 'text', 'default_value' => 'Как нас найти'],
+            ['key' => 'field_zvezda_contacts_banner_description', 'label' => 'Описание', 'name' => 'page_banner_description', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'СК «Звезда», м. Пионерская/м. Черная речка. Быстрее всего отвечаем в WhatsApp и Telegram.'],
+        ],
+        'location' => [[[
+            'param' => 'page_template',
+            'operator' => '==',
+            'value' => 'templates/page-contacts.php',
         ]]],
         'position' => 'normal',
         'style' => 'default',
