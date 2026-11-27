@@ -13,7 +13,7 @@
 <div class="topbar" id="topbar">
   <div class="wrap">
     <span class="tb-text"><i class="tb-dot"></i><span class="tb-full">Открыт круглогодичный набор на сезон 2026/27 (дети 5–12 лет) — первая тренировка бесплатно</span><span class="tb-short">Набор 2026/27 · 5–12 лет · 1-я бесплатно</span></span>
-    <a class="tb-btn" href="<?php echo esc_url(home_url('/')); ?>">Записаться</a>
+    <a class="tb-btn" href="<?php echo esc_url(home_url('/#signup')); ?>">Записаться</a>
     <button class="tb-close" type="button" aria-label="Закрыть объявление">×</button>
   </div>
 </div>
@@ -36,10 +36,10 @@
       <a href="<?php echo esc_url(home_url('/contacts/')); ?>">Контакты</a>
     </nav>
     <a class="phone" href="tel:+79856692689">+7 (985) 669-26-89</a>
-    <button class="burger" aria-label="Открыть меню"><span></span><span></span><span></span></button><a class="btn btn-p cta" href="<?php echo esc_url(home_url('/')); ?>">Пробная тренировка</a>
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span><span></span></button><a class="btn btn-p cta" href="<?php echo esc_url(home_url('/#signup')); ?>">Пробная тренировка</a>
   </div>
 </header>
-<div class="mobile-nav" aria-hidden="true">
+<div class="mobile-nav" id="mobile-navigation" aria-hidden="true">
 <button class="close" type="button" aria-label="Закрыть меню">✕</button>
 <a href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
 <a href="<?php echo esc_url(home_url('/about/')); ?>">О клубе</a>
