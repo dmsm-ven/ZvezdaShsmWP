@@ -35,6 +35,13 @@ foreach ($photo_values as $photo_value) {
     }
 }
 
+$signup_photo_alt = zvezda_front_page_field('signup_photo_alt', '');
+if ($signup_photo_alt === '') {
+    $signup_photo_alt = is_array($signup_photo) && !empty($signup_photo['alt'])
+        ? $signup_photo['alt']
+        : 'Юные игроки ' . zvezda_setting('club_name');
+}
+
 $signup_photo_html = '';
 if ($signup_photo_id) {
     $signup_photo_html = wp_get_attachment_image($signup_photo_id, 'large', false, [
@@ -53,12 +60,6 @@ if ($signup_photo_id) {
     }
 }
 
-$signup_photo_alt = zvezda_front_page_field('signup_photo_alt', '');
-if ($signup_photo_alt === '') {
-    $signup_photo_alt = is_array($signup_photo) && !empty($signup_photo['alt'])
-        ? $signup_photo['alt']
-        : 'Юные игроки ' . zvezda_setting('club_name');
-}
 ?>
 <section class="section signup" id="signup">
   <div class="wrap inner reveal">
