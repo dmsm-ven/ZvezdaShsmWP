@@ -4,33 +4,29 @@
  * Its editable content is stored on the WordPress front page.
  */
 $front_page_id = (int) get_option('page_on_front');
-$signup_photo = zvezda_front_page_field('signup_photo', null);
-$raw_signup_photo = $front_page_id ? get_post_meta($front_page_id, 'signup_photo', true) : '';
 
-$signup_photo_id = 0;
+// Use the same ACF helper as the working homepage banner first.
+// The front-page helper remains the fallback for shared use on inner pages.
+$signup_photo = zvezda_home_field('signup_photo', null);
+if ($signup_photo === null || $signup_photo === false || $signup_photo === '') {
+    $signup_photo = zvezda_front_page_field('signup_photo', null);
+}
+
+// ACF image fields configured with return_format=array provide a URL directly.
+// Also accept an attachment ID in case the production field setting differs.
 $signup_photo_url = '';
+$signup_photo_id = 0;
 
-// Prefer the raw attachment ID saved by ACF. The formatted field value is
-// also checked because ACF return formats can differ between environments.
-$photo_values = [$raw_signup_photo, $signup_photo];
-foreach ($photo_values as $photo_value) {
-    if (!$signup_photo_id && is_numeric($photo_value)) {
-        $signup_photo_id = absint($photo_value);
-    } elseif (is_array($photo_value)) {
-        if (!$signup_photo_id) {
-            $signup_photo_id = !empty($photo_value['ID'])
-                ? absint($photo_value['ID'])
-                : (!empty($photo_value['id']) ? absint($photo_value['id']) : 0);
-        }
-
-        if ($signup_photo_url === '' && !empty($photo_value['url'])) {
-            $signup_photo_url = $photo_value['url'];
-        }
-    } elseif (!$signup_photo_id && is_object($photo_value) && !empty($photo_value->ID)) {
-        $signup_photo_id = absint($photo_value->ID);
-    } elseif ($signup_photo_url === '' && is_string($photo_value) && filter_var($photo_value, FILTER_VALIDATE_URL)) {
-        $signup_photo_url = $photo_value;
-    }
+if (is_array($signup_photo)) {
+    $signup_photo_url = !empty($signup_photo['url']) ? $signup_photo['url'] : '';
+    $signup_photo_id = !empty($signup_photo['ID']) ? absint($signup_photo['ID']) : 0;
+} elseif (is_numeric($signup_photo)) {
+    $signup_photo_id = absint($signup_photo);
+    $signup_photo_url = $signup_photo_id
+        ? (wp_get_attachment_image_url($signup_photo_id, 'large') ?: wp_get_attachment_url($signup_photo_id) ?: '')
+        : '';
+} elseif (is_string($signup_photo) && filter_var($signup_photo, FILTER_VALIDATE_URL)) {
+    $signup_photo_url = $signup_photo;
 }
 
 $signup_photo_alt = zvezda_front_page_field('signup_photo_alt', '');
