@@ -3,46 +3,54 @@
  * Shared signup section used on the homepage and inner pages.
  * Its editable content is stored on the WordPress front page.
  */
+$front_page_id = (int) get_option('page_on_front');
 $signup_photo = zvezda_front_page_field('signup_photo', null);
+$raw_signup_photo = $front_page_id ? get_post_meta($front_page_id, 'signup_photo', true) : '';
+
 $signup_photo_id = 0;
 $signup_photo_url = '';
 
-// Read the raw ACF value as an attachment ID. This avoids differences
-// between ACF image return formats on local and production environments.
-if (function_exists('get_field')) {
-    $front_page_id = (int) get_option('page_on_front');
-    $raw_signup_photo = get_field('signup_photo', $front_page_id ?: false, false);
+// Prefer the raw attachment ID saved by ACF. The formatted field value is
+// also checked because ACF return formats can differ between environments.
+$photo_values = [$raw_signup_photo, $signup_photo];
+foreach ($photo_values as $photo_value) {
+    if ($signup_photo_id || $signup_photo_url !== '') {
+        break;
+    }
 
-    if (is_numeric($raw_signup_photo)) {
-        $signup_photo_id = absint($raw_signup_photo);
-    } elseif (is_array($raw_signup_photo)) {
-        $signup_photo_id = !empty($raw_signup_photo['ID'])
-            ? absint($raw_signup_photo['ID'])
-            : (!empty($raw_signup_photo['id']) ? absint($raw_signup_photo['id']) : 0);
-        $signup_photo_url = !empty($raw_signup_photo['url']) ? $raw_signup_photo['url'] : '';
-    } elseif (is_object($raw_signup_photo) && !empty($raw_signup_photo->ID)) {
-        $signup_photo_id = absint($raw_signup_photo->ID);
-    } elseif (is_string($raw_signup_photo) && filter_var($raw_signup_photo, FILTER_VALIDATE_URL)) {
-        $signup_photo_url = $raw_signup_photo;
+    if (is_numeric($photo_value)) {
+        $signup_photo_id = absint($photo_value);
+    } elseif (is_array($photo_value)) {
+        $signup_photo_id = !empty($photo_value['ID'])
+            ? absint($photo_value['ID'])
+            : (!empty($photo_value['id']) ? absint($photo_value['id']) : 0);
+
+        if (!$signup_photo_id && !empty($photo_value['url'])) {
+            $signup_photo_url = $photo_value['url'];
+        }
+    } elseif (is_object($photo_value) && !empty($photo_value->ID)) {
+        $signup_photo_id = absint($photo_value->ID);
+    } elseif (is_string($photo_value) && filter_var($photo_value, FILTER_VALIDATE_URL)) {
+        $signup_photo_url = $photo_value;
     }
 }
 
-// Keep compatibility with formatted ACF values if the raw value is unavailable.
-if (!$signup_photo_id && is_array($signup_photo)) {
-    $signup_photo_id = !empty($signup_photo['ID'])
-        ? absint($signup_photo['ID'])
-        : (!empty($signup_photo['id']) ? absint($signup_photo['id']) : 0);
-    if ($signup_photo_url === '' && !empty($signup_photo['url'])) {
-        $signup_photo_url = $signup_photo['url'];
-    }
-} elseif (!$signup_photo_id && is_numeric($signup_photo)) {
-    $signup_photo_id = absint($signup_photo);
-} elseif ($signup_photo_url === '' && is_string($signup_photo) && filter_var($signup_photo, FILTER_VALIDATE_URL)) {
-    $signup_photo_url = $signup_photo;
-}
+$signup_photo_html = '';
+if ($signup_photo_id) {
+    $signup_photo_html = wp_get_attachment_image($signup_photo_id, 'large', false, [
+        'class' => 'photo',
+        'alt' => '',
+        'loading' => 'lazy',
+        'decoding' => 'async',
+    ]);
 
-if ($signup_photo_id && $signup_photo_url === '') {
-    $signup_photo_url = wp_get_attachment_url($signup_photo_id) ?: '';
+    // If WordPress cannot build the responsive image markup, use the
+    // attachment URL directly rather than silently omitting the photo.
+    if (!$signup_photo_html) {
+        $signup_photo_url = wp_get_attachment_image_url($signup_photo_id, 'large')
+            ?: wp_get_attachment_url($signup_photo_id)
+            ?: '';
+    }
 }
 
 $signup_photo_alt = zvezda_front_page_field('signup_photo_alt', '');
@@ -62,20 +70,17 @@ if ($signup_photo_alt === '') {
         <a class="btn" href="https://wa.me/<?php echo esc_attr(zvezda_phone_digits()); ?>">WhatsApp</a>
         <a class="btn" href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
       </div>
-      <?php if ($signup_photo_id) : ?>
+      <?php if ($signup_photo_html) : ?>
         <?php
-        $signup_photo_html = wp_get_attachment_image($signup_photo_id, 'large', false, [
-            'class' => 'photo',
-            'alt' => $signup_photo_alt,
-            'loading' => 'lazy',
-            'decoding' => 'async',
-        ]);
+        // Apply the editable ALT text to the generated image markup.
+        $signup_photo_html = preg_replace(
+            '/alt=("|')(.*?)\\1/i',
+            'alt="' . esc_attr($signup_photo_alt) . '"',
+            $signup_photo_html,
+            1
+        );
+        echo $signup_photo_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         ?>
-        <?php if ($signup_photo_html !== '') : ?>
-          <?php echo $signup_photo_html; ?>
-        <?php elseif ($signup_photo_url !== '') : ?>
-          <img class="photo" src="<?php echo esc_url($signup_photo_url); ?>" alt="<?php echo esc_attr($signup_photo_alt); ?>" loading="lazy" decoding="async">
-        <?php endif; ?>
       <?php elseif ($signup_photo_url !== '') : ?>
         <img class="photo" src="<?php echo esc_url($signup_photo_url); ?>" alt="<?php echo esc_attr($signup_photo_alt); ?>" loading="lazy" decoding="async">
       <?php endif; ?>
