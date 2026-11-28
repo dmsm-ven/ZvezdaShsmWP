@@ -7,12 +7,42 @@ $signup_photo = zvezda_front_page_field('signup_photo', null);
 $signup_photo_id = 0;
 $signup_photo_url = '';
 
-if (is_array($signup_photo)) {
-    $signup_photo_id = !empty($signup_photo['ID']) ? absint($signup_photo['ID']) : 0;
-    $signup_photo_url = !empty($signup_photo['url']) ? $signup_photo['url'] : '';
-} elseif (is_numeric($signup_photo)) {
+// Read the raw ACF value as an attachment ID. This avoids differences
+// between ACF image return formats on local and production environments.
+if (function_exists('get_field')) {
+    $front_page_id = (int) get_option('page_on_front');
+    $raw_signup_photo = get_field('signup_photo', $front_page_id ?: false, false);
+
+    if (is_numeric($raw_signup_photo)) {
+        $signup_photo_id = absint($raw_signup_photo);
+    } elseif (is_array($raw_signup_photo)) {
+        $signup_photo_id = !empty($raw_signup_photo['ID'])
+            ? absint($raw_signup_photo['ID'])
+            : (!empty($raw_signup_photo['id']) ? absint($raw_signup_photo['id']) : 0);
+        $signup_photo_url = !empty($raw_signup_photo['url']) ? $raw_signup_photo['url'] : '';
+    } elseif (is_object($raw_signup_photo) && !empty($raw_signup_photo->ID)) {
+        $signup_photo_id = absint($raw_signup_photo->ID);
+    } elseif (is_string($raw_signup_photo) && filter_var($raw_signup_photo, FILTER_VALIDATE_URL)) {
+        $signup_photo_url = $raw_signup_photo;
+    }
+}
+
+// Keep compatibility with formatted ACF values if the raw value is unavailable.
+if (!$signup_photo_id && is_array($signup_photo)) {
+    $signup_photo_id = !empty($signup_photo['ID'])
+        ? absint($signup_photo['ID'])
+        : (!empty($signup_photo['id']) ? absint($signup_photo['id']) : 0);
+    if ($signup_photo_url === '' && !empty($signup_photo['url'])) {
+        $signup_photo_url = $signup_photo['url'];
+    }
+} elseif (!$signup_photo_id && is_numeric($signup_photo)) {
     $signup_photo_id = absint($signup_photo);
-    $signup_photo_url = $signup_photo_id ? wp_get_attachment_image_url($signup_photo_id, 'large') : '';
+} elseif ($signup_photo_url === '' && is_string($signup_photo) && filter_var($signup_photo, FILTER_VALIDATE_URL)) {
+    $signup_photo_url = $signup_photo;
+}
+
+if ($signup_photo_id && $signup_photo_url === '') {
+    $signup_photo_url = wp_get_attachment_url($signup_photo_id) ?: '';
 }
 
 $signup_photo_alt = zvezda_front_page_field('signup_photo_alt', '');
@@ -33,12 +63,19 @@ if ($signup_photo_alt === '') {
         <a class="btn" href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
       </div>
       <?php if ($signup_photo_id) : ?>
-        <?php echo wp_get_attachment_image($signup_photo_id, 'large', false, [
+        <?php
+        $signup_photo_html = wp_get_attachment_image($signup_photo_id, 'large', false, [
             'class' => 'photo',
             'alt' => $signup_photo_alt,
             'loading' => 'lazy',
             'decoding' => 'async',
-        ]); ?>
+        ]);
+        ?>
+        <?php if ($signup_photo_html !== '') : ?>
+          <?php echo $signup_photo_html; ?>
+        <?php elseif ($signup_photo_url !== '') : ?>
+          <img class="photo" src="<?php echo esc_url($signup_photo_url); ?>" alt="<?php echo esc_attr($signup_photo_alt); ?>" loading="lazy" decoding="async">
+        <?php endif; ?>
       <?php elseif ($signup_photo_url !== '') : ?>
         <img class="photo" src="<?php echo esc_url($signup_photo_url); ?>" alt="<?php echo esc_attr($signup_photo_alt); ?>" loading="lazy" decoding="async">
       <?php endif; ?>
