@@ -14,23 +14,21 @@ $signup_photo_url = '';
 // also checked because ACF return formats can differ between environments.
 $photo_values = [$raw_signup_photo, $signup_photo];
 foreach ($photo_values as $photo_value) {
-    if ($signup_photo_id || $signup_photo_url !== '') {
-        break;
-    }
-
-    if (is_numeric($photo_value)) {
+    if (!$signup_photo_id && is_numeric($photo_value)) {
         $signup_photo_id = absint($photo_value);
     } elseif (is_array($photo_value)) {
-        $signup_photo_id = !empty($photo_value['ID'])
-            ? absint($photo_value['ID'])
-            : (!empty($photo_value['id']) ? absint($photo_value['id']) : 0);
+        if (!$signup_photo_id) {
+            $signup_photo_id = !empty($photo_value['ID'])
+                ? absint($photo_value['ID'])
+                : (!empty($photo_value['id']) ? absint($photo_value['id']) : 0);
+        }
 
-        if (!$signup_photo_id && !empty($photo_value['url'])) {
+        if ($signup_photo_url === '' && !empty($photo_value['url'])) {
             $signup_photo_url = $photo_value['url'];
         }
-    } elseif (is_object($photo_value) && !empty($photo_value->ID)) {
+    } elseif (!$signup_photo_id && is_object($photo_value) && !empty($photo_value->ID)) {
         $signup_photo_id = absint($photo_value->ID);
-    } elseif (is_string($photo_value) && filter_var($photo_value, FILTER_VALIDATE_URL)) {
+    } elseif ($signup_photo_url === '' && is_string($photo_value) && filter_var($photo_value, FILTER_VALIDATE_URL)) {
         $signup_photo_url = $photo_value;
     }
 }
