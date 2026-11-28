@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * Temporary diagnostic: prefer GD over Imagick for WordPress image editing.
+ * Remove this filter after testing the media crop operation.
+ */
+add_filter('wp_image_editors', function ($editors) {
+    return ['WP_Image_Editor_GD', 'WP_Image_Editor_Imagick'];
+});
+
+/**
  * Настройки темы и регистрация функциональности.
  */
 function zvezda_club_settings_defaults()
