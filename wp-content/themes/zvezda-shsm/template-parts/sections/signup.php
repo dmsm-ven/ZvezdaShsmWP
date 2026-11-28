@@ -39,7 +39,7 @@ $signup_photo_html = '';
 if ($signup_photo_id) {
     $signup_photo_html = wp_get_attachment_image($signup_photo_id, 'large', false, [
         'class' => 'photo',
-        'alt' => '',
+        'alt' => $signup_photo_alt,
         'loading' => 'lazy',
         'decoding' => 'async',
     ]);
@@ -71,16 +71,7 @@ if ($signup_photo_alt === '') {
         <a class="btn" href="<?php echo esc_url(zvezda_setting('telegram_url')); ?>">Telegram</a>
       </div>
       <?php if ($signup_photo_html) : ?>
-        <?php
-        // Apply the editable ALT text to the generated image markup.
-        $signup_photo_html = preg_replace(
-            '/alt=("|')(.*?)\\1/i',
-            'alt="' . esc_attr($signup_photo_alt) . '"',
-            $signup_photo_html,
-            1
-        );
-        echo $signup_photo_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        ?>
+        <?php echo $signup_photo_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
       <?php elseif ($signup_photo_url !== '') : ?>
         <img class="photo" src="<?php echo esc_url($signup_photo_url); ?>" alt="<?php echo esc_attr($signup_photo_alt); ?>" loading="lazy" decoding="async">
       <?php endif; ?>
